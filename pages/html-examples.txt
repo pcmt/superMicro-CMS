@@ -1,0 +1,76 @@
+#~~
+HTML examples
+
+View 'edit page' in admin for the actual markup.
+
+<h6>(1) Images</h6>
+
+Normal 740 pixel maximum-width image:
+
+<img src="img/example-image.jpg" width="740" height="400" alt="">
+
+Normal 740 pixel maximum-width image with caption:
+
+<img src="img/example-image.jpg" width="740" height="400" alt="">
+
+<p class="caption">Image caption</p>
+
+Normal 740 maximum-width image with rounded corners:
+
+<img src="img/example-image.jpg" width="740" height="400" alt="" class="rc">
+
+Image with border (maximum width 680 pixels):
+
+<img src="img/example-image.jpg" width="680" height="368" alt="" class="border">
+
+<h6>(2) Normal list</h6>
+
+<ul>
+<li>Item one</li>
+<li>Item two</li>
+<li>Item three</li>
+</ul>
+
+<h6>(3) Numbered list</h6>
+
+<ol>
+<li>Item one</li>
+<li>Item two</li>
+<li>Item three</li>
+</ol>
+
+<h6>(4) Styled list</h6>
+
+<ul class="listing">
+<li>Item one</li>
+<li>Item two</li>
+<li>Item three</li>
+</ul>
+
+<h6>(5) Internal link</h6>
+
+<a href="./html-examples">Link to this page</a>
+
+<h6>(6) External link</h6>
+
+<a href="https://google.com/">External website</a> (eg: Google)
+
+<h6>(7) Horizontal rule</h6>
+
+<hr>
+
+<h6>(8) Text formatting</h6>
+
+<strong>Bold text</strong>
+<em>Emphasised text</em> (usually italic)
+<span>Coloured text</span>
+
+<h6>(9) Sub-headings</h6>
+
+<h2>H2 heading</h2>
+<h3>H3 heading</h3>
+<h4>H4 heading</h4>
+<h5>H5 heading</h5>
+<h6>H6 heading</h6>
+
+Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
