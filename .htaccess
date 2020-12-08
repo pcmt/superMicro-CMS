@@ -1,0 +1,21 @@
+# BEGIN superMicro CMS
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+# Forbid direct viewing of txt files in pages folder
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/(pages|visits)/(.*)\.txt [NC]
+  RewriteRule ^ "-" [F]
+# Rewrite non php URLs to php on server
+# php URLs still usable
+#     is not a directory
+  RewriteCond %{REQUEST_FILENAME} !-d
+#     is a php file
+  RewriteCond %{REQUEST_FILENAME}\.php -f
+# Internally rewrite to actual php file
+  RewriteRule ^(.*)$ $1.php
+# If not found, relative path to error 404 file
+#     is not an actual file or directory
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule .* inc/404.php [L]
+</IfModule>
+# END superMicro CMS
