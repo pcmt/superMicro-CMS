@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 25 Nov 2020 */
+/* Last updated 08 Dec 2020 */
 /* Form action */
 
 // Declare variables
@@ -179,9 +179,9 @@ if (function_exists('h1')) {
 
 		// Admin images moved to admin
 
-		if ($imagename == 'og.jpg') {
+		if (($imagename == 'og.jpg') || ($imagename == 'bg_footer.gif') || ($imagename == 'bg_footer_monochrome.gif')) {
 			$problem = TRUE;
-			$response = "<em>The Open Graph image can't be deleted. Maybe upload a new one 200 pixels square.</em>";
+			$response = "<em>The default images can't be deleted. Maybe upload a new one (<b>og.jpg</b> must be 200 pixels square).</em>";
 		}
 
 		if (!$problem) {
