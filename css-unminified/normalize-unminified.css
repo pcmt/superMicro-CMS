@@ -1,0 +1,79 @@
+/* 'Normalizer' (unminified) for all screen widths [last update 08.50 Aug 29 2020] */
+
+/* When minified, paste into /css/common.css */
+
+* { margin: 0; padding: 0; }
+
+html,
+body {
+  margin: 0;
+}
+
+html {
+  position: relative;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box; /* Padding and borders increase box */
+  overflow-y: scroll;
+  -webkit-overflow-scrolling:touch; /* Added */
+}
+
+body {
+  text-align: center;
+  line-height: 1.0;
+}
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+main,
+menu,
+nav,
+section,
+summary {
+  display: block;
+}
+
+small {
+  font-size: 90%;
+}
+
+img {
+  vertical-align: bottom; /* Put this in minified version and remove elsewhere */
+}
+
+input,
+select,
+textarea { /* Attempt to override 'Mac' defaults */
+  /* -moz-appearance: none; */
+  -webkit-appearance: none;
+  /* appearance: none; */
+  outline: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+  outline: none;
+}
+
+/* Improve readability when focused / hovered in all browsers */
+a:active,
+a:hover {
+  outline: 0;
+}
+
+a {
+  /* Remove grey background from active links in IE 10 */
+  background: transparent;
+}
+
+input[type=password] {
+  filter: none; /* Gets rid of yellow bg */
+}
