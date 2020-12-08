@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 08 Dec 2020 */
+/* Last updated 14 Sept 2020 */
 
 // Declare variable
 $obj = '';
