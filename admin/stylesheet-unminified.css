@@ -1,0 +1,956 @@
+@charset "UTF-8";
+@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i');
+
+/* [last update 30 Oct 2020] */
+
+/*
+Breakpoints:
+Less than 1201px and more than 660px
+More than 1200px
+Adjustments 1 less than 961px
+Adjustments 2 less than 641px
+Adjustments 3 less than 561px
+*/
+
+/* #boxes4/#buttons4 removed Jan 30 2020 (no 'links') */
+
+* { margin: 0; padding: 0; }
+
+html,
+body {
+  margin: 0;
+}
+
+html {
+  position: relative;
+  -moz-box-sizing: content-box;
+  -webkit-box-sizing: content-box;
+  box-sizing: content-box; /* Padding and borders increase box */
+  overflow-y: scroll;
+}
+
+body {
+  text-align: center;
+  font-size: 62.5%; /* 1.0em = 10px */
+  font-family: 'Open Sans', Sans-Serif;
+  background: #ebebeb;
+}
+
+#wrap {
+  background: #fff;
+}
+
+/* -------------------------------------------------- */
+/* Login form */
+
+#loginform {
+  margin: 3.0em auto;
+  padding: 10px 20px 70px 20px;
+  text-align: center;
+  font-size: 1.3em;
+  line-height: 1.4;
+  background: #fff url('img/bg_footer.gif') no-repeat;
+  background-position: bottom 30px center;
+}
+
+@media screen and (min-width: 481px) {
+
+  #loginform {
+    max-width: 360px;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    border-radius: 6px;
+  }
+
+}
+
+#loginform h1 {
+  text-align: center;
+  padding-bottom: 0;
+  border-bottom: 3px solid #fff;
+}
+
+#loginform p {
+  margin: 0 0 0.4em 0;
+}
+
+/* -------------------------------------------------- */
+/* Everything over 660 */
+
+@media screen and (min-width: 661px) {
+
+  #wrap {
+    width: 920px;
+  }
+
+  #wrap .min-height { /* For install.php */
+    min-height: 600px;
+  }
+
+  #boxes { /* Input boxes on left */
+    width: 720px;
+  }
+
+  #boxes textarea {
+    width: 704px;
+    height: 388px;
+  }
+
+} /* End 661- */
+
+/* -------------------------------------------------- */
+/* Widens things over 1200 */
+
+@media screen and (min-width: 1201px) {
+
+  #wrap {
+    width: 1120px;
+  }
+
+  #boxes { /* Input boxes on left */
+    width: 920px;
+  }
+
+  #boxes textarea {
+    width: 904px;
+    height: 488px;
+  }
+
+} /* End 1201 */
+
+/* -------------------------------------------------- */
+/* General layout, all screen widths above 660px */
+
+#wrap {
+  margin: 0 auto;
+  padding: 0 20px;
+  text-align: left;
+  font-size: 1.3em;
+  line-height: 1.4;
+}
+
+#boxes { /* Pages, Comments, Extra */
+  display: inline;
+  float: left;
+  margin-bottom: 10px;
+}
+
+#boxes2 { /* Setup */
+  display: inline;
+  float: left;
+  width: 500px;
+  margin-bottom: 1.6em;
+}
+
+#boxes3 { /* Backup buttons */
+  display: block;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.group { /* Setup */
+  display: block;
+  width: auto;
+  padding-bottom: 6px;
+}
+
+.one {
+  float: left;
+  width: 200px;
+}
+
+.two {
+  float: right;
+  width: 284px; /* Leaves 16px space to .one */
+}
+
+#bottom {
+  clear: both;
+  display: block;
+  width: 500px;
+}
+
+#buttons { /* Buttons etc on right */
+  display: inline;
+  float: right;
+  margin: 24px 0 10px 0;
+  width: 180px;
+}
+
+#buttons2 { /* Setup */
+  display: inline;
+  float: right;
+  margin: 0 0 10px 0;
+  padding-bottom: 10px;
+  width: 400px;
+  max-width: 400px;
+}
+
+#buttons2.install {
+  margin-top: 50px;
+}
+
+#info { /* Backup */
+  display: block;
+  width: 600px;
+  margin: 12px 0 22px 0;
+  padding: 8px 18px 25px 18px;
+  background: #fff;
+  border: 1px solid #ddd;
+  -webkit-border-radius: 15px;
+  -moz-border-radius: 15px;
+  border-radius: 15px;
+  -webkit-box-shadow: inset 0 0 30px 5px #f4f4f4;
+  -moz-box-shadow: inset 0 0 30px 5px #f4f4f4;
+  box-shadow: inset 0 0 30px 5px #f4f4f4;
+}
+
+div.bg {
+  position: relative;
+  margin: 15px 0 6px 0;
+  padding: 16px 18px 10px 18px;
+  color: #666;
+  background: #ebeff8;
+  border: none;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+/* End general layout */
+/* -------------------------------------------------- */
+
+h1 {
+  margin: 0;
+  padding: 20px 0 10px 0;
+  display: block;
+  font-weight: 600;
+  letter-spacing: 0;
+  font-size: 1.8em;
+  line-height: 1.0;
+  color: #000;
+  border-bottom: 3px solid #ebebeb;
+  text-shadow: 1px 2px 3px #ccc;
+}
+
+h1 i {
+  color: #666;
+}
+
+h3, h5 {
+  display: block;
+  font-weight: 600;
+  font-size: 1.4em;
+  line-height: 1.1;
+  color: #333;
+  text-shadow: 1px 1px 2px #ddd;
+}
+
+h3 {
+  margin: 16px 0 6px 0;
+}
+
+h5 { /* Images */
+  margin: 16px 0 10px 0;
+}
+
+h3 em {
+  font-weight: 600;
+}
+
+h4 {
+  margin: 2px 0 10px 0;
+  font-size: 1.0em;
+}
+
+p {
+  margin: 1.2em 0 0 0;
+  padding: 0;
+  font-size: 1.05em;
+}
+
+p#nav {
+  margin: 0;
+  padding: 6px 0;
+  border-bottom: 3px solid #ebebeb;
+  background: #fff url('img/nav-icon.jpg') no-repeat;
+  background-position: 100% 3px;
+}
+
+p#nav a,
+p#nav span {
+  padding: 0 14px 0 10px;
+  border-right: 3px solid #ebebeb;
+}
+
+p#nav a.ext {
+  border-right: none;
+}
+
+p#nav span {
+  color: #999;
+}
+
+/* #info is for backup.php */
+#info p,
+p.backup {
+  font-size: 1.1em;
+}
+
+p#footer {
+  clear: both;
+  display: block;
+  width: 100%;
+  text-align: center;
+  margin: 1.6em auto 2.4em auto;
+  padding-top: 1.2em;
+  padding-bottom: 3.25em;
+  color: #fff;
+  background: #333 url('img/bg_footer.gif') no-repeat;
+  background-position: 50% bottom;
+  /* x-value y-value blur spread color */
+  -webkit-box-shadow: 0 700px 0 700px #333;
+  -moz-box-shadow: 0 700px 0 700px #333;
+  box-shadow: 0 700px 0 700px #333;
+}
+
+p#footer em {
+  font-weight: 400;
+  color: #f6fffb;
+}
+
+p.break_word {
+  margin: 1.2em 0 0 0;
+  word-break: break-all;
+  white-space: pre-wrap;
+  white-space: -moz-pre-wrap;
+  white-space: -pre-wrap;
+  white-space: -o-pre-wrap;
+  word-wrap: break-word;
+}
+
+p.important {
+  margin: 1.2em 0;
+  padding: 7px 6px 6px 6px;
+  border: 1px solid #fe7f40;
+  -webkit-border-radius: 4px;
+  -moz-border-radius: 4px;
+  border-radius: 4px;
+}
+
+p#upload-progress {
+  margin-bottom: 50px;
+  font-weight: bold;
+  font-style: italic;
+  color: #c63;
+}
+
+#buttons2 p {
+  margin: 0.6em 0 0 0;
+}
+
+em {
+  font-style: normal;
+  font-weight: bold;
+  color: #c63;
+}
+
+em b {
+  color: #000;
+}
+
+span {
+  color: #bbb;
+}
+
+i {
+  font-style: normal;
+  color: #c63;
+}
+
+pre {
+  font-family: Consolas, Monaco, monospace;
+  font-size: 13px;
+  color: #609;
+  background: #f3f7ff;
+}
+
+/* -------------------------------------------------- */
+/* Action box at top */
+
+#response {
+  margin: 15px 0 13px 0;
+  padding: 1px 0 1px 0;
+  height: auto;
+  width: 100%;
+  font-weight: 400;
+  font-size: 1.1em;
+  border-top: 3px solid #b4ecd6;
+  border-bottom: 3px solid #b4ecd6;
+  background: #f6fffb; /* Pale green */
+}
+
+#response p { /* Limit width to actual text */
+  display: inline;
+  margin: 0;
+  padding: 0;
+}
+
+span.padded-multiline { /* Pads end of every line */
+  margin: 0;
+  padding: 6px 14px 7px 14px;
+  line-height: 1.8;
+  color: #000;
+  background: #b4ecd6;
+  max-width: 100%;
+  box-decoration-break: clone;
+  -webkit-box-decoration-break: clone;
+}
+
+#response em { /* Not coloured */
+  color: #000;
+  font-weight: 400;
+}
+
+#response b {
+  color: #000; /* Not working */
+  font-weight: bold;
+}
+
+/* -------------------------------------------------- */
+/* Lists */
+
+ul {
+  margin: 6px 0 0 0;
+  padding: 0;
+  list-style-type: none;
+  font-size: 1.0em;
+}
+
+#info ul {
+  clear: left;
+  margin-left: 25px;
+  padding: 5px 0 5px 0;
+  list-style-type: disc;
+  list-style-position: outside;
+  font-size: 1.1em;
+  line-height: 1.4;
+}
+
+#info li {
+  padding: 1px 0 0 0;
+}
+
+#list { /* Bottom list */
+  display: block;
+  clear: both;
+  margin-bottom: 14px;
+  font-size: 1.05em;
+}
+
+#list li.top {
+  padding-bottom: 4px;
+}
+
+#list li {
+  padding: 2px 0 3px 0;
+  color: #666;
+  border-bottom: 1px solid #f4f4f4;
+}
+
+#list li.mark {
+  background: #f4f4f4;
+}
+
+#list span {
+  padding: 2px 0 3px 0;
+  color: #555;
+  background: #fff;
+}
+
+#list span:hover {
+  color: #000;
+  background: #fff;
+}
+
+/* Page on */
+#list li.mark span,
+#list li.mark span a {
+  color: #000;
+  background: #f4f4f4;
+}
+
+#list li.mark span a:hover {
+  color: #03f;
+}
+
+/* -------------------------------------------------- */
+/* Misc */
+
+img.upload {
+  margin: 10px 0 10px 0;
+  max-width: 100%;
+  background: #f4f4f4;
+  vertical-align: bottom;
+}
+
+div.bg img {
+  position: absolute;
+  top: 6px; right: 6px;
+  opacity: 0.5;
+}
+
+div.bg img:hover {
+  opacity: 1.0;
+}
+
+a {
+  color: #03f;
+  text-decoration: none;
+}
+
+a:hover {
+  color: #000;
+}
+
+span a {
+  color: #999;
+}
+
+#response span a { /* Against darker background */
+  color: #03f;
+}
+
+p#footer a {
+  color: #fff;
+  border-bottom: 1px dotted #ccc;
+}
+
+p#footer a:hover {
+  border-bottom: 1px solid #ccc;
+}
+
+hr {
+  clear: both;
+  display: block;
+  margin: 10px auto 10px auto;
+  padding-bottom: 1px;
+  height: 0;
+  width: 100%;
+  background: #fff;
+  border: none;
+  border-top: 3px solid #ebebeb;
+}
+
+div.bg hr {
+  border-top: 2px solid #fff;
+}
+
+/* -------------------------------------------------- */
+/* Forms */
+
+input,
+select,
+textarea { /* Attempt to override 'Mac' defaults */
+  /* -moz-appearance: none; */
+  -webkit-appearance: none;
+  /* appearance: none; */
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: none;
+}
+
+form {
+  margin: 0;
+}
+
+form#pw {
+  width: 290px;
+  margin: 1.0em auto 1.0em auto;
+  padding: 1.6em 10px 1.0em 10px;
+  border: 1px solid #ccc;
+}
+
+label {
+  display: block;
+  margin: 0.5em 0 0.25em 0;
+  font-size: 1.05em;
+  line-height: 1.4;
+}
+
+form#pw label {
+  display: none;
+}
+
+#buttons2 label { /* Font and language */
+  display: inline;
+  padding-left: 4px;
+}
+
+/* -------------------- */
+/* Text inputs */
+
+input[type=text],
+input[type=file] {
+  font-family: 'Open Sans', Sans-Serif;
+  font-size: 1.05em;
+}
+
+input[type=text],
+textarea {
+  margin: 2px 0 6px 0;
+  padding: 5px 6px 5px 6px;
+  background: #fafafa;
+  border: 1px solid #ddd;
+}
+
+form#pw input[type=password] {
+  margin: 2px 0 6px 0;
+  padding: 6px 6px 6px 6px;
+  background: #fafafa;
+  border: 1px solid #bbb;
+  -webkit-border-radius: 6px;
+  -moz-border-radius: 6px;
+  border-radius: 6px;
+  width: 254px;
+  font-size: 1.2em;
+  filter: none; /* Gets rid of yellow bg */
+}
+
+#boxes2 .one input[type=text],
+#bottom input[type=text] {
+  width: 186px;
+}
+
+#boxes2 .two input[type=text] {
+  width: 270px;
+}
+
+input[type=file] { /* Tricky */
+  margin: 2px 0 6px 0;
+  padding: 6px 5px 5px 5px;
+  background: #fff;
+  border: 1px solid #b4ecd6;
+  border-radius: 4px;
+  font-size: 1.1em;
+}
+
+/* -------------------- */
+/* Textareas */
+
+textarea { overflow: auto;
+  display: block;
+  margin-top: 0.5em;
+  font-family: Consolas, Monaco, monospace;
+  font-size: 1.1em;
+  line-height: 1.2;
+  color: #000;
+}
+
+@media screen and (max-width: 1200px) {
+
+  #bottom textarea {
+    font-size: 1.2em;
+  }
+
+}
+
+#boxes2 textarea {
+  width: 486px;
+}
+
+#bottom textarea { /* Setup */
+  margin: 5px 0 14px 0;
+}
+
+/* -------------------- */
+/* Submit buttons */
+
+input[type=submit] { /* All buttons */
+  margin: 6px 0 7px 0;
+  padding: 7px 5px 8px 5px;
+  background-color: #3366cc;
+  border: 1px solid #3366cc;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  border-radius: 5px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.05em;
+  font-family: 'Open Sans', Sans-Serif;
+}
+
+input[type=submit]:hover {
+  color: #03f;
+  background-color: #fff;
+  border: 1px solid #bbb;
+  cursor: pointer;
+}
+
+form#pw input[type=submit] { /* Password */
+  display: block;
+  margin: 6px auto 6px auto;
+  padding: 14px 20px 13px 20px;
+  font-size: 1.05em;
+  text-align: center;
+}
+
+#buttons input[type=submit], /* Pages */
+#buttons2 input[type=submit] { /* Setup */
+  display: block;
+  width: 170px;
+  /* margin: 6px 0 7px 0; */
+  /* padding: 7px 5px 8px 5px; */
+}
+
+input[type=submit].images { /* Images (beneath box) */
+  margin: 2px 0 1.6em 0;
+}
+
+#boxes3 input[type=submit] { /* Backup */
+  display: inline;
+  margin: 10px 0 10px 0;
+  padding: 7px 20px 8px 20px;
+}
+
+input[type=submit].em { /* Setup boxes */
+  color: #fff;
+}
+
+input[type=submit].em:hover { /* Setup boxes */
+  color: #03f;
+}
+
+input[type=submit].caution {
+  color: #600;
+  background-color: #fff;
+  border: 1px solid #bbb;
+}
+
+input[type=submit].caution:hover {
+  color: #fff;
+  background-color: #b85454;
+  border: 1px solid #b85454;
+}
+
+/* Enlarge things on screens less than 1201px */
+@media screen and (max-width: 1200px) { /* (tablets?) */
+
+  input[type=submit] { /* All buttons and dropdowns */
+    font-size: 1.2em;
+  }
+
+  input[type=text] { /* All input boxes */
+    font-size: 1.1em;
+  }
+
+  input[type=password] {
+    font-size: 1.2em;
+  }
+
+}
+
+/* -------------------- */
+/* Dropdowns */
+
+select#dropdown {
+  margin: 6px 0 2px 0;
+  padding: 7px 6px 7px 4px;
+  width: 170px;
+  background-color: #fff;
+  border: 1px solid #bbb;
+  font-family: 'Open Sans', Sans-Serif;
+  font-size: 14px;
+}
+
+/* -------------------- */
+/* Misc */
+
+#buttons2 input.big { /* Install */
+  padding: 15px 5px 15px 5px;
+}
+
+.fade {
+  opacity: 0.6;
+}
+
+input.fade:hover {
+  opacity: 1.0;
+}
+
+#buttons2 input.fade { /* Setup: add a bit of space below bottom button */
+  margin-bottom: 0.9em;
+}
+
+.images { /* Images */
+  display: block;
+  width: 170px;
+  padding: 7px 5px 5px 5px;
+}
+
+/* End forms */
+
+/* -------------------------------------------------- */
+/* Adjustments 1 when screen width is less than 961 */
+/* Puts 'buttons' below 'boxes' */
+
+@media screen and (max-width: 981px) {
+
+  #wrap {
+    width: auto;
+  }
+
+  p#nav {
+    background: none;
+    font-size: 1.25em;
+  }
+
+  p#nav a,
+  p#nav span {
+    padding: 0 10px 0 10px;
+    border-right: none;
+  }
+
+  #boxes {
+    display: block;
+    float: none;
+    width: 100%;
+    margin-top: 19px; /* No longer floated */
+    margin-bottom: 10px;
+  }
+
+  #boxes textarea {
+    width: 98%;
+    height: 388px;
+  }
+
+  #boxes2 {
+    display: block;
+    float: none;
+    margin-top: 6px; /* No longer floated */
+    margin-bottom: 10px;
+  }
+
+  #boxes3 {
+    display: block;
+    width: 100%;
+    margin-top: 19px; /* No longer floated */
+    margin-bottom: 10px;
+  }
+
+  #buttons,
+  #buttons2 { /* Buttons etc underneath */
+    display: block;
+    float: none;
+    width: 100%;
+  }
+
+  #buttons2 {
+    max-width: 100%;
+  }
+
+  #buttons input[type=submit],
+  #buttons2 input[type=submit] {
+    display: inline;
+    width: 150px;
+    margin: 3px 3px 3px 0;
+  }
+
+  #buttons input.big,
+    #buttons2 input.big { /* Regularise */
+    padding: 7px 5px 6px 5px;
+  }
+
+  #boxes3 input[type=submit] { /* Backup */
+    margin: 3px 3px 3px 0;
+    padding: 7px 20px 6px 20px;
+  }
+
+  #buttons #dropdown {
+    width: 150px;
+    margin: 0 3px 0 0;
+  }
+
+  #buttons p {
+    margin-bottom: 3px;
+  }
+
+  #info {
+    width: auto;
+  }
+
+} /* End adjustments 1 */
+
+/* -------------------------------------------------- */
+/* Adjustments 2 when screen width is less than 641 */
+
+@media screen and (max-width: 640px) {
+
+  #wrap {
+    padding: 0 10px;
+  }
+
+  #boxes input[type=text],
+  #boxes2 input[type=text],
+  input[type=text].n {
+    width: 97%;
+  }
+
+  #boxes3 input[type=submit] { /* Backup */
+    width: 140px;
+  }
+
+  #boxes textarea,
+  #boxes2 textarea {
+    width: 97%;
+  }
+
+  #bottom {
+    width: auto;
+  }
+
+  #bottom input[type=text] {
+    width: 186px;
+  }
+
+} /* End adjustments 2 */
+
+/* -------------------------------------------------- */
+/* Adjustments 3 when screen width is less than 561 */
+
+@media screen and (max-width: 560px) {
+
+  #boxes2 {
+    width: auto;
+  }
+
+  .group { /* Setup */
+    padding-bottom: 0;
+  }
+
+  .one {
+    float: none;
+    display: block;
+    width: auto;
+  }
+
+  .two {
+    float: none;
+    display: block;
+    width: auto;
+  }
+
+  #boxes2 .one input[type=text],
+  #boxes2 .two input[type=text],
+  #bottom input[type=text] {
+    width: 60%;
+  }
+
+  #boxes2 textarea {
+    width: 96.5%;
+  }
+
+} /* End adjustments 3 */

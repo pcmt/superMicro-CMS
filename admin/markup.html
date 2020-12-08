@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>HTML markup examples</title>
+<style>
+* { margin: 0; padding: 0; }
+
+body {
+  background: #fff;
+  color: #000;
+  font-family: 'Verdana', Sans-serif;
+  text-align: left;
+}
+
+@media screen and (min-width: 641px) {
+
+  body {
+    margin: 30px 50px;
+    font-size: 90%;
+    line-height: 1.4;
+  }
+
+}
+
+@media screen and (max-width: 640px) {
+
+  body {
+    margin: 20px 10px 30px 10px;
+    font-size: 80%;
+    line-height: 1.6;
+  }
+
+}
+
+h1 {
+  margin: 0 0 0.6em 0;
+  font-size: 140%;
+}
+
+h4 {
+  margin: 0.6em 0 0.2em 0;
+}
+
+div {
+  display: inline;
+}
+
+div.block {
+  display: block;
+  max-width: 600px;
+  margin: 0 0 0.6em 0;
+  padding: 0.4em 0;
+  background: #ebebeb;
+}
+
+em {
+  font-style: normal;
+}
+
+h1 em,
+em:hover,
+div.block:hover {
+  color: red;
+}
+
+span {
+  color: #666;
+}
+
+</style>
+</head>
+<body>
+
+<h1>Markup examples (<em>copy & paste</em>)</h1>
+
+<h4>Bold text</h4>
+<em>&lt;strong&gt;<span>bold text</span>&lt;/strong&gt;</em>
+
+<h4>Italic text</h4>
+<em>&lt;em&gt;<span>italic text</span>&lt;/em&gt;</em>
+
+<h4>Coloured text</h4>
+<em>&lt;span&gt;<span>coloured text</span>&lt;/span&gt;</em>
+
+<h4>Combined</h4>
+<em>&lt;strong&gt;&lt;em&gt;<span>bold italic text</span>&lt;/em&gt;&lt;/strong&gt;</em>
+
+<h4>Internal link</h4>
+<em>&lt;a href="<span>./page</span>"&gt;link text&lt;/a&gt;</em>
+
+<h4>Coloured side borders (images)</h4>
+<em>&nbsp;class="bgmaxw0"</em> &nbsp;<span>[ darkish grey ]</span><br>
+<em>&nbsp;class="bgmaxw1"</em> &nbsp;<span>[ mid grey ]</span><br>
+<em>&nbsp;class="bgmaxw2"</em> &nbsp;<span>[ light grey ]</span><br>
+<em>&nbsp;class="bgmaxw3"</em> &nbsp;<span>[ black ]</span><br>
+<em>&nbsp;class="bgmaxw4"</em> &nbsp;<span>[ light turquoise ]</span><br>
+<em>&nbsp;class="bgmaxw5"</em> &nbsp;<span>[ blue-grey ]</span><br>
+<em>&nbsp;class="bgmaxw6"</em> &nbsp;<span>[ mid-tan ]</span><br>
+<em>&nbsp;class="bgmaxw7"</em> &nbsp;<span>[ mauve ]</span><br>
+<em>&nbsp;class="bgmaxw8"</em> &nbsp;<span>[ dark pink ]</span><br>
+<span>Example:</span><br>
+<div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" class="bgmaxw0"&gt;</em></div>
+
+<h4>Narrower column for text</h4>
+<span>Not to include images, repeat as required</span><br>
+<div class="block"><em>&lt;section&gt;</em><br><br><span>Narrower text column (600 pixels wide)</span><br><br><em>&lt;/section&gt;</em></div>
+
+<h4>Coloured text boxes</h4>
+<span>Maroon, rounded corners:</span><br>
+<div class="block"><em>&lt;div class="bg1"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
+<span>Light grey, rounded corners:</span><br>
+<div class="block"><em>&lt;div class="bg2"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
+<span>Light yellowy, rounded corners:</span><br>
+<div class="block"><em>&lt;div class="bg3"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
+<span>White background, thick grey border, square corners:</span><br>
+<div class="block"><em>&lt;div class="bg4"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
+
+<h4>Wide box</h4>
+<span>Example:</span><br>
+<div class="block"><em>&lt;div class="w1200"&gt;<br><br><span>Content (up to 1200 pixels wide <i>including borders</i>)</span><br><br>&lt;/div&gt;</em></div>
+
+<h4>Box for images (can be used for divs)</h4>
+<em>&nbsp;class="box"</em> &nbsp;<span>[ grey surround ]</span><br>
+<span>Example:</span><br>
+<div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" class="box"&gt;</em></div>
+
+<h4>Box for video</h4>
+<em>&nbsp;class="tv"</em> &nbsp;<span>[ grey 'lozenge' surround ]</span><br>
+<span>Example:</span><br>
+<div class="block"><em>&lt;div class="w1200"&gt;<br><br>&lt;div class="tv" style="max-width: <span>xxx</span>px;"&gt;<br><br>&lt;div class="video"&gt;<br>&lt;video width="<span>auto</span>" height="<span>auto</span>" autoplay controls loop&gt;<br>&lt;source src="<span>./video/filename.mp4</span>" type="video/mp4"&gt;<br>Your browser does not support the video tag.<br>&lt;/video&gt;<br>&lt;/div&gt;<br><br>&lt;/div&gt;<br><br>&lt;/div&gt;</em></div>
+
+<h4>Bullet point list</h4>
+<div class="block"><em>&lt;ul&gt;<br>
+&lt;li&gt;<span>item 1</span>&lt;/li&gt;<br>
+&lt;li&gt;<span>item 2</span>&lt;/li&gt;<br>
+&lt;/ul&gt;</em></div>
+
+<h4>Numbered list</h4>
+<div class="block"><em>&lt;ol&gt;<br>
+&lt;li&gt;<span>item 1</span>&lt;/li&gt;<br>
+&lt;li&gt;<span>item 2</span>&lt;/li&gt;<br>
+&lt;/ol&gt;</em></div>
+
+<h4>Underlined list</h4>
+<div class="block"><em>&lt;ul class="listing"&gt;<br>
+&lt;li&gt;<span>item 1</span>&lt;/li&gt;<br>
+&lt;li&gt;<span>item 2</span>&lt;/li&gt;<br>
+&lt;/ul&gt;</em></div>
+
+<h4>Navigation list</h4>
+<div class="block"><em>&lt;ul class="boxlist"&gt;<br>
+&lt;li&gt;&lt;a href="<span>./page1</span>"&gt;<span>page 1</span>&lt;/a&gt;&lt;/li&gt;<br>
+&lt;li&gt;&lt;a href="<span>./page2</span>"&gt;<span>page 2</span>&lt;/a&gt;&lt;/li&gt;<br>
+&lt;/ul&gt;</em></div>
+
+<h4>Quote</h4>
+<div class="block"><em>&lt;blockquote&gt;<br><br>
+<span>Content</span><br><br>
+&lt;/blockquote&gt;</div>
+
+<span>superMicro CMS 28/11/2020</span><br>
+
+</body>
+</html>
