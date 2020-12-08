@@ -1,3 +1,8 @@
+# superMicro CMS
+Website building system developed 2008 - 2020 by Patrick Taylor.
+
+No database. Web content stored in plain text files.
+
 ---------------------------------------------------------------------------
 
 superMicro CMS (THE PROGRAM) is written by Patrick Taylor and remains his
