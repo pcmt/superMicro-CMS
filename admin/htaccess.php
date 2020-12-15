@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Oct 2020 */
+/* Last updated 13 Dec 2020 */
 
 // Declare variables (see also top.php)
 $root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = "";
@@ -29,7 +29,7 @@ if (function_exists('p_title')) {
 
 ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
+<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -45,50 +45,12 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-?>
-	<div id="loginform">
-
-<h1>superMicro CMS <i>login</i></h1>
-
-<?php
-
-	if ($notice) {
-		echo "\n" . $notice . "\n"; // From top.php (cookie test response)
-	}
-
-?>
-
-<form id="pw" action="<?php echo $self; ?>" method="post">
-<label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="login">
-<input type="password" name="password" size="25" maxlength="32">
-<input type="submit" name="submit0" value="Submit Password">
-</form>
-
-<?php
-
-	if ($response) {
-		echo '<p><em>' . $response . '</em></p>'; // If the user didn't do something
-		echo "\n";
-	}
-
-	// Footer link etc
-	if (function_exists('loggedoutFooter')) {
-		// Prints link to home page if 'dofooter' + lost/forgotten password link if logged out
-		loggedoutFooter();
+	if (!file_exists('./login-form.php')) {
+		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
+		exit();
 	} else {
-		echo "\n";
-		echo '<p>Missing function. Install the latest version of <strong>superMicro CMS</strong>.</p>';
-
+		require('./login-form.php');
 	}
-
-	echo "\n";
-
-?>
-
-	</div>
-
-<?php
 
 } elseif ($login) {
 
@@ -213,7 +175,7 @@ if (!$login) {
 		$canonical_1 = '# Hostname canonicalization redirect 1 not www';
 		$canonical_1 .= "\n";
 		$canonical_1 .= '  RewriteCond %{HTTP_HOST} ^www\. [NC]';
-		$canonical_1.= "\n";
+		$canonical_1 .= "\n";
 		$canonical_1 .= '  RewriteRule (.*) ' . $protocol . $no_w_domain . $path . '$1 [R=301,L]';
 	}
 
@@ -334,7 +296,7 @@ if (function_exists('h1')) {
 
 ?></h1>
 
-<p id="nav"><a href="<?php echo LOCATION; ?>">&#171;&nbsp;Site</a> 
+<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
 <a href="./index.php" title="Create/edit/delete pages">Pages</a> 
 <a href="./images.php" title="Upload or delete images">Images</a> 
 <span>.htaccess</span> 
@@ -353,15 +315,13 @@ if (function_exists('h1')) {
 /* SECTION 4: TOP BOX FEEDBACK */
 /* ================================================== */
 
-	echo '<p><span class="padded-multiline">';
-
+	_print('<p><span class="padded-multiline">');
 	if (!$response) {
-		echo '<em>No action requested.</em>';
+		_print('<em>No action requested.</em>');
 	} else {
-		echo $response;
+		_print($response);
 	}
-
-	echo '</span></p>';
+	_print('</span></p>');
 
 ?>
 
@@ -383,19 +343,15 @@ if (function_exists('h1')) {
 
 <?php
 
-echo "\n";
-echo '<p>Server software = ' . $serverSoftware . '</p>';
-echo "\n";
-echo '<p>Domain = ' . $domain . '</p>';
-echo "\n";
-echo '<p>Site location = ' . $site_location . '</p>';
-echo "\n";
-echo '<p>Protocol = ' . $show_protocol . '</p>';
-echo "\n";
-echo '<p>Admin folder = ' . $admin . '</p>';
-echo "\n";
-echo '<p><a href="https://supermicrocms.com/htaccess" target="_blank">Info here</a>&nbsp;&raquo;</p>';
-echo "\n";
+_print("
+<p>Server software = {$serverSoftware}</p>
+<p>Domain = {$domain}</p>
+<p>Site location = {$site_location}</p>
+<p>Protocol = {$show_protocol}</p>
+<p>Admin folder = {$admin}</p>
+<p><a href=\"https://supermicrocms.com/htaccess\" target=\"_blank\">Info here</a>&nbsp;&raquo;</p>
+");
+
 /* For testing
 echo '<p>Canonical redirect 1 = <br>' . $canonical_1 . '</p>';
 echo "\n";
@@ -420,7 +376,7 @@ echo "\n";
 /* END 'IF LOGGED IN' */
 /* ================================================== */
 
-	echo '<p>Login could not be verified.</p>';
+	_print('<p>Login could not be verified.</p>');
 }
 
 ?>

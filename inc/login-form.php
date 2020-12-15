@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 28 Oct 2020 */
+/* Last updated 13 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to login-form.php.');
@@ -13,7 +13,7 @@ if (!defined('ACCESS')) {
 
 // See ppp.php for why logout form is not displayed (18 Jan 20)
 
-echo '
+_print_nlb('
 <h1 id="pp">Password Protected</h1>
 
 		<div id="pw">
@@ -25,8 +25,6 @@ echo '
 <input type="submit" class="submit" name="submit_pass" value="' . TEXT14 . '">
 </form>
 
-		</div>';
-
-echo "\n";
+		</div>');
 
 ?>

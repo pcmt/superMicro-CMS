@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Dec 2020 */
+/* Last updated 13 Dec 2020 */
 
 // Declare variables
 $status = $notice = $user = $dofooter = $word = $login = $dom = $secure = $secure_cookie = $path = '';
@@ -22,6 +22,12 @@ $tm_start = array_sum(explode(' ', microtime()));
 
 // Load functions
 include('./functions.php');
+
+// Check for new functions
+if (!function_exists('_print_nla')) {
+	_print("Error. Missing function '_print_nla'. Install the latest version of /admin/functions.php");
+	exit();
+}
 
 /* -------------------------------------------------- */
 // setup.php edits /inc/settings.php

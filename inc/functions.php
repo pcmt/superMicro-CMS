@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 16 Oct 2020 */
+/* Last updated 13 Dec 2020 */
 /* .svg added */
 
 if(!defined('ACCESS')) {
@@ -18,6 +18,18 @@ if(!defined('ACCESS')) {
 
 function _print($text) {
 	echo $text;
+}
+
+function _print_nla($text) { // Newline above
+	echo "\n" . $text;
+}
+
+function _print_nlab($text) { // Newline above and below
+	echo "\n" . $text . "\n";
+}
+
+function _print_nlb($text) { // Newline below
+	echo $text . "\n";
 }
 
 /* --------------------------------------------------

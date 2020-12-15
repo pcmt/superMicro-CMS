@@ -7,7 +7,7 @@
 
 /*
 
-/* Last updated 07 Dec 2020 */
+/* Last updated 13 Dec 2020 */
 
 /*
 
@@ -90,7 +90,7 @@ if mod_rewrite is enabled.
 */
 
 // Declare variables
-$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = NULL;
+$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = "";
 
 $thisPage = 'setup';
 
@@ -114,7 +114,7 @@ if (function_exists('p_title')) {
 
 ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
+<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -130,50 +130,12 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-?>
-	<div id="loginform">
-
-<h1>superMicro CMS <i>login</i></h1>
-
-<?php
-
-	if ($notice) {
-		echo "\n" . $notice . "\n"; // From top.php (cookie test response)
-	}
-
-?>
-
-<form id="pw" action="<?php echo $self; ?>" method="post">
-<label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="login">
-<input type="password" name="password" size="25" maxlength="32">
-<input type="submit" name="submit0" value="Submit Password">
-</form>
-
-<?php
-
-	if ($response) {
-		echo '<p><em>' . $response . '</em></p>'; // If the user didn't do something
-		echo "\n";
-	}
-
-	// Footer link etc
-	if (function_exists('loggedoutFooter')) {
-		// Prints link to home page if 'dofooter' + lost/forgotten password link if logged out
-		loggedoutFooter();
+	if (!file_exists('./login-form.php')) {
+		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
+		exit();
 	} else {
-		echo "\n";
-		echo '<p>Missing function. Install the latest version of <strong>superMicro CMS</strong>.</p>';
-
+		require('./login-form.php');
 	}
-
-	echo "\n";
-
-?>
-
-	</div>
-
-<?php
 
 } elseif ($login) {
 
@@ -570,7 +532,7 @@ if (function_exists('h1')) {
 ?></h1>
 
 <p id="nav"><?php if ($settings) { ?>
-<a href="<?php echo $site_location; ?>">&#171;&nbsp;Site</a> 
+<a href="<?php _print($site_location); ?>">&#171;&nbsp;Site</a> 
 <a href="./index.php" title="Create/edit/delete pages">Pages</a> 
 <a href="./images.php" title="Upload or delete images">Images</a> 
 <a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
@@ -588,8 +550,7 @@ if (function_exists('h1')) {
 /* ================================================== */
 
 	if (file_exists('./install.php')) {
-		echo '<p class="important">IMPORTANT: the file <a href="./install.php">/' . $admin . '/install.php</a> still exists and should now be deleted. Submit setup to delete it.</p>';
-		echo "\n";
+		_print_nlb('<p class="important">IMPORTANT: the file <a href="./install.php">/' . $admin . '/install.php</a> still exists and should now be deleted. Submit setup to delete it.</p>');
 	}
 
 ?>
@@ -602,7 +563,7 @@ if (function_exists('h1')) {
 /* SECTION 5: TOP BOX FEEDBACK */
 /* ================================================== */
 
-echo '<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' . $response3 . '</span></p>';
+_print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' . $response3 . '</span></p>');
 
 ?>
 
@@ -618,94 +579,94 @@ echo '<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' 
 
 ?>
 
-<form action="<?php echo $self; ?>" method="post" accept-charset="UTF-8">
+<form action="<?php _print($self); ?>" method="post" accept-charset="UTF-8">
 
 	<div id="boxes2">
 
 		<div class="group one">
 
-<label>Menu text for home page<?php if (isset($_POST['submit1']) && (!$home_link) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Menu text for home page<?php if (isset($_POST['submit1']) && (!$home_link) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="home_link" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		echo stripslashes($home_link);
+		_print(stripslashes($home_link));
 	} elseif (file_exists('../inc/settings.php') && defined('HOME_LINK')) {
-		echo HOME_LINK;
+		_print(HOME_LINK);
 	} else {
-		echo 'Home Page';
+		_print('Home Page');
 	}
 
 ?>
 " maxlength="60">
 
-<label>Name in footer<?php if (isset($_POST['submit1']) && (!$name) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Name in footer<?php if (isset($_POST['submit1']) && (!$name) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="name" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		echo stripslashes($name);
+		_print(stripslashes($name));
 	} elseif (file_exists('../inc/settings.php') && defined('NAME')) {
-		echo NAME;
+		_print(NAME);
 	} else {
-		echo 'Josephine Bloggs';
+		_print('Josephine Bloggs');
 	}
 
 ?>
 " maxlength="60">
 
-<label>Alphabetical menu (YES/NO)<?php if (isset($_POST['submit1']) && (!$menu) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Alphabetical menu (YES/NO)<?php if (isset($_POST['submit1']) && (!$menu) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="menu" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		echo $menu;
+		_print($menu);
 	} elseif (file_exists('../inc/settings.php') && defined('ALPHABETICAL')) {
 		if (ALPHABETICAL) {
-			echo 'YES';
+			_print('YES');
 		} else {
-			echo 'NO';
+			_print('NO');
 		}
 	} else {
-		echo 'YES';
+		_print('YES');
 	}
 
 ?>
 " maxlength="3">
 
-<label>Debug (YES/NO) [ <a href="https://supermicrocms.com/debug" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$debug) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Debug (YES/NO) [ <a href="https://supermicrocms.com/debug" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$debug) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="debug" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		echo $debug;
+		_print($debug);
 	} elseif (file_exists('../inc/settings.php') && defined('SHOW_ERRORS')) {
 		if (SHOW_ERRORS) {
-			echo 'YES';
+			_print('YES');
 		} else {
-			echo 'NO';
+			_print('NO');
 		}
 	} else {
-		echo 'NO';
+		_print('NO');
 	}
 
 ?>
 " maxlength="3">
 
-<label>Track hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$track) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Track hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$track) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="track" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		echo $track;
+		_print($track);
 	} elseif (file_exists('../inc/settings.php') && defined('TRACK_HITS')) {
 		if (TRACK_HITS) {
-			echo 'YES';
+			_print('YES');
 		} else {
-			echo 'NO';
+			_print('NO');
 		}
 	} else {
-		echo 'NO';
+		_print('NO');
 	}
 
 ?>
@@ -715,70 +676,70 @@ echo '<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' 
 
 		<div class="group two">
 
-<label>Email address<?php if (isset($_POST['submit1']) && (!$email) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Email address<?php if (isset($_POST['submit1']) && (!$email) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="email" size="60" value="<?php
 
 	$invalid_email = ""; // Required to re-declare variable
 	if (isset($_POST['submit1'])) {
 		if ($invalid_email) {
-			echo trim($_POST['email']);
+			_print(trim($_POST['email']));
 		} else {
-			echo $email;
+			_print($email);
 		}
 	} elseif (file_exists('../inc/settings.php') && defined('EMAIL')) {
-		echo EMAIL;
+		_print(EMAIL);
 	} else {
-		echo 'mail@mydomain.com';
+		_print('mail@mydomain.com');
 	}
 
 ?>
 " maxlength="60">
 
-<label>Your name<?php if (isset($_POST['submit1']) && (!$own_name) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Your name<?php if (isset($_POST['submit1']) && (!$own_name) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="own_name" size="60" value="<?php
 
 		if (isset($_POST['submit1'])) {
-			echo stripslashes($own_name);
+			_print(stripslashes($own_name));
 		} elseif (file_exists('../inc/settings.php') && defined('OWN_NAME')) {
-			echo OWN_NAME;
+			_print(OWN_NAME);
 		} else {
-			echo 'Josephine';
+			_print('Josephine');
 		}
 
 ?>
 " maxlength="60">
 
-<label>Site name (20 max)<?php if (isset($_POST['submit1']) && (!$site_name) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Site name (20 max)<?php if (isset($_POST['submit1']) && (!$site_name) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="site_name" size="20" value="<?php
 
 		if (isset($_POST['submit1'])) {
-			echo stripslashes($site_name);
+			_print(stripslashes($site_name));
 		} elseif (file_exists('../inc/settings.php') && defined('SITE_NAME')) {
-			echo SITE_NAME;
+			_print(SITE_NAME);
 		} else {
-			echo 'My Website';
+			_print('My Website');
 		}
 
 ?>
 " maxlength="100">
 
-<label>.php it (YES/NO) [ <a href="https://supermicrocms.com/links" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$suffix_it) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>.php it (YES/NO) [ <a href="https://supermicrocms.com/links" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$suffix_it) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <input type="text" name="suffix_it" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		echo $suffix_it;
+		_print($suffix_it);
 	} elseif (file_exists('../inc/settings.php') && defined('PHP_EXT')) {
 		if (PHP_EXT) {
-			echo 'YES';
+			_print('YES');
 		} else {
-			echo 'NO';
+			_print('NO');
 		}
 	} else {
-		echo 'NO';
+		_print('NO');
 	}
 
 ?>
@@ -788,7 +749,7 @@ echo '<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' 
 
 <input type="text" name="unused" size="60" value="<?php
 
-	echo '';
+	_print('');
 
 ?>
 " maxlength="3">
@@ -804,16 +765,16 @@ echo '<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' 
 
 		<div id="bottom">
 
-<label>Contact page introductory text<?php if (isset($_POST['submit1']) && (!$contact_text) && ($problem)) { echo ' [ <strong>incorrect value</strong> ]'; } ?></label>
+<label>Contact page introductory text<?php if (isset($_POST['submit1']) && (!$contact_text) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
 
 <textarea name="contact_text" size="60" rows="4" cols="30"><?php
 
 		if (isset($_POST['submit1'])) {
-			echo stripslashes($contact_text);
+			_print(stripslashes($contact_text));
 		} elseif (file_exists('../inc/settings.php') && defined('CONTACT_TEXT')) {
-			echo CONTACT_TEXT;
+			_print(CONTACT_TEXT);
 		} else {
-			echo 'To get in touch, feel free to use the following contact form. All fields required. The form will send me an email. Your privacy will be respected.';
+			_print('To get in touch, feel free to use the following contact form. All fields required. The form will send me an email. Your privacy will be respected.');
 		}
 
 ?></textarea>
@@ -823,11 +784,11 @@ echo '<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' 
 <input type="text" name="contact_menu" size="60" value="<?php
 
 		if (isset($_POST['submit1'])) {
-			echo stripslashes($contact_menu); // Whatever was entered in the form
+			_print(stripslashes($contact_menu)); // Whatever was entered in the form
 		} elseif (file_exists('../inc/settings.php') && defined('CONTACT_MENU')) {
-			echo CONTACT_MENU; // Blank if defined as ''
+			_print(CONTACT_MENU); // Blank if defined as ''
 		} else {
-			echo 'Contact'; // Fallback: no settings, nothing submitted
+			_print('Contact'); // Fallback: no settings, nothing submitted
 		}
 
 ?>
@@ -835,14 +796,17 @@ echo '<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' ' 
 
 <?php
 
-		echo "</div><!-- end bottom //-->\n\n";
+		_print_nlb("</div><!-- end bottom //-->\n");
 
 	} else { // No contact page
 
-		echo "\n\n";
-		echo '		<div id="bottom">';
-		echo "\n\n<p>The optional contact page (e.php) is not installed.</p>\n\n";
-		echo "		</div>\n";
+		_print('
+<div id="bottom">
+
+<p>The optional contact page (e.php) is not installed.</p>
+
+</div>
+');
 
 	}
 
@@ -901,13 +865,9 @@ if (isset($_POST['submit1'])) {
 
 	// Selected option
 	if (isset($_POST['submit1'])) {
-		echo "\n";
-		echo '<option value="' . $_POST['lang_attr'] . '">' . $language . '</option>';
-		echo "\n";
+		_print_nlab('<option value="' . $_POST['lang_attr'] . '">' . $language . '</option>');
 	} elseif (defined('LANG_ATTR')) {
-		echo "\n";
-		echo '<option value="' . LANG_ATTR . '">' . $language . '</option>';
-		echo "\n";
+		_print_nlab('<option value="' . LANG_ATTR . '">' . $language . '</option>');
 	}
 
 ?>
@@ -920,7 +880,7 @@ if (isset($_POST['submit1'])) {
 <hr>
 
 <input type="submit" name="submit1" value="Submit setup">
-<input type="submit" name="submit2" class="fade" value="Current setup"><?php echo "\n"; ?>
+<input type="submit" name="submit2" class="fade" value="Current setup"><?php _print("\n"); ?>
 
 <?php
 
@@ -928,27 +888,20 @@ if (isset($_POST['submit1'])) {
 /* SECTION 8: INFO BELOW BUTTONS */
 /* ================================================== */
 
-	echo "\n<hr>\n";
-	echo '<p class="break_word">Home page:<strong><br>' . $site_location . '</strong></p>';
-	echo "\n";
+	_print("<hr>
 
-	echo "\n";
-	echo '<p>Server software: <strong>' . $serverSoftware . '</strong></p>';
-	echo "\n";
+<p class=\"break_word\">Home page:<strong><br>{$site_location}</strong></p>
+<p>Server software: <strong>{$serverSoftware}</strong></p>
+<p>Operating system: <strong>{$opSystem}</strong></p>
 
-	echo "\n";
-	echo '<p>Operating system: <strong>' . $opSystem . '</strong></p>';
-	echo "\n";
+");
 
 	if ($protocol == 'https://') {
-		echo '<p class="break_word">The server is <strong>https</strong> (secure).</p>';
-		echo "\n";
+		_print_nlb('<p class="break_word">The server is <strong>https</strong> (secure).</p>');
 	} elseif ($protocol == 'http://') {
-		echo '<p class="break_word">The server is <strong>http</strong> (not secure).</p>';
-		echo "\n";
+		_print_nlb('<p class="break_word">The server is <strong>http</strong> (not secure).</p>');
 	} else {
-		echo '<p class="break_word">Problem: server protocol (https or http) not detected. Setup can <strong>not</strong> proceed.</p>';
-		echo "\n";
+		_print_nlb('<p class="break_word">Problem: server protocol (https or http) not detected. Setup can <strong>not</strong> proceed.</p>');
 	}
 
 ?>
@@ -962,14 +915,13 @@ if (isset($_POST['submit1'])) {
 <?php
 
 	include('./footer.php');
-
 } else {
 
 /* ================================================== */
 /* END 'IF LOGGED IN' */
 /* ================================================== */
 
-	echo '<p>Login could not be verified.</p>';
+	_print('<p>Login could not be verified.</p>');
 }
 
 ?>

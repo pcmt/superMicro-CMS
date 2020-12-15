@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Nov 2020 */
+/* Last updated 13 Dec 2020 */
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
@@ -148,8 +148,7 @@ if (!isset($_POST['terms'])) { // No search submitted
 
 <?php
 
-		_print('<ul class="listing">');
-		_print("\n");
+		_print_nlb('<ul class="listing">');
 
 		/* -------------------------------------------------- */
 		// Pages
@@ -242,8 +241,7 @@ if (!isset($_POST['terms'])) { // No search submitted
 						}
 					}
 
-					_print(' <span class="faded">...</span></li>');
-					_print("\n");
+					_print_nlb(' <span class="faded">...</span></li>');
 
 					flush();
 				}
@@ -264,12 +262,11 @@ if (!isset($_POST['terms'])) { // No search submitted
 			_print("<li>" . TEXT40 . " '<strong><span>{$terms}</span></strong>'</li>\n");
 		}
 
-		_print("</ul>\n"); // End the list
+		_print_nlb('</ul>'); // End the list
 
 	} else { // Prints "Nothing found" if search string less then 3 characters
 
-		_print('<h1>No ' . TEXT38 . '</h1>');
-		_print("\n");
+		_print_nlb('<h1>No ' . TEXT38 . '</h1>');
 
 // Here's the form again (has to be after each H1)
 ?>
@@ -317,9 +314,6 @@ if (!isset($_POST['terms'])) { // No search submitted
 <?php
 
 include(INC . 'footer.php');
-if (file_exists(INC . 'tracking.php')) { // Optional
-	include(INC . 'tracking.php');
-}
 
 ?>
 

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 06 Oct 2020 */
+/* Last updated 12 Dec 2020 */
 
 // Declare variables
 $_pages = $_images = $response = "";
@@ -29,7 +29,7 @@ if (function_exists('p_title')) {
 
 ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
+<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -45,50 +45,12 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-?>
-	<div id="loginform">
-
-<h1>superMicro CMS <i>login</i></h1>
-
-<?php
-
-	if ($notice) {
-		echo "\n" . $notice . "\n"; // From top.php (cookie test response)
-	}
-
-?>
-
-<form id="pw" action="<?php echo $self; ?>" method="post">
-<label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="login">
-<input type="password" name="password" size="25" maxlength="32">
-<input type="submit" name="submit0" value="Submit Password">
-</form>
-
-<?php
-
-	if ($response) {
-		echo '<p><em>' . $response . '</em></p>'; // If the user didn't do something
-		echo "\n";
-	}
-
-	// Footer link etc
-	if (function_exists('loggedoutFooter')) {
-		// Prints link to home page if 'dofooter' + lost/forgotten password link if logged out
-		loggedoutFooter();
+	if (!file_exists('./login-form.php')) {
+		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
+		exit();
 	} else {
-		echo "\n";
-		echo '<p>Missing function. Install the latest version of <strong>superMicro CMS</strong>.</p>';
-
+		require('./login-form.php');
 	}
-
-	echo "\n";
-
-?>
-
-	</div>
-
-<?php
 
 } elseif ($login) {
 
@@ -108,7 +70,7 @@ if (function_exists('h1')) {
 }
 ?></h1>
 
-<p id="nav"><a href="<?php echo LOCATION; ?>">&#171;&nbsp;Site</a> 
+<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
 <a href="./index.php" title="Create/edit/delete pages">Pages</a> 
 <a href="./images.php" title="Upload or delete images">Images</a> 
 <a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
@@ -256,23 +218,23 @@ if (function_exists('h1')) {
 
 <?php
 
-	echo '<p><span class="padded-multiline">';
+	_print('<p><span class="padded-multiline">');
 
 	if (isset($_POST['submit1']) || isset($_POST['submit2']) || isset($_POST['submit3'])) {
-		echo $response;
+		_print($response);
 	} elseif (file_exists('./backup.zip')) {
-		echo '<em>A backup exists on the server and should be deleted. <a href="backup.zip">Download it</a> then click \'Delete backup\'.</em>';
+		_print('<em>A backup exists on the server and should be deleted. <a href="backup.zip">Download it</a> then click \'Delete backup\'.</em>');
 	} else {
-		echo '<em>A backup does not exist.</em>';
+		_print('<em>A backup does not exist.</em>');
 	}
 
-	echo '</span></p>';
+	_print('</span></p>');
 
 ?>
 
 	</div>
 
-<form action="<?php echo $self; ?>" method="post" accept-charset="UTF-8">
+<form action="<?php _print($self); ?>" method="post" accept-charset="UTF-8">
 
 	<div id="boxes3">
 
@@ -305,9 +267,9 @@ if (function_exists('h1')) {
 <?php
 
 	if (class_exists('ZipArchive')) {
-		echo "<h3>Your server supports ZIP archiving</h3>\n<p class=\"backup\">If your backup is large (images especially) please wait a few moments after pressing the button.</p>";
+		_print("<h3>Your server supports ZIP archiving</h3>\n<p class=\"backup\">If your backup is large (images especially) please wait a few moments after pressing the button.</p>");
 	} else {
-		echo "<h3>Note: your server does not support ZIP archiving</h3>\n<p class=\"backup\">Backup your files by downloading them manually (eg: via FTP).</p>";
+		_print("<h3>Note: your server does not support ZIP archiving</h3>\n<p class=\"backup\">Backup your files by downloading them manually (eg: via FTP).</p>");
 	}
 
 	include('./footer.php');
@@ -316,7 +278,7 @@ if (function_exists('h1')) {
 	/* -------------------------------------------------- */
 	// No $login or !$login
 
-	echo '<p>Login could not be verified.</p>';
+	_print('<p>Login could not be verified.</p>');
 }
 
 ?>

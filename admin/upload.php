@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 25 Nov 2020 */
+/* Last updated 13 Dec 2020 */
 /* Form action */
 
 // Declare variables
@@ -31,7 +31,7 @@ if (function_exists('p_title')) {
 
 ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
+<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -47,50 +47,12 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-?>
-	<div id="loginform">
-
-<h1>superMicro CMS <i>login</i></h1>
-
-<?php
-
-	if ($notice) {
-		echo "\n" . $notice . "\n"; // From top.php (cookie test response)
-	}
-
-?>
-
-<form id="pw" action="<?php echo $self; ?>" method="post">
-<label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="login">
-<input type="password" name="password" size="25" maxlength="32">
-<input type="submit" name="submit0" value="Submit Password">
-</form>
-
-<?php
-
-	if ($response) {
-		echo '<p><em>' . $response . '</em></p>'; // If the user didn't do something
-		echo "\n";
-	}
-
-	// Footer link etc
-	if (function_exists('loggedoutFooter')) {
-		// Prints link to home page if 'dofooter' + lost/forgotten password link if logged out
-		loggedoutFooter();
+	if (!file_exists('./login-form.php')) {
+		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
+		exit();
 	} else {
-		echo "\n";
-		echo '<p>Missing function. Install the latest version of <strong>superMicro CMS</strong>.</p>';
-
+		require('./login-form.php');
 	}
-
-	echo "\n";
-
-?>
-
-	</div>
-
-<?php
 
 } elseif ($login) {
 
@@ -110,7 +72,7 @@ if (function_exists('h1')) {
 }
 ?></h1>
 
-<p id="nav"><a href="<?php echo LOCATION; ?>">&#171;&nbsp;Site</a> 
+<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
 <a href="./index.php" title="Create/edit/delete pages">Pages</a> 
 <a href="./images.php" title="Upload or delete images">Images</a> 
 <a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
@@ -200,15 +162,13 @@ if (function_exists('h1')) {
 
 <?php
 
-	echo '<p><span class="padded-multiline">';
-
+	_print('<p><span class="padded-multiline">');
 	if (!$response) {
-		echo '<em>No action requested.</em>';
+		_print('<em>No action requested.</em>');
 	} else {
-		echo $response;
+		_print($response);
 	}
-
-	echo '</span></p>';
+	_print('</span></p>');
 
 ?>
 
@@ -216,16 +176,16 @@ if (function_exists('h1')) {
 
 <h5>Choose a file on your device</h5>
 
-<form enctype="multipart/form-data" action="<?php echo $self; ?>" method="post" onSubmit="displayLoading();">
+<form enctype="multipart/form-data" action="<?php _print($self); ?>" method="post" onSubmit="displayLoading();">
 
-<label>2 megabyte max.</label>
+<label>2 megabytes max.</label>
 <input type="file" name="upload">
 <label>Choose a name for the upload file (eg: <b>filename1</b> - omit file extension):</label>
 <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
 <input type="text" size="40" name="filename" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		echo $_POST['filename'];
+		_print($_POST['filename']);
 	}
 
 ?>" maxlength="60">
@@ -250,10 +210,10 @@ function displayLoading() {
 
 <h3>Delete a file</h3>
 
-<form action="<?php echo $self; ?>" method="post">
+<form action="<?php _print($self); ?>" method="post">
 
 <label>Enter filename (eg: <b>myfile.pdf</b> - include file extension):</label>
-<input type="text" name="delete" size="40" value="<?php if (isset($_POST['submit2'])) echo $_POST['delete']; ?>" maxlength="60">
+<input type="text" name="delete" size="40" value="<?php if (isset($_POST['submit2'])) _print($_POST['delete']); ?>" maxlength="60">
 <input type="submit" name="submit2" class="images" value="Delete file">
 
 </form>
@@ -268,8 +228,8 @@ function displayLoading() {
 
 	$view = LOCATION . 'uploads/';
 
-	echo "<ul>\n";
-	echo "<li class=\"top\"><em>Click to view or copy markup to paste in pages</em></li>\n";
+	_print_nlb('<ul>');
+	_print_nlb('<li class="top"><em>Click to view or copy markup to paste in pages</em></li>');
 	$dirname = "../uploads";
 	if ($folder = @opendir($dirname)) {
 		$filesArray = array();
@@ -292,12 +252,11 @@ function displayLoading() {
 			(int)$num = $num + 1;
 			$num_padded = sprintf("[%03d]", $num);
 
-			echo '<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;a href="./uploads/' . $file . '"&gt;' . $file . '&lt;/a&gt;</span></li>';
-			echo "\n";
+			_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;a href="./uploads/' . $file . '"&gt;' . $file . '&lt;/a&gt;</span></li>');
 		}
 
 		closedir($folder);
-		echo "</ul>\n";
+		_print_nlb('</ul>');
 	}
 
 ?>
@@ -312,7 +271,7 @@ function displayLoading() {
 	/* -------------------------------------------------- */
 	// No $login or !$login
 
-	echo '<p>Login could not be verified.</p>';
+	_print('<p>Login could not be verified.</p>');
 }
 
 ?>

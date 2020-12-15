@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Dec 2020 */
+/* Last updated 13 Dec 2020 */
 
 /* --------------------------------------------------
  * General
@@ -13,6 +13,18 @@
 
 function _print($text) {
 	echo $text;
+}
+
+function _print_nla($text) { // Newline above
+	echo "\n" . $text;
+}
+
+function _print_nlab($text) { // Newline above and below
+	echo "\n" . $text . "\n";
+}
+
+function _print_nlb($text) { // Newline below
+	echo $text . "\n";
 }
 
 /* --------------------------------------------------
@@ -296,7 +308,7 @@ function loggedoutFooter() {
 		echo '<p><a href="' . LOCATION . '">' . $anchor . '</a> (logged out)</p>';
 	}
 
-	if (file_exists('./install.php') && !file_exists('./password.php')) { // For when not installed
+	if (file_exists('./install.php') && !defined('ADMIN')) { // For when not installed
 		echo '<p>It seems superMicro CMS is not yet installed.</p>
 <p><a href="./install.php">Install here&nbsp;&raquo;</a></p>';
 	} else { // Is installed

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 08 Nov 2020 */
+/* Last updated 13 Dec 2020 */
 /* $canonical from top.php */
 
 if (!defined('ACCESS')) {
@@ -24,9 +24,8 @@ if ($pageID == 'index') {
 // Replace quotes etc
 $titletag = str_replace(array("\"", "'"), "&#34;", $titletag);
 
-_print("\n");
 if (defined('SITE_NAME')) {
-	_print('<meta property="og:site_name" content="' . SITE_NAME . '">');
+	_print_nla('<meta property="og:site_name" content="' . SITE_NAME . '">');
 }
 _print('
 <meta property="og:title" content="' . $titletag . '">

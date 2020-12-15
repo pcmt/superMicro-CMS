@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 05 Dec 2020
+// Last updated 12 Dec 2020
 // Rewrote password routine due to problem reported
 
 // Declare variables
@@ -79,7 +79,7 @@ if ($secure_cookie) {
 /* -------------------------------------------------- */
 /* Verify all the required admin files */
 
-$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/index.txt', './text/inc_inmenu.txt', './text/stylesheet.txt', './text/extra-css.txt', './text/password.txt');
+$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/index.txt', './text/inc_inmenu.txt', './text/stylesheet.txt', './text/extra-css.txt', './text/password.txt');
 
 foreach ($required as $file) {
 	if (!file_exists($file)) { // Exit if a file is missing

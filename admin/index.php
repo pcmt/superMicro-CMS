@@ -5,8 +5,8 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Dec 2020 */
-// Some time switch all echo to _print()
+/* Last updated 13 Dec 2020 */
+// Switched all echo to _print()
 
 // Declare variables
 $notice = $thisPage = $page_id = $filetitle = $pagecontent = $file_contents = $response = $do_page = $theme_selection = $theme = $do_stylesheet = $do_menu = $problem = $homepage = $page = $addmenu = $line_exists = $menuline = $menutext = $cssfilename = $rewrite = $ext = $mode = "";
@@ -19,7 +19,7 @@ if (!file_exists('./top.php')) { // Leave this
 require('./top.php');
 
 // For $fileurl link to successful update
-if (APACHE) {
+if (defined('APACHE') && APACHE) { // May not yet be installed
 	$rewrite = TRUE;
 	$ext = '';
 } else {
@@ -92,7 +92,7 @@ if (function_exists('p_title')) {
 
 ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
+<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -108,50 +108,12 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-?>
-	<div id="loginform">
-
-<h1>superMicro CMS <i>login</i></h1>
-
-<?php
-
-	if ($notice) {
-		echo "\n" . $notice . "\n"; // From top.php (cookie test response)
-	}
-
-?>
-
-<form id="pw" action="<?php echo $self; ?>" method="post">
-<label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="login">
-<input type="password" name="password" size="25" maxlength="32">
-<input type="submit" name="submit0" value="Submit Password">
-</form>
-
-<?php
-
-	if ($response) {
-		echo '<p><em>' . $response . '</em></p>'; // If the user didn't do something
-		echo "\n";
-	}
-
-	// Footer link etc
-	if (function_exists('loggedoutFooter')) {
-		// Prints link to home page if 'dofooter' + lost/forgotten password link if logged out
-		loggedoutFooter();
+	if (!file_exists('./login-form.php')) {
+		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
+		exit();
 	} else {
-		echo "\n";
-		echo '<p>Missing function. Install the latest version of <strong>superMicro CMS</strong>.</p>';
-
+		require('./login-form.php');
 	}
-
-	echo "\n";
-
-?>
-
-	</div>
-
-<?php
 
 } elseif ($login) {
 
@@ -223,7 +185,7 @@ if (function_exists('h1')) {
 
 ?></h1>
 
-<p id="nav"><a href="<?php echo LOCATION; ?>">&#171;&nbsp;Site</a> 
+<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
 <span>Pages</span> 
 <a href="./images.php" title="Upload or delete images">Images</a> 
 <a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
@@ -697,15 +659,13 @@ $obj->Template();
 /* ================================================== */
 /* ACTION BOX */
 
-	echo '<p><span class="padded-multiline">';
-
+	_print('<p><span class="padded-multiline">');
 	if (!$response) {
-		echo '<em>No action requested.</em>';
+		_print('<em>No action requested.</em>');
+	} else {
+		_print($response);
 	}
-
-	echo $response;
-
-	echo '</span></p>';
+	_print('</span></p>');
 
 ?>
 
@@ -758,42 +718,42 @@ $obj->Template();
 	/* -------------------------------------------------- */
 	// Clear all
 	if (isset($_POST['submit8']) || (isset($_POST['submit5']) && !$cssfilename)) {
-		echo "";
+		_print("");
 
 	/* -------------------------------------------------- */
 	// For create, update, delete
 	} elseif ($do_page) {
 		if ($homepage) {
-			echo 'index'; // $filetitle is empty
+			_print('index'); // $filetitle is empty
 		} else {
-			echo $filetitle;
+			_print($filetitle);
 		}
 
 	/* -------------------------------------------------- */
 	// Styles
 	} elseif ($do_stylesheet && $cssfilename) {
 		if ($cssfilename == '../css/extra.css') {
-			echo 'extra.css';
+			_print('extra.css');
 		} else {
-			echo 'stylesheet.css';
+			_print('stylesheet.css');
 		}
 
 	/* -------------------------------------------------- */
 	// Menu
 	} elseif ($do_menu) {
-		echo 'inmenu.txt';
+		_print('inmenu.txt');
 
 	/* -------------------------------------------------- */
 	// From edit link
 	} elseif ($page) {
-		echo $page;
+		_print($page);
 
 	/* -------------------------------------------------- */
 	} else {
 		if(isset($_POST['page_id'])) {
 			$page = trim(stripslashes($_POST['page_id']));
 			$page = preg_replace("/^-/", "", $page);
-			echo $page;
+			_print($page);
 		}
 	}
 
@@ -834,7 +794,7 @@ The default styles can be restored with <em>Get styles</em> &raquo; <em>Default 
 
 	if ($mode == 'preview') {
 		$previewtext = file_get_contents('../pages/preview.txt');
-		echo stripslashes(htmlentities($previewtext));
+		_print(stripslashes(htmlentities($previewtext)));
 		// Delete preview when viewed to prevent appearing in list
 		// Relies on 'edit' link (https only - see edit page)
 		unlink('../pages/preview.txt');
@@ -843,15 +803,15 @@ The default styles can be restored with <em>Get styles</em> &raquo; <em>Default 
 	// Clear all
 	} elseif (isset($_POST['submit8'])) {
 		$file_contents = FALSE;
-		echo "";
+		_print("");
 
 	/* -------------------------------------------------- */
 	// New page
 	} elseif (isset($_POST['submit1'])) {
 		if (strlen(trim($pagecontent)) > 0) {
-			echo stripslashes(htmlentities($pagecontent));
+			_print(stripslashes(htmlentities($pagecontent)));
 		} else {
-			echo stripslashes(htmlentities($_POST['content']));
+			_print(stripslashes(htmlentities($_POST['content'])));
 		}
 
 	/* -------------------------------------------------- */
@@ -862,46 +822,46 @@ The default styles can be restored with <em>Get styles</em> &raquo; <em>Default 
 		if (trim($linesArray[0]) == '') { // If first line empty
 			$pagecontent = "#{$pagecontent}"; // add #
 		}
-		echo $pagecontent;
+		_print($pagecontent);
 
 	/* -------------------------------------------------- */
 	// Get styles
 	} elseif (isset($_POST['submit5'])) {
 		if ($cssfilename) {
-			echo stripslashes($file_contents);
+			_print(stripslashes($file_contents));
 		} else {
-			echo '';
+			_print('');
 		}
 
 	/* -------------------------------------------------- */
 	// Update styles or get ready to save the menu
 	} elseif (isset($_POST['pre-submit6']) || isset($_POST['submit6']) || isset($_POST['pre-submit10'])) {
-		echo trim(stripslashes($_POST['content']));
+		_print(trim(stripslashes($_POST['content'])));
 
 	/* -------------------------------------------------- */
 	// Get the menu
 	} elseif (isset($_POST['submit9'])) {
-		echo stripslashes($file_contents);
+		_print(stripslashes($file_contents));
 
 	/* -------------------------------------------------- */
 	// Save the menu
 	} elseif (isset($_POST['submit10'])) {
-		echo $menucontent;
+		_print($menucontent);
 
 	/* -------------------------------------------------- */
 	// Edit page link
 	} elseif ($page) {
 		if (isset($file_contents)) {
-			echo stripslashes($file_contents);
+			_print(stripslashes($file_contents));
 		}
 
 	/* -------------------------------------------------- */
 	// This page first loaded or 'example' clicked
 	} else {
-		echo '#
+		_print('#
 Page Heading
 
-Content...';
+Content...');
 
 	}
 
@@ -918,7 +878,7 @@ Content...';
 
 <?php } else { // Default to: ?>
 
-<p><strong>Line 1</strong> ampersand symbol <em>&</em> enables comments [ <a href="https://supermicrocms.com/commenting" target="_blank">info</a> ] <span>&#124;</span> <em>~~&~~</em> closes comments <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://supermicrocms.com/page-extras" target="_blank">info</a> ]</p>
+<p><strong>Line 1</strong> ampersand symbol <em>&</em> enables comments [ <a href="https://supermicrocms.com/commenting" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://supermicrocms.com/page-extras" target="_blank">info</a> ]</p>
 
 <?php } ?>
 
@@ -941,18 +901,18 @@ Content...';
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit3'])) {
-		echo 'submit3';
+		_print('submit3');
 	} else {
-		echo 'pre-submit3';
+		_print('pre-submit3');
 	}
 
 ?>" value="Update page">
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit4']) && file_exists($to_delete)) {
-		echo 'submit4';
+		_print('submit4');
 	} else {
-		echo 'pre-submit4';
+		_print('pre-submit4');
 	}
 
 ?>" class="caution" value="Delete page">
@@ -971,17 +931,13 @@ Content...';
 
 	if (isset($_POST['submit5']) || isset($_POST['pre-submit6'])) {
 		if ($_POST['select_style'] == 'current') {
-			echo '<option value="' . $_POST['select_style'] . '">' . $current . '</option>';
-			echo "\n";
+			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $current . '</option>');
 		} elseif ($_POST['select_style'] == 'default') {
-			echo '<option value="' . $_POST['select_style'] . '">' . $default . '</option>';
-			echo "\n";
+			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $default . '</option>');
 		} elseif ($_POST['select_style'] == 'default_unminified') {
-			echo '<option value="' . $_POST['select_style'] . '">' . $default_unminified . '</option>';
-			echo "\n";
+			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $default_unminified . '</option>');
 		} elseif ($_POST['select_style'] == 'extra') {
-			echo '<option value="' . $_POST['select_style'] . '">' . $extra . '</option>';
-			echo "\n";
+			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $extra . '</option>');
 		}
 	}
 
@@ -997,9 +953,9 @@ Content...';
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit6']) && (strlen(trim(stripslashes($_POST['content']))) > 1) && (strpos($_POST['page_id'], '.css') !== FALSE)) {
-		echo 'submit6';
+		_print('submit6');
 	} else {
-		echo 'pre-submit6';
+		_print('pre-submit6');
 	}
 
 	if (isset($_POST['pre-submit6']) || isset($_POST['submit5'])) {
@@ -1020,9 +976,9 @@ Content...';
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit10'])) {
-		echo 'submit10';
+		_print('submit10');
 	} else {
-		echo 'pre-submit10';
+		_print('pre-submit10');
 	}
 
 	if (isset($_POST['submit9']) || isset($_POST['pre-submit10'])) {
@@ -1031,7 +987,7 @@ Content...';
 		$class2 = 'fade';
 	}
 
-?>" class="<?php echo $class2; ?>" value="Save the menu">
+?>" class="<?php _print($class2); ?>" value="Save the menu">
 
 	</div>
 
@@ -1053,7 +1009,7 @@ Content...';
 	/* -------------------------------------------------- */
 	// No $login or !$login
 
-	echo '<p>Login could not be verified.</p>';
+	_print('<p>Login could not be verified.</p>');
 }
 
 ?>

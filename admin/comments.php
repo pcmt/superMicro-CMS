@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 06 Oct 2020 */
+/* Last updated 14 Dec 2020 */
 
 // Declare variables
-$filetitle = $response = $rewrite = $ext = "";
+$page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = "";
 
 require('./top.php');
 
@@ -36,7 +36,7 @@ if (function_exists('p_title')) {
 
 ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
+<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -52,50 +52,12 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-?>
-	<div id="loginform">
-
-<h1>superMicro CMS <i>login</i></h1>
-
-<?php
-
-	if ($notice) {
-		echo "\n" . $notice . "\n"; // From top.php (cookie test response)
-	}
-
-?>
-
-<form id="pw" action="<?php echo $self; ?>" method="post">
-<label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="login">
-<input type="password" name="password" size="25" maxlength="32">
-<input type="submit" name="submit0" value="Submit Password">
-</form>
-
-<?php
-
-	if ($response) {
-		echo '<p><em>' . $response . '</em></p>'; // If the user didn't do something
-		echo "\n";
-	}
-
-	// Footer link etc
-	if (function_exists('loggedoutFooter')) {
-		// Prints link to home page if 'dofooter' + lost/forgotten password link if logged out
-		loggedoutFooter();
+	if (!file_exists('./login-form.php')) {
+		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
+		exit();
 	} else {
-		echo "\n";
-		echo '<p>Missing function. Install the latest version of <strong>superMicro CMS</strong>.</p>';
-
+		require('./login-form.php');
 	}
-
-	echo "\n";
-
-?>
-
-	</div>
-
-<?php
 
 } elseif ($login) {
 
@@ -132,7 +94,7 @@ if (function_exists('h1')) {
 }
 ?></h1>
 
-<p id="nav"><a href="<?php echo LOCATION; ?>">&#171;&nbsp;Site</a> 
+<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
 <a href="./index.php" title="Create/edit/delete pages">Pages</a> 
 <a href="./images.php" title="Upload or delete images">Images</a> 
 <a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
@@ -169,10 +131,18 @@ if (function_exists('h1')) {
 /* ---------------------------------------------------------------------- */
 /* Prepare to edit comments */
 
-	if (isset($_POST['presubmit1'])) {
-		if (strlen($_POST['comments_id']) < 1) {
+	if (isset($_POST['presubmit'])) {
+		if (trim($_POST['comments_id']) == '') {
 			$response = "<em>You didn't enter a page name.</em>";
+			$update = FALSE;
+		} elseif (trim($_POST['content']) == '') {
+			$response = "<em>You didn't enter any comments.</em>";
+			$update = FALSE;
 		} else {
+			$update = TRUE;
+		}
+
+		if ($update) {
 			$filetitle = trim($_POST['comments_id']);
 			$commentsfilename = $filetitle . '.txt';
 			if (!file_exists("../comments/{$commentsfilename}")) {
@@ -186,11 +156,19 @@ if (function_exists('h1')) {
 /* ---------------------------------------------------------------------- */
 /* Edit comments */
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit'])) {
 		$filetitle = trim($_POST['comments_id']);
-		if (strlen($filetitle) < 1) {
+		if ($filetitle == '') {
 			$response = "<em>You didn't enter a page name.</em>";
+			$update = FALSE;
+		} elseif (trim($_POST['content']) == '') {
+			$response = "<em>You didn't enter any comments.</em>";
+			$update = FALSE;
 		} else {
+			$update = TRUE;
+		}
+
+		if ($update) {
 			$commentsfilename = $filetitle . '.txt';
 			if (!file_exists("../comments/{$commentsfilename}")) {
 				$response = '<em>Sorry, this comments file does not exist. Try another.</em>';
@@ -218,13 +196,13 @@ if (function_exists('h1')) {
 
 <?php
 
-	echo '<p><span class="padded-multiline">';
+	_print('<p><span class="padded-multiline">');
 	if (!$response) {
-		echo '<em>No page\'s comments requested.</em>';
+		_print('<em>No action requested.</em>');
 	} else {
-		echo $response;
+		_print($response);
 	}
-	echo '</span></p>';
+	_print('</span></p>');
 
 ?>
 
@@ -237,28 +215,28 @@ if (function_exists('h1')) {
 <label>Page title:</label>
 <input type="text" name="comments_id" size="60" style="font-weight: bold; color: #c63;" value="<?php
 
-	if (isset($_POST['presubmit1']) || isset($_POST['get_comments'])) {
-		echo $filetitle;
-	} elseif (isset($_POST['submit1'])) {
+	if (isset($_POST['presubmit']) || isset($_POST['get_comments'])) {
+		_print($_POST['comments_id']);
+	} elseif (isset($_POST['submit'])) {
 		if (strlen($filetitle) < 1) {
 			$filetitle = 'index';
 		}
-		echo $filetitle;
+		_print($filetitle);
 	} else {
-		echo $page;
+		_print($page);
 	}
 
 ?>
 " maxlength="60">
 
-<label>Edit comments (leave blank line to create new paragraph). To stop further comments, enter <em>~~&~~</em> as the last line.</label>
+<label>Edit comments (leave blank line to create new paragraph). To stop further comments, enter <em>~~&~~</em> as the last line (not displayed).</label>
 <textarea name="content" cols="90" rows="21">
 <?php
 
-	if (isset($_POST['presubmit1']) || isset($_POST['submit1'])) {
-		echo stripslashes(htmlentities($_POST['content']));
+	if (isset($_POST['presubmit']) || isset($_POST['submit'])) {
+		_print(stripslashes(htmlentities($_POST['content'])));
 	} elseif (isset($_POST['get_comments']) || $page) {
-		echo stripslashes(htmlentities($file_contents));
+		_print(stripslashes(htmlentities($file_contents)));
 	}
 
 ?>
@@ -271,10 +249,10 @@ if (function_exists('h1')) {
 <input type="submit" name="get_comments" class="fade" value="Get comments">
 <input type="submit" name="<?php
 
-	if (isset($_POST['presubmit1'])) {
-		echo 'submit1';
+	if (isset($_POST['presubmit']) && $update) { // Move forward only if not whitespace
+		_print('submit');
 	} else {
-		echo 'presubmit1';
+		_print('presubmit');
 	}
 
 ?>" value="Update comments">
@@ -290,7 +268,7 @@ if (function_exists('h1')) {
 	/* -------------------------------------------------- */
 	// No $login or !$login
 
-	echo '<p>Login could not be verified.</p>';
+	_print('<p>Login could not be verified.</p>');
 }
 
 ?>

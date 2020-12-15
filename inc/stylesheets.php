@@ -5,10 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Oct 2020 */
-// Options for 'common'
-// Various 'if (file_exists) deleted
-// Deleted theme.php
+/* Last updated 13 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to stylesheets.php.');
@@ -32,11 +29,8 @@ if (defined('FONT_TYPE')) {
 	_print('<link rel="stylesheet" media="all" href="' . LOCATION . 'css/common-h.css">');
 }
 
-_print("\n");
-_print('<link rel="stylesheet" media="screen and (min-width: 798px)" href="' . LOCATION . 'css/stylesheet.css">');
-_print("\n");
-_print('<link rel="stylesheet" media="screen and (max-width: 797px)" href="' . LOCATION . 'css/mobile.css">');
-_print("\n");
-_print('<link rel="stylesheet" media="screen" href="' . LOCATION . 'css/extra.css">');
+_print_nla('<link rel="stylesheet" media="screen and (min-width: 798px)" href="' . LOCATION . 'css/stylesheet.css">');
+_print_nla('<link rel="stylesheet" media="screen and (max-width: 797px)" href="' . LOCATION . 'css/mobile.css">');
+_print_nla('<link rel="stylesheet" media="screen" href="' . LOCATION . 'css/extra.css">');
 
 ?>

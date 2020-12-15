@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Oct 2020 */
+/* Last updated 13 Dec 2020 */
 
 /*
 Determine whether to display the comment form which uses
@@ -161,13 +161,19 @@ if (isset($_POST['submit'])) {
 // End form action
 
 if (isset($_POST['submit'])) {
-	_print('		<div class="response" id="response">');
-	_print("\n\n<hr>\n\n<p>{$response}</p>\n\n");
-	_print("		</div>\n");
+
+	_print("
+		<div class=\"response\" id=\"response\">
+
+<hr>
+<p>{$response}</p>
+
+		</div>
+	");
+
 }
 
 ?>
-
 <h6><?php _print(TEXT52); ?></h6>
 
 <form method="post" class="contactform" action="#response" accept-charset="UTF-8">

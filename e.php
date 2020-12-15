@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Nov 2020 */
+/* Last updated 13 Dec 2020 */
 
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
@@ -267,9 +267,13 @@ if (!$phpMail) { // Hides form and just shows email address
 <?php
 
 	if (isset($_POST['submit'])) {
-		_print('		<div class="response">');
-		_print("\n\n<p>{$response}</p>\n\n");
-		_print("		</div>\n");
+		_print_nlb('
+		<div class="response">
+
+<p>' . $response . '</p>
+
+		</div>
+		');
 	}
 
 	if ($showform) { // Don't hide form until message posted
@@ -300,9 +304,6 @@ if (!$phpMail) { // Hides form and just shows email address
 <?php
 
 include(INC . 'footer.php');
-if (file_exists(INC . 'tracking.php')) { // Optional
-	include(INC . 'tracking.php');
-}
 
 ?>
 
