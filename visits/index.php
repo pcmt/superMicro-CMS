@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 01 Dec 2020 */
+/* Last updated 16 Dec 2020 */
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
@@ -44,6 +44,12 @@ if (file_exists('../inc/settings.php')) {
 	require('../inc/settings.php');
 } else {
 	die('Error. /inc/settings.php not found');
+}
+
+if (file_exists('../inc/functions.php')) {
+	require('../inc/functions.php');
+} else {
+	die('Error. /inc/functions.php not found');
 }
 
 /* Safe 'self' function (from /admin/functions.php) */
@@ -97,13 +103,13 @@ if (defined('LOCATION')) {
 
 <?php
 
-	if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
+if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 
 ?>
 
 <!-- CONTENT (correct password entered) -->
 
-<h1>Hits for <span><a href="<?php echo $site; ?>" target="_blank"><?php echo $site; ?></a></span></h1>
+<h1>Hits for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
 
 <?php
 
@@ -115,31 +121,38 @@ if (isset($_POST['delete'])) { // Deletes everything
 
 	$fp1 = fopen("count.txt", "w") or die("Error!");
 	if ($fp1) {
-		echo "count.txt emptied<br>\n";
+		_print_nlb('count.txt emptied<br>');
 	}
 	fwrite($fp1, "0");
 	fclose($fp1);
 
 	$fp2 = fopen("listhits.txt", "w") or die("Error!");
 	if ($fp2) {
-		echo "listhits.txt emptied<br>\n";
+		_print_nlb('listhits.txt emptied<br>');
 	}
 	fwrite($fp2, "");
 	fclose($fp2);
 
 	$fp3 = fopen("since.txt", "w") or die("Error!");
 	if ($fp3) {
-		echo "since.txt updated<br>\n\n";
+		_print_nlb('since.txt updated<br>');
 	}
 	fwrite($fp3, $time);
 	fclose($fp3);
 
 	$fp4 = fopen("tempcount.txt", "w") or die("Error!");
 	if ($fp4) {
-		echo "tempcount.txt emptied<br><br>\n";
+		_print_nlb('tempcount.txt emptied<br>');
 	}
 	fwrite($fp4, "0");
 	fclose($fp4);
+
+	$fp5 = fopen("pageid.txt", "w") or die("Error!");
+	if ($fp5) {
+		_print_nlb('pageid.txt emptied<br><br>');
+	}
+	fwrite($fp5, "");
+	fclose($fp5);
 
 }
 
@@ -156,36 +169,37 @@ if (isset($_POST['delete'])) { // Deletes everything
 
 <hr>
 
+<p>See also <a href="./stats.php">page stats</a>&nbsp;&raquo;</p>
 <?php
 
 $page = $self;
 $page = str_replace("index.php", "", $page);
 
-$visits  = file_get_contents("count.txt");
-$since  = file_get_contents("since.txt"); // Timestamp
-$formatsince = date('l jS F Y H:i:s', $since);
-echo "<p>Total hits since delete: <strong>{$visits}</strong> since {$formatsince}</p>\n\n";
+$visits = file_get_contents("count.txt");
+$since = file_get_contents("since.txt"); // Timestamp
+$formatsince = date('l jS F Y H:i:s', (int)$since);
+_print_nlb('<p>Total hits since delete: <strong>' . $visits . '</strong> since ' . $formatsince . '</p>');
 
 // Calculate hits per day
-$start = strtotime(date('Y-m-d', $since));
+$start = strtotime(date('Y-m-d', (int)$since));
 $end = strtotime(date('Y-m-d', time()));
 
 // $days_between = ceil(abs($end - $start) / 86400);
 $days_between = (($end - $start) / 86400);
 $dayscounted = $days_between + 1;
 $hitsperday = ceil(abs($visits / $dayscounted));
-echo '<p>Days counted since delete: <strong>' . $dayscounted . '</strong>, so <strong>' . $hitsperday . '</strong> hits per day on average</p>';
+_print_nlb('<p>Days counted since delete: <strong>' . $dayscounted . '</strong>, so <strong>' . $hitsperday . '</strong> hits per day on average</p>');
 
 $temp  = file_get_contents("tempcount.txt");
-echo "<p>The most recent 250 hits from <a href=\"https://supermicrocms.com/visitor-tracking\" target=\"_blank\">temporary count</a> of <strong>{$temp}</strong> (emptied at 1000):\n\n";
+_print_nlb('<p>The most recent 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):');
 
 ?>
 
 	<div id="results">
 
-<ol reversed><?php
+<ol reversed>
 
-echo "\n\n";
+<?php
 
 // Open the file for reading
 $file = 'listhits.txt';
@@ -197,8 +211,8 @@ for ($i = 0; $i < 250; $i++) {
 	$line = fgets($fh);
 
 	// If a line was read then output it
-	if ($line !== false) {
-		echo "<li>{$line}</li>\n\n";
+	if ($line !== FALSE) {
+		_print_nlb("<li>{$line}</li>\n");
 	}
 }
 
@@ -220,7 +234,7 @@ fclose($fh);
 <input class="password" type="submit" name="submit_pass" value="Submit">
 </form>
 
-<?php echo $error; } ?>
+<?php _print($error); } ?>
 
 </div>
 

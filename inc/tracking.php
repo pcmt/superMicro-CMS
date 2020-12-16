@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 08 Dec 2020 */
+/* Last updated 16 Dec 2020 */
 
 // This file adds formatted hits to 'listhits.txt'
 // to be read by /visits/
@@ -167,14 +167,14 @@ if (isset($admin) && !$admin) { /* From top.php */ ?>
 				fclose($fp2);
 
 				// Prevent huge hits file being written
-				if ($temp_count < 1001) { // If less than 1000 hits
+				if ($temp_count < 1000) { // If less than 1000 hits
 
 					// Add hit details to top of listhits.txt
 					$file_data = $hitinfo . "\n"; // New hit
 					$file_data .= file_get_contents($hitsfile); // Add previous hits
 					file_put_contents($hitsfile, $file_data); // Update list
 
-				} else { // More than 1001 hits
+				} else { // More than 1000 hits
 
 					// Delete all hits and start again
 					$fp4 = @fopen($hitsfile, "w");
@@ -192,22 +192,40 @@ if (isset($admin) && !$admin) { /* From top.php */ ?>
 
 		} // End of 'if hitsfile exists'
 
+		// If hit recorded add pageID
+		if (isset($pageID)) {
+			// Text file where pageID listed
+			$pageidfile = './visits/pageid.txt';
+			if (file_exists($pageidfile)) {
+				$current = file_get_contents($pageidfile);
+				// Append to the file
+				$current .= ($pageID . "\n");
+				// Write the contents back to the file
+				file_put_contents($pageidfile, $current);
+			}
+		}
+
 	} // End of 'if not blocked'
 
-	echo "\n<!-- Logged out (hit logged) //-->";
+	_print_nla('<!-- Logged out (hit logged) //-->');
 
 } else { // End of 'if logged out'
 
-	echo "\n<!-- Logged in (hit not logged) //-->";
+	_print_nla('<!-- Logged in (hit not logged) //-->');
 
 }
 
 if ($ip) {
-	echo "\n<!-- {$ip} //-->";
+	_print_nla('<!-- ' . $ip . ' //-->');
 } else {
-	echo "\n<!-- No ip //-->";
+	_print_nla('<!-- No ip //-->');
 }
 
-echo "\n<!-- Tracking {$escaped_url} (tracking file: 10:10 08 DEC 20) //-->\n";
+if (isset($pageID)) {
+	// $pageID from /inc/html.php (same folder)
+	_print('
+<!-- Tracking "/' . $pageID . '" (tracking file: 12:50 16 DEC 20) //-->
+	');
+}
 
 ?>
