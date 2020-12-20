@@ -5,79 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 16 Dec 2020 */
+/* Last updated 18 Dec 2020 */
 
-// No PHP errors detected in testing so
-// normally leave error reporting off
-error_reporting(0);
-ini_set('display_errors', 0);
-
-// Report errors (none found)
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
-// Declare variables
-$error = "";
-
-session_start();
-
-if (isset($_POST['submit_pass']) && $_POST['pass']) {
-
-	$p_word = trim($_POST['pass']);
-
-	if (preg_match('/[a-z_\-0-9]/i', $p_word)) {
-
-		if ($p_word == "v") {
-			$_SESSION['password'] = $p_word;
-		} else {
-			$error = "<p>Wrong Password</p>";
-		}
-
-	} else {
-		$error = "<p>Invalid character(s)</p>";
-	}
-
-}
-
-define('ACCESS', TRUE);
-if (file_exists('../inc/settings.php')) {
-	require('../inc/settings.php');
+if (file_exists('./top.php')) {
+	require('./top.php');
 } else {
-	die('Error. /inc/settings.php not found');
-}
-
-if (file_exists('../inc/functions.php')) {
-	require('../inc/functions.php');
-} else {
-	die('Error. /inc/functions.php not found');
-}
-
-/* Safe 'self' function (from /admin/functions.php) */
-
-function phpSELF() {
-	// Convert special characters to HTML entities
-	$str = htmlspecialchars($_SERVER['PHP_SELF']);
-	if (empty($str)) { // Fix empty PHP_SELF
-		// Strip query string
-		$str = preg_replace("/(\?.*)?$/", "", $_SERVER['REQUEST_URI']);
-	}
-
-	return $str;
-}
-
-$self = htmlspecialchars(phpSELF(), ENT_QUOTES, "utf-8");
-
-/* End of safe 'self' */
-
-if (isset($_POST['page_logout'])) {
-	unset($_SESSION['password']);
-}
-
-/* Get the path to the installation */
-if (defined('LOCATION')) {
-	$site = LOCATION;
-} else {
-	$site = "LOCATION not found";
+	die('Error. /visits/top.php not found');
 }
 
 ?>
@@ -88,7 +21,7 @@ if (defined('LOCATION')) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>superMicro CMS visits</title>
+<title>superMicro CMS stats</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Expires" content="Mon, 26 Jul 1997 05:00:00 GMT">
 <meta http-equiv="Pragma" content="no-cache">
@@ -109,52 +42,15 @@ if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 
 <!-- CONTENT (correct password entered) -->
 
-<h1>Hits for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
+<h1>Page stats for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
 
 <?php
 
-if (isset($_POST['delete'])) { // Deletes everything
-
-	$the_date = date('l jS F Y H:i:s'); // For listhits.txt
-	$since_date = $the_date;
-	$time = time();
-
-	$fp1 = fopen("count.txt", "w") or die("Error!");
-	if ($fp1) {
-		_print_nlb('count.txt emptied<br>');
+	if (file_exists('./delete.php')) {
+		include('./delete.php');
+	} else {
+		die('Error. /visits/delete.php not found');
 	}
-	fwrite($fp1, "0");
-	fclose($fp1);
-
-	$fp2 = fopen("listhits.txt", "w") or die("Error!");
-	if ($fp2) {
-		_print_nlb('listhits.txt emptied<br>');
-	}
-	fwrite($fp2, "");
-	fclose($fp2);
-
-	$fp3 = fopen("since.txt", "w") or die("Error!");
-	if ($fp3) {
-		_print_nlb('since.txt updated<br>');
-	}
-	fwrite($fp3, $time);
-	fclose($fp3);
-
-	$fp4 = fopen("tempcount.txt", "w") or die("Error!");
-	if ($fp4) {
-		_print_nlb('tempcount.txt emptied<br>');
-	}
-	fwrite($fp4, "0");
-	fclose($fp4);
-
-	$fp5 = fopen("pageid.txt", "w") or die("Error!");
-	if ($fp5) {
-		_print_nlb('pageid.txt emptied<br><br>');
-	}
-	fwrite($fp5, "");
-	fclose($fp5);
-
-}
 
 ?>
 
@@ -169,57 +65,42 @@ if (isset($_POST['delete'])) { // Deletes everything
 
 <hr>
 
-<p>See also <a href="./stats.php">page stats</a>&nbsp;&raquo;</p>
+<p>See also <a href="./list.php" title="List of hits">list of hits</a>&nbsp;&raquo;</p>
 <?php
 
-$page = $self;
-$page = str_replace("index.php", "", $page);
-
-$visits = file_get_contents("count.txt");
-$since = file_get_contents("since.txt"); // Timestamp
-$formatsince = date('l jS F Y H:i:s', (int)$since);
-_print_nlb('<p>Total hits since delete: <strong>' . $visits . '</strong> since ' . $formatsince . '</p>');
-
-// Calculate hits per day
-$start = strtotime(date('Y-m-d', (int)$since));
-$end = strtotime(date('Y-m-d', time()));
-
-// $days_between = ceil(abs($end - $start) / 86400);
-$days_between = (($end - $start) / 86400);
-$dayscounted = $days_between + 1;
-$hitsperday = ceil(abs($visits / $dayscounted));
-_print_nlb('<p>Days counted since delete: <strong>' . $dayscounted . '</strong>, so <strong>' . $hitsperday . '</strong> hits per day on average</p>');
-
-$temp  = file_get_contents("tempcount.txt");
-_print_nlb('<p>The most recent 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):');
+	if (file_exists('./counts.php')) {
+		include('./counts.php');
+	} else {
+		die('Error. /visits/counts.php not found');
+	}
 
 ?>
 
+<p>Hits per page:</p>
+
 	<div id="results">
 
-<ol reversed>
-
+<ol>
 <?php
 
-// Open the file for reading
-$file = 'listhits.txt';
-$fh = fopen($file, 'rb');
-
-// Loop a specified number of times
-for ($i = 0; $i < 250; $i++) {
-	// Read a line
-	$line = fgets($fh);
-
-	// If a line was read then output it
-	if ($line !== FALSE) {
-		_print_nlb("<li>{$line}</li>\n");
+	// Identify each pageID and count the number of times it appears in the list
+	// Get text files into array
+	$pageidArray = file('pageid.txt');
+	$list = array_count_values($pageidArray);
+	arsort($list, SORT_NUMERIC);
+	foreach ($list as $page => $num) {
+		$page = str_replace("\n", "", trim($page));
+		// $anchor = $page;
+		if (!APACHE) { // Add .php extension
+			$page = $page . '.php';
+		} elseif ($page == 'index') {
+			$page = str_replace("index", "", $page);
+		}
+		_print_nlb('<li><a href="' . LOCATION . $page . '" target="_blank"><span>' . LOCATION .'</span>' . $page . '</a> : ' . $num .'</li>');
 	}
-}
 
-// Close the file handle
-fclose($fh);
-
-?></ol>
+?>
+</ol>
 
 	</div>
 

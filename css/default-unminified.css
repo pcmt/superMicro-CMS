@@ -411,7 +411,6 @@ p.caption {
   clear: both;
   margin: -0.6em auto 1.6em auto;
   padding: 0 6px 0.6em 6px;
-  /* For margins and padding, see margin control below */
   width: 460px;
   border-bottom: 1px solid #999;
   text-align: center;

@@ -1,4 +1,4 @@
-/* [ last update 01 Dec 2020 ] */
+/* [ last update 18 Dec 2020 ] */
 
 body {
   font-size: 100%;
@@ -30,12 +30,13 @@ p {
 }
 
 ol {
-  margin: 10px 0 0 10px;
+  margin: 10px 0 12px 10px;
   padding: 0;
 }
 
 li {
   margin-left: 27px;
+  margin-bottom: 2px;
 }
 
 span {

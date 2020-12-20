@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 20 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to error-reporting.php.');
@@ -27,7 +27,7 @@ if (defined('SHOW_ERRORS')) {
  * Relative path to INC defined as required in /e.php and /inc/html.php
  */
 
-$required = array('languages/de.php','languages/en.php','languages/es.php','languages/fr.php', '404.php', 'content.php', 'extra-body.php', 'extra-content.php', 'extra-head.php', 'footer.php', 'functions.php', 'lang.php', 'login-form.php', 'logout-form.php', 'menu.php', 'ppp.php', 'stylesheets.php', 'top.php');
+$required = array('languages/de.php','languages/en.php','languages/es.php','languages/fr.php', '404.php', 'content.php', 'extra-body.php', 'extra-content.php', 'extra-head.php', 'footer.php', 'form.php', 'functions.php', 'lang.php', 'login-form.php', 'logout-form.php', 'menu.php', 'ppp.php', 'stylesheets.php', 'top.php');
 
 if (defined('INC')) { // See html.php
 	$missing = FALSE;

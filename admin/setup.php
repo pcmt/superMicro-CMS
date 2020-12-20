@@ -5,97 +5,60 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/*
-
-/* Last updated 13 Dec 2020 */
-
-/*
-
-EVERY TIME THE SETUP PAGE IS ACCESSED:
-
-* top.php sets the test_cookie and checks the login cookie
-
-* Declares the version number for /inc/settings.php
-
-* Checks the name of the 'admin' folder for /inc/settings.php
-(prevents setup if incorrect)
-
-* Attempts to get the domain of the installation
-(prevents setup if it fails)
-
-* Gets the path to the folder of the installation
-
-* Attempts to detect whether http or https
-
-* Uses (3) (4) and (5) to set $site_location in settings.php
-
-* Attempts to detect if server is Apache for settings.php
-
-* Attempts to detect if server is Window for settings.php
-Determines whether PHP mail function can be used
-
-* Attempts to detect server software for settings.php
-
-* Attempts to delete any conflicting directory index file
-
-* Checks whether e.php exists to determine whether
-the text input box should be displayed in setup
-
-* Checks whether settings.php already exists to notify
-the user in the 'action' box at the top of the page
-
-* Displays the input boxes
-
-* Displays language selection dropdown, submit setup button
-and some status information
-
-WHEN SETUP IS SUBMITTED:
-
-(1) Checks if setup can proceed
-
-(2) Checks whether the input boxes have been filled in correctly
-and notifies the user accordingly
-
-(3) Attempts to write or update settings.php
-
-(4) Deletes install.php if it exists
-
-SEE ALSO install.php which should have already written:
-
-/admin/password.php
-/css/stylesheet.css
-/css/extra.css
-/inc/inmenu.txt
-/inc/password.php
-/pages/index.txt
-
-and if it already exists updates:
-
-/admin/password.php
-
-The default files for install.php to write are in /admin/text/
-
-If these files can't be written on install the system won't work
-and the setup link won't be displayed so there is no need for further
-write tests in this file.
-
-The reason is to allow the system to be updated from the download
-files without over-writing them. It can then be updated by uploading
-everything in the download folders - not the folders themselves.
-
-NOTE: the existence of .htaccess in the root folder does not mean
-it does anything. It probably does if the server is Apache but only
-if mod_rewrite is enabled.
-
-*/
+/* Last updated 20 Dec 2020 */
 
 // Declare variables
-$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = "";
+$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = $submitted_language = $correct_value = $track_me = $posted = $feedback = $value = "";
 
 $thisPage = 'setup';
 
 require('./top.php'); // Loads functions.php
 require('./language.php');
+
+if (defined('TRACK_HITS') && TRACK_HITS) { // Only if tracking activated
+
+	// Set or delete cookie
+	if (isset($_POST['submit1'])) {
+
+		$posted = trim($_POST['track_me']);
+		$array = array('YES','NO', '');
+		foreach ($array as $val) {
+			if ($val == $posted) {
+				$correct_value = TRUE;
+			}
+		}
+
+		if ($correct_value) {
+			if ($posted == 'YES') { // Track
+				setcookie("track", "yes", time() + 31556926, "/"); // One year
+				// $feedback = 'track cookie set to yes';
+			} elseif ($posted == 'NO') { // Don't track, so set track cookie no (see footer)
+				setcookie("track", "no", time() + 31556926, "/"); // One year
+				// $feedback = 'track cookie set to no';
+			} elseif ($posted == '') { // Don't track, so unset track cookie (see footer)
+				if (isset($_COOKIE["track"])) {
+					setcookie("track", "", time() - 3600, "/");
+					// $feedback = 'track cookie deleted';
+				}
+			}
+		} else {
+			$problem = TRUE;
+		}
+
+	} // End of 'if submit'
+
+	// echo '$posted = ' . $posted . '<br>'; // Testing
+	// echo '$correct_value = ' . $correct_value . '<br>'; // Testing
+	// echo '$feedback = ' . $feedback . '<br>'; // Testing
+	// echo '$response1 = ' . $response1 . '<br>'; // Testing
+	// if (isset($_COOKIE["track"])) {
+	// 	$value = $_COOKIE["track"];
+	// 	echo 'track cookie "' . $value . '" exists<br>'; // Testing
+	// } elseif (!isset($_COOKIE["track"])) {
+	// 	echo 'track cookie does not exist<br>'; // Testing
+	// }
+
+}
 
 ?>
 <!DOCTYPE html>
@@ -371,6 +334,8 @@ if (!$login) {
 			$track_hits = 'FALSE';
 		}
 
+		// See top of file for 'Track my hits' cookie
+
 		// Different vars so YES/NO is printed
 		$php_ext = $suffix_it = '';
 		$suffix_it = trim($_POST['suffix_it']);
@@ -428,8 +393,20 @@ if (!$login) {
 		}
 
 		$font_type = $_POST['font_type']; // No option not to Post
-
 		$lang_attr = $_POST['lang_attr']; // No option not to Post
+
+		if ($lang_attr == 'en') {
+			$submitted_language = 'English';
+		}
+		if ($lang_attr == 'fr') {
+			$submitted_language = 'French';
+		}
+		if ($lang_attr == 'de') {
+			$submitted_language = 'German';
+		}
+		if ($lang_attr == 'es') {
+			$submitted_language = 'Spanish';
+		}
 
 		if ($problem) {
 			if ($fileError) {
@@ -585,12 +562,15 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 		<div class="group one">
 
-<label>Menu text for home page<?php if (isset($_POST['submit1']) && (!$home_link) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Menu text for home page</label>
 <input type="text" name="home_link" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		_print(stripslashes($home_link));
+		if (!$home_link && $problem) {
+			_print('Enter menu text');
+		} else {
+			_print(stripslashes($home_link));
+		}
 	} elseif (file_exists('../inc/settings.php') && defined('HOME_LINK')) {
 		_print(HOME_LINK);
 	} else {
@@ -600,12 +580,15 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="60">
 
-<label>Name in footer<?php if (isset($_POST['submit1']) && (!$name) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Name in footer</label>
 <input type="text" name="name" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		_print(stripslashes($name));
+		if (!$name && $problem) {
+			_print('Enter a name');
+		} else {
+			_print(stripslashes($name));
+		}
 	} elseif (file_exists('../inc/settings.php') && defined('NAME')) {
 		_print(NAME);
 	} else {
@@ -615,12 +598,15 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="60">
 
-<label>Alphabetical menu (YES/NO)<?php if (isset($_POST['submit1']) && (!$menu) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Alphabetical menu (YES/NO)</label>
 <input type="text" name="menu" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		_print($menu);
+		if (!$menu && $problem) {
+			_print('Enter YES or NO');
+		} else {
+			_print($menu);
+		}
 	} elseif (file_exists('../inc/settings.php') && defined('ALPHABETICAL')) {
 		if (ALPHABETICAL) {
 			_print('YES');
@@ -634,12 +620,15 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Debug (YES/NO) [ <a href="https://supermicrocms.com/debug" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$debug) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Debug (YES/NO) [ <a href="https://supermicrocms.com/debug" target="_blank">info</a> ]</label>
 <input type="text" name="debug" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		_print($debug);
+		if (!$debug && $problem) {
+			_print('Enter YES or NO');
+		} else {
+			_print($debug);
+		}
 	} elseif (file_exists('../inc/settings.php') && defined('SHOW_ERRORS')) {
 		if (SHOW_ERRORS) {
 			_print('YES');
@@ -653,12 +642,15 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Track hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$track) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Track hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]</label>
 <input type="text" name="track" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		_print($track);
+		if (!$track && $problem) {
+			_print('Enter YES or NO');
+		} else {
+			_print($track);
+		}
 	} elseif (file_exists('../inc/settings.php') && defined('TRACK_HITS')) {
 		if (TRACK_HITS) {
 			_print('YES');
@@ -676,16 +668,19 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 		<div class="group two">
 
-<label>Email address<?php if (isset($_POST['submit1']) && (!$email) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Email address</label>
 <input type="text" name="email" size="60" value="<?php
 
 	$invalid_email = ""; // Required to re-declare variable
 	if (isset($_POST['submit1'])) {
-		if ($invalid_email) {
-			_print(trim($_POST['email']));
+		if (!$email && $problem) {
+			_print('Invalid email address');
 		} else {
-			_print($email);
+			if ($invalid_email) {
+				_print(trim($_POST['email']));
+			} else {
+				_print($email);
+			}
 		}
 	} elseif (file_exists('../inc/settings.php') && defined('EMAIL')) {
 		_print(EMAIL);
@@ -696,42 +691,51 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="60">
 
-<label>Your name<?php if (isset($_POST['submit1']) && (!$own_name) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Your name</label>
 <input type="text" name="own_name" size="60" value="<?php
 
-		if (isset($_POST['submit1'])) {
-			_print(stripslashes($own_name));
-		} elseif (file_exists('../inc/settings.php') && defined('OWN_NAME')) {
-			_print(OWN_NAME);
+	if (isset($_POST['submit1'])) {
+		if (!$own_name && $problem) {
+			_print('Enter a name');
 		} else {
-			_print('Josephine');
+			_print(stripslashes($own_name));
 		}
+	} elseif (file_exists('../inc/settings.php') && defined('OWN_NAME')) {
+		_print(OWN_NAME);
+	} else {
+		_print('Josephine');
+	}
 
 ?>
 " maxlength="60">
 
-<label>Site name (20 max)<?php if (isset($_POST['submit1']) && (!$site_name) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Site name (20 max)</label>
 <input type="text" name="site_name" size="20" value="<?php
 
-		if (isset($_POST['submit1'])) {
-			_print(stripslashes($site_name));
-		} elseif (file_exists('../inc/settings.php') && defined('SITE_NAME')) {
-			_print(SITE_NAME);
+	if (isset($_POST['submit1'])) {
+		if (!$site_name && $problem) {
+			_print('Enter site name');
 		} else {
-			_print('My Website');
+			_print(stripslashes($site_name));
 		}
+	} elseif (file_exists('../inc/settings.php') && defined('SITE_NAME')) {
+		_print(SITE_NAME);
+	} else {
+		_print('My Website');
+	}
 
 ?>
 " maxlength="100">
 
-<label>.php it (YES/NO) [ <a href="https://supermicrocms.com/links" target="_blank">info</a> ]<?php if (isset($_POST['submit1']) && (!$suffix_it) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>.php it (YES/NO) [ <a href="https://supermicrocms.com/links" target="_blank">info</a> ]</label>
 <input type="text" name="suffix_it" size="60" value="<?php
 
 	if (isset($_POST['submit1'])) {
-		_print($suffix_it);
+		if (!$suffix_it && $problem) {
+			_print('Enter YES or NO');
+		} else {
+			_print($suffix_it);
+		}
 	} elseif (file_exists('../inc/settings.php') && defined('PHP_EXT')) {
 		if (PHP_EXT) {
 			_print('YES');
@@ -745,11 +749,42 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Unused</label>
+<label>Track my hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]</label>
+<input type="text" name="track_me" size="60" value="<?php
 
-<input type="text" name="unused" size="60" value="<?php
+	if (defined('TRACK_HITS')) { // Regardless of anything else
 
-	_print('');
+		if (isset($_POST['submit1'])) {
+
+			if (!$correct_value) {
+				_print('Enter YES or NO or leave empty');
+			} else {
+				if (($track == 'NO') || (TRACK_HITS == FALSE)) {
+					_print('Track hits not activated');
+				}
+				if (($track == 'YES') && TRACK_HITS && ($_POST['track_me'] == 'YES')) {
+					_print('YES');
+				}
+				if (($track == 'YES') && TRACK_HITS && ($_POST['track_me'] == 'NO')) {
+					_print('NO');
+				}
+			}
+
+		} else { // Not POSTed
+			if (isset($_COOKIE["track"]) && ($_COOKIE["track"] == 'yes')) {
+				_print('YES');
+			}
+			if (isset($_COOKIE["track"]) && ($_COOKIE["track"] == 'no')) {
+				_print('NO');
+			}
+			if (!isset($_COOKIE["track"])) {
+				_print('');
+			}
+		}
+
+	} else {
+		_print('Empty: TRACK_HITS undefined');
+	}
 
 ?>
 " maxlength="3">
@@ -765,12 +800,15 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 		<div id="bottom">
 
-<label>Contact page introductory text<?php if (isset($_POST['submit1']) && (!$contact_text) && ($problem)) { _print('<br>[ <strong>incorrect value</strong> ]'); } ?></label>
-
+<label>Contact page introductory text</label>
 <textarea name="contact_text" size="60" rows="4" cols="30"><?php
 
 		if (isset($_POST['submit1'])) {
-			_print(stripslashes($contact_text));
+			if (!$contact_text && $problem) {
+				_print('Enter some text');
+			} else {
+				_print(stripslashes($contact_text));
+			}
 		} elseif (file_exists('../inc/settings.php') && defined('CONTACT_TEXT')) {
 			_print(CONTACT_TEXT);
 		} else {
@@ -780,7 +818,6 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?></textarea>
 
 <label>Menu text for contact page (leave blank to hide contact page from menu)</label>
-
 <input type="text" name="contact_menu" size="60" value="<?php
 
 		if (isset($_POST['submit1'])) {
@@ -859,13 +896,28 @@ if (isset($_POST['submit1'])) {
 
 <select id="dropdown" name="lang_attr"><?php
 
+	if (defined('LANG_ATTR')) {
+		if (LANG_ATTR == 'en') {
+			$language = 'English';
+		}
+		if (LANG_ATTR == 'fr') {
+			$language = 'French';
+		}
+		if (LANG_ATTR == 'de') {
+			$language = 'German';
+		}
+		if (LANG_ATTR == 'es') {
+			$language = 'Spanish';
+		}
+	}
+
 	/* -------------------------------------------------- */
 	/* SELECT LANG */
 	// For <html lang="??">
 
 	// Selected option
 	if (isset($_POST['submit1'])) {
-		_print_nlab('<option value="' . $_POST['lang_attr'] . '">' . $language . '</option>');
+		_print_nlab('<option value="' . $_POST['lang_attr'] . '">' . $submitted_language . '</option>');
 	} elseif (defined('LANG_ATTR')) {
 		_print_nlab('<option value="' . LANG_ATTR . '">' . $language . '</option>');
 	}
