@@ -43,7 +43,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
 <?php
 
 // Date
-	$the_date = date('l jS F Y H:i:s');
+$the_date = date('l jS F Y H:i:s');
 
 // User agent
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
