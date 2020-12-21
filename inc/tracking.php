@@ -5,22 +5,29 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 // This file adds formatted hits to 'listhits.txt'
-// to be read by /visits/
+// to be read by /admin/visits/
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
-#error_reporting(0);
- error_reporting(E_ALL);
+error_reporting(0);
+// error_reporting(E_ALL);
 
 if(!defined('ACCESS')) {
 	die('Direct access not permitted to tracking.php.');
 }
 
 // Declare variables
-$blocked = $url = $escaped_url = $trackme = "";
+$blocked = $url = $escaped_url = $error = "";
+
+if (file_exists('./inc/settings.php')) {
+	define('ACCESS', TRUE);
+	include('./inc/settings.php');
+} else {
+	$error = "cannot find '/inc/settings.php'";
+}
 
 // IP address
 if (isset($_SERVER['REMOTE_ADDR'])) {
@@ -116,16 +123,21 @@ if (!$blocked) {
 	$escaped_url = htmlspecialchars( $url, ENT_QUOTES, 'UTF-8' );
 
 	// Build the data to display
-	$hitinfo = 'Page: <a href="' . $escaped_url . '" target="_blank">' . $escaped_url . '</a><br>' . $the_date . '<br>IP address: <a href="https://ip-address.us/lookup/' . $ip . '" target="_blank">' . $ip . '</a> User info: ' . $user_agent . '<br>Referrer: <span>' . $referer . '</span>';
+	$hitinfo = 'Page: <a href="' . $escaped_url . '" target="_blank">' . $escaped_url . '</a><br>' . $the_date . '<br>IP address: <span class="mute">https://ip-address.us/lookup/</span>' . $ip . ' User info: ' . $user_agent . '<br>Referrer: <span>' . $referer . '</span>';
 
-	// Text file where hits listed
-	$hitsfile = './visits/listhits.txt';
+	$visits = './' . ADMIN . '/visits/';
+	if (file_exists($visits)) {
+		// Text file where hits listed
+		$hitsfile = $visits . 'listhits.txt';
 
-	// Permanent text file where hits counted
-	$countfile = './visits/count.txt';
+		// Permanent text file where hits counted
+		$countfile = $visits . 'count.txt';
 
-	// Temporary text file where hits counted
-	$temp_countfile = './visits/tempcount.txt';
+		// Temporary text file where hits counted
+		$temp_countfile = $visits . 'tempcount.txt';
+	} else {
+		$error = 'cannot find /visits/ at ' . $visits;
+	}
 
 	// Nothing happens if no hits file
 	if (file_exists($hitsfile)) {
@@ -193,7 +205,7 @@ if (!$blocked) {
 	if (isset($pageID)) {
 
 		// Text file where pageID listed
-		$pageidfile = './visits/pageid.txt';
+		$pageidfile = $visits . 'pageid.txt';
 		if (file_exists($pageidfile)) {
 			$current = file_get_contents($pageidfile);
 			// Append to the file
@@ -209,12 +221,15 @@ if (!$blocked) {
 
 } // End of 'if not blocked'
 
+if ($error) {
+	_print_nlb('<!-- Error in /inc/tracking.php: ' . $error . ' //-->');
+}
 if ($ip) {
 	_print_nlb('<!-- IP ' . $ip . ' //-->');
 } else {
 	_print_nlb('<!-- No ip //-->');
 }
 
-_print('<!-- Tracking file: 22:30 20 DEC 20 //-->');
+_print('<!-- Tracking file: 12:00 21 DEC 20 //-->');
 
 ?>

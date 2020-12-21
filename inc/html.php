@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 07 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 // Looks for $source, not $textArray
 // Comments detection
 
@@ -30,7 +30,7 @@ class Page {
 		if (file_exists(INC . 'error-reporting.php')) {
 			require(INC . 'error-reporting.php');
 		} else {
-			echo "Error. The file '/inc/error-reporting.php' could not be found.";
+			echo "Error in html.php - file '/inc/error-reporting.php' not found";
 			exit();
 		}
 

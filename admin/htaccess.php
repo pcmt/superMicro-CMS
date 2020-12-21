@@ -302,6 +302,7 @@ if (function_exists('h1')) {
 <span>.htaccess</span> 
 <a href="./backup.php" title="Backup">Backup</a> 
 <a href="./setup.php" title="Setup">Setup</a> 
+<a href="./visits/" title="Visits" target="_blank">Visits</a> 
 <a href="?status=logout" title="Logout">Logout</a> 
 <a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
 

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 19 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
@@ -39,16 +39,16 @@ if (isset($_POST['submit_pass']) && $_POST['pass']) {
 
 }
 
-if (file_exists('../inc/settings.php')) {
-	require('../inc/settings.php');
+if (file_exists('../../inc/settings.php')) {
+	require('../../inc/settings.php');
 } else {
-	die('Error. /inc/settings.php not found');
+	die('Error in /admin/visits/top.php: /inc/settings.php not found');
 }
 
-if (file_exists('../inc/functions.php')) {
-	require('../inc/functions.php');
+if (file_exists('../../inc/functions.php')) {
+	require('../../inc/functions.php');
 } else {
-	die('Error. /inc/functions.php not found');
+	die('Error in /admin/visits/top.php: /inc/functions.php not found');
 }
 
 /* Safe 'self' function (from /admin/functions.php) */

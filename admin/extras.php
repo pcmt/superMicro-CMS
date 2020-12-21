@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 // Declare variables
 $page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = "";
@@ -100,6 +100,7 @@ if (function_exists('h1')) {
 <a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
 <a href="./backup.php" title="Backup">Backup</a> 
 <a href="./setup.php" title="Setup">Setup</a> 
+<a href="./visits/" title="Visits" target="_blank">Visits</a> 
 <a href="?status=logout" title="Logout">Logout</a> 
 <a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
 

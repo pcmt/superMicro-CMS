@@ -1,7 +1,7 @@
 #
 Home Page Heading
 
-Success. <a href="https://supermicrocms.com/" target="_blank">superMicro CMS</a> version 3.10 installed. This is the home page. Edit as required.
+Success. <a href="https://supermicrocms.com/" target="_blank">superMicro CMS</a> version 3.11 installed. This is the home page. Edit as required.
 
 <p class="w"><img src="img/example-image.jpg" width="740" height="400" alt=""></p>
 

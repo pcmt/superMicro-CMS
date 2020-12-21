@@ -5,8 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 Dec 2020 */
-/* Changed echo to _print() + 'single quotes' where possible */
+/* Last updated 21 Dec 2020 */
 
 // Declare variables
 $protected = $the_page = "";
@@ -28,7 +27,7 @@ if ($password) { // From html.php
 		include(INC . 'ppp.php');
 		$protected = TRUE;
 	} else {
-		_print("Error. The file '/inc/ppp.php' could not be found.");
+		_print("Error in /inc/top.php: '/inc/ppp.php' could not be found.");
 		exit(); // For security (file has to exist)
 	}
 }

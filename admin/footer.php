@@ -5,8 +5,8 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
-/* Updated version to 3.10 */
+/* Last updated 21 Dec 2020 */
+/* Updated version to 3.11 */
 
 ?>
 

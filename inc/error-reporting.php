@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to error-reporting.php.');
@@ -34,7 +34,7 @@ if (defined('INC')) { // See html.php
 
 	foreach ($required as $file) {
 		if (!file_exists(INC . $file)) { // If a file is missing
-			echo "Error. The file '/inc/{$file}' does not exist. It must be installed.";
+			echo "Error in /inc/error-reporting.php: the file '/inc/{$file}' does not exist. It must be installed.";
 			$missing = TRUE;
 			exit();
 		}
@@ -46,12 +46,12 @@ if (defined('INC')) { // See html.php
 
 	// Check for new functions
 	if (!function_exists('_print_nla')) {
-		_print("Error. Missing function '_print_nla'. Install the latest version of /inc/functions.php");
+		_print("Error in /inc/error-reporting.php: missing function '_print_nla'. Install the latest version of /inc/functions.php");
 		exit();
 	}
 
 } else {
-	echo "Error. The path 'INC' is not defined. Please install the latest version of superMicro CMS.";
+	echo "Error in /inc/error-reporting.php: the path 'INC' is not defined. Please install the latest version of superMicro CMS.";
 }
 
 ?>

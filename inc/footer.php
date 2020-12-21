@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php.');
@@ -84,7 +84,7 @@ if (defined('TRACK_HITS')) {
 			if (file_exists(INC . 'tracking.php')) {
 				include(INC . 'tracking.php');
 			} else {
-				$feedback = 'tracking.php does not exist';
+				$feedback = "Error in /inc/footer.php: '/inc/tracking.php' does not exist";
 			}
 		} else {
 			$feedback = 'Not tracking';
@@ -95,7 +95,7 @@ if (defined('TRACK_HITS')) {
 	}
 
 } else {
-	$feedback = 'Track hits not defined';
+	$feedback = 'Error in /inc/footer.php: track hits not defined';
 }
 
 _print_nla('<!-- ' . $logged . ' //-->');

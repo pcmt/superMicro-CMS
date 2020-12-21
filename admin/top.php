@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 // Declare variables
 $status = $notice = $user = $dofooter = $word = $login = $dom = $secure = $secure_cookie = $path = '';
@@ -19,6 +19,16 @@ $tm_start = array_sum(explode(' ', microtime()));
 
 /* -------------------------------------------------- */
 // Stuff
+
+if (defined('SHOW_ERRORS')) {
+	if (SHOW_ERRORS) {
+		ini_set('display_errors', 1);
+		ini_set('display_startup_errors', 1);
+		error_reporting(E_ALL);
+	} else {
+		error_reporting(0);
+	}
+}
 
 // Load functions
 include('./functions.php');
@@ -35,16 +45,6 @@ if (!function_exists('_print_nla')) {
 if (file_exists('../inc/settings.php')) {
 	define('ACCESS', TRUE);
 	include('../inc/settings.php');
-}
-
-if (defined('SHOW_ERRORS')) {
-	if (SHOW_ERRORS) {
-		ini_set('display_errors', 1);
-		ini_set('display_startup_errors', 1);
-		error_reporting(E_ALL);
-	} else {
-		error_reporting(0);
-	}
 }
 
 // Set cross-platform PHP_EOL constant (for 'explode') for backwards compatibility,

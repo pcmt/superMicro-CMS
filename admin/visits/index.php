@@ -5,12 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
 } else {
-	die('Error. /visits/top.php not found');
+	die('Error: /admin/visits/top.php not found');
 }
 
 ?>
@@ -21,7 +21,7 @@ if (file_exists('./top.php')) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>superMicro CMS visits</title>
+<title>superMicro CMS stats</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <meta http-equiv="Expires" content="Mon, 26 Jul 1997 05:00:00 GMT">
 <meta http-equiv="Pragma" content="no-cache">
@@ -42,14 +42,14 @@ if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 
 <!-- CONTENT (correct password entered) -->
 
-<h1>Hits for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
+<h1>Page stats for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
 
 <?php
 
 	if (file_exists('./delete.php')) {
 		include('./delete.php');
 	} else {
-		die('Error. /visits/delete.php not found');
+		die('Error: /admin/visits/delete.php not found');
 	}
 
 ?>
@@ -65,48 +65,42 @@ if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 
 <hr>
 
-<p>See also <a href="./" title="Page stats">page stats</a>&nbsp;&raquo;</p>
+<p>See also <a href="./list.php" title="List of hits">list of hits</a>&nbsp;&raquo;</p>
 <?php
-
-	$page = $self;
-	$page = str_replace("index.php", "", $page);
 
 	if (file_exists('./counts.php')) {
 		include('./counts.php');
 	} else {
-		die('Error. /visits/counts.php not found');
+		die('Error: /admin/visits/counts.php not found');
 	}
-
-	$temp  = file_get_contents("tempcount.txt");
-	_print_nlb('<p>The most recent 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):');
 
 ?>
 
+<p>Hits per page:</p>
+
 	<div id="results">
 
-<ol reversed>
-
+<ol>
 <?php
 
-	// Open the file for reading
-	$file = 'listhits.txt';
-	$fh = fopen($file, 'rb');
-
-	// Loop a specified number of times
-	for ($i = 0; $i < 250; $i++) {
-		// Read a line
-		$line = fgets($fh);
-
-		// If a line was read then output it
-		if ($line !== FALSE) {
-			_print_nlb("<li>{$line}</li>\n");
+	// Identify each pageID and count the number of times it appears in the list
+	// Get text files into array
+	$pageidArray = file('pageid.txt');
+	$list = array_count_values($pageidArray);
+	arsort($list, SORT_NUMERIC);
+	foreach ($list as $page => $num) {
+		$page = str_replace("\n", "", trim($page));
+		// $anchor = $page;
+		if (!APACHE) { // Add .php extension
+			$page = $page . '.php';
+		} elseif ($page == 'index') {
+			$page = str_replace("index", "", $page);
 		}
+		_print_nlb('<li><a href="' . LOCATION . $page . '" target="_blank"><span>' . LOCATION .'</span>' . $page . '</a> : ' . $num .'</li>');
 	}
 
-	// Close the file handle
-	fclose($fh);
-
-?></ol>
+?>
+</ol>
 
 	</div>
 
@@ -121,7 +115,15 @@ if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 <input class="password" type="submit" name="submit_pass" value="Submit">
 </form>
 
-<?php _print($error); } ?>
+<?php
+
+	if ($error) {
+		_print($error); // Password error
+	}
+
+}
+
+?>
 
 </div>
 

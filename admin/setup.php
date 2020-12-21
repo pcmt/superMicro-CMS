@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 Dec 2020 */
+/* Last updated 21 Dec 2020 */
 
 // Declare variables
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = $submitted_language = $correct_value = $track_me = $posted = $feedback = $value = "";
@@ -46,19 +46,24 @@ if (defined('TRACK_HITS') && TRACK_HITS) { // Only if tracking activated
 		}
 
 	} // End of 'if submit'
+} // End of 'if defined'
 
-	// echo '$posted = ' . $posted . '<br>'; // Testing
-	// echo '$correct_value = ' . $correct_value . '<br>'; // Testing
-	// echo '$feedback = ' . $feedback . '<br>'; // Testing
-	// echo '$response1 = ' . $response1 . '<br>'; // Testing
-	// if (isset($_COOKIE["track"])) {
-	// 	$value = $_COOKIE["track"];
-	// 	echo 'track cookie "' . $value . '" exists<br>'; // Testing
-	// } elseif (!isset($_COOKIE["track"])) {
-	// 	echo 'track cookie does not exist<br>'; // Testing
-	// }
-
+/*
+// For testing
+_print_nlb('$posted = ' . $posted . '<br>');
+if ($correct_value == '') {
+	$correct_value = 'Left blank';
 }
+_print_nlb('$correct_value = ' . $correct_value . '<br>');
+_print_nlb('$feedback = ' . $feedback . '<br>');
+_print_nlb('$response1 = ' . $response1 . '<br>');
+if (isset($_COOKIE["track"])) {
+	$value = $_COOKIE["track"];
+	_print_nlb('track cookie "' . $value . '" exists<br>');
+} elseif (!isset($_COOKIE["track"])) {
+	_print_nlb('track cookie does not exist<br>');
+}
+*/
 
 ?>
 <!DOCTYPE html>
@@ -106,7 +111,7 @@ if (!$login) {
 	// Logged in
 
 	// Declare the version
-	$version = '3.10'; // Edit footer.php and text/index.txt as well
+	$version = '3.11'; // Edit footer.php and text/index.txt as well
 
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
@@ -515,6 +520,7 @@ if (function_exists('h1')) {
 <a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
 <a href="./backup.php" title="Backup">Backup</a><?php } ?> 
 <span>Setup</span> 
+<a href="./visits/" title="Visits" target="_blank">Visits</a> 
 <a href="?status=logout" title="Logout">Logout</a> 
 <a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
 
@@ -758,7 +764,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 			if (!$correct_value) {
 				_print('Enter YES or NO or leave empty');
-			} else {
+			} else { // Various conditions
 				if (($track == 'NO') || (TRACK_HITS == FALSE)) {
 					_print('Track hits not activated');
 				}
@@ -782,8 +788,11 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 			}
 		}
 
+	// Track hits not yet defined
+	} elseif (isset($_POST['submit1']) && ($_POST['track_me'] == 'NO')) {
+		_print('NO');
 	} else {
-		_print('Empty: TRACK_HITS undefined');
+		_print('');
 	}
 
 ?>
