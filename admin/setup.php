@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 22 Dec 2020 */
 
 // Declare variables
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = $submitted_language = $correct_value = $track_me = $posted = $feedback = $value = "";
@@ -755,7 +755,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Track my hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]</label>
+<label>Track my hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking#myhits" target="_blank">info</a> ]</label>
 <input type="text" name="track_me" size="60" value="<?php
 
 	if (defined('TRACK_HITS')) { // Regardless of anything else
@@ -821,7 +821,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 		} elseif (file_exists('../inc/settings.php') && defined('CONTACT_TEXT')) {
 			_print(CONTACT_TEXT);
 		} else {
-			_print('To get in touch, feel free to use the following contact form. All fields required. The form will send me an email. Your privacy will be respected.');
+			_print('To get in touch, feel free to use this contact form (all fields required). The form will send me an email. Privacy respected.');
 		}
 
 ?></textarea>

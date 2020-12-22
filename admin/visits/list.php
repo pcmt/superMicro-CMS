@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 22 Dec 2020 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -55,13 +55,29 @@ if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 ?>
 
 <form action="" method="post">
-<input class="dark" type="submit" name="delete" title="Are you sure?" value="Delete"> <input class="light" type="submit" name="refresh" value="Refresh">
+<input class="dark" type="submit" name="<?php
+
+	if ( isset($_POST['pre-delete']) ) {
+		_print('delete'); // Name after pre-delete
+	} else {
+		_print('pre-delete'); // Initial name
+	}
+
+?>" title="Are you sure?" value="Delete"> <input class="light" type="submit" name="refresh" value="Refresh">
 </form>
 <!--
 <form method="post" action="" id="logout">
 <input type="submit" name="page_logout" value="Logout">
 </form>
 //-->
+
+<?php
+
+if ($response) {
+	_print_nlab($response);
+}
+
+?>
 
 <hr>
 

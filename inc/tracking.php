@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 22 Dec 2020 */
 
 // This file adds formatted hits to 'listhits.txt'
 // to be read by /admin/visits/
@@ -15,19 +15,8 @@
 error_reporting(0);
 // error_reporting(E_ALL);
 
-if(!defined('ACCESS')) {
-	die('Direct access not permitted to tracking.php.');
-}
-
 // Declare variables
 $blocked = $url = $escaped_url = $error = "";
-
-if (file_exists('./inc/settings.php')) {
-	define('ACCESS', TRUE);
-	include('./inc/settings.php');
-} else {
-	$error = "cannot find '/inc/settings.php'";
-}
 
 // IP address
 if (isset($_SERVER['REMOTE_ADDR'])) {
@@ -136,7 +125,7 @@ if (!$blocked) {
 		// Temporary text file where hits counted
 		$temp_countfile = $visits . 'tempcount.txt';
 	} else {
-		$error = 'cannot find /visits/ at ' . $visits;
+		$error = 'cannot find /visits/';
 	}
 
 	// Nothing happens if no hits file
@@ -230,6 +219,6 @@ if ($ip) {
 	_print_nlb('<!-- No ip //-->');
 }
 
-_print('<!-- Tracking file: 12:00 21 DEC 20 //-->');
+_print('<!-- Tracking file: 12:20 22 DEC 20 //-->');
 
 ?>

@@ -5,13 +5,21 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Dec 2020 */
+/* Last updated 22 Dec 2020 */
 
 if(!defined('ACCESS')) {
 	die('Direct access not permitted to delete.php');
 }
 
+$response = ""; // Initialise
+
+if (isset($_POST['pre-delete'])) {
+	$response = '<p class="response">Are you sure you want to delete everything?<br>If not, press Refresh, otherwise press Delete again.</p>';
+}
+
 if (isset($_POST['delete'])) { // Deletes everything
+
+	_print_nlab('<p class="response">');
 
 	$the_date = date('l jS F Y H:i:s'); // For listhits.txt
 	$since_date = $the_date;
@@ -47,9 +55,11 @@ if (isset($_POST['delete'])) { // Deletes everything
 
 	$fp5 = fopen("pageid.txt", "w") or die("Error!");
 	if ($fp5) {
-		_print_nlb('pageid.txt emptied<br><br>');
+		_print_nlb('pageid.txt emptied<br>');
 	}
 	fwrite($fp5, "");
 	fclose($fp5);
+
+	_print_nlb('</p>');
 
 }
