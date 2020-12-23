@@ -5,9 +5,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 22 Dec 2020 */
+/* Last updated 23 Dec 2020 */
 
-// Declare variables
+// Declare variables ($feedback and $value used only when testing)
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = $submitted_language = $correct_value = $track_me = $posted = $feedback = $value = "";
 
 $thisPage = 'setup';
@@ -15,46 +15,82 @@ $thisPage = 'setup';
 require('./top.php'); // Loads functions.php
 require('./language.php');
 
-if (defined('TRACK_HITS') && TRACK_HITS) { // Only if tracking activated
+/*
+(1) TRACK_HITS is defined on setup as TRUE or FALSE
+(2) If TRUE, check correct value then set cookie to
+	either "yes", "no", or delete the cookie
+(3) If FALSE, 'track_me' cookie should never be set
+	so if cookie is set, page load deletes it
+(4) IF TRACK_HITS is not yet defined, do nothing
+*/
 
-	// Set or delete cookie
-	if (isset($_POST['submit1'])) {
+if (defined('TRACK_HITS')) {
 
-		$posted = trim($_POST['track_me']);
-		$array = array('YES','NO', '');
-		foreach ($array as $val) {
-			if ($val == $posted) {
-				$correct_value = TRUE;
-			}
-		}
+	if (TRACK_HITS) {
 
-		if ($correct_value) {
-			if ($posted == 'YES') { // Track
-				setcookie("track", "yes", time() + 31556926, "/"); // One year
-				// $feedback = 'track cookie set to yes';
-			} elseif ($posted == 'NO') { // Don't track, so set track cookie no (see footer)
-				setcookie("track", "no", time() + 31556926, "/"); // One year
-				// $feedback = 'track cookie set to no';
-			} elseif ($posted == '') { // Don't track, so unset track cookie (see footer)
-				if (isset($_COOKIE["track"])) {
-					setcookie("track", "", time() - 3600, "/");
-					// $feedback = 'track cookie deleted';
+		// Set or delete cookie
+		if (isset($_POST['submit1'])) {
+
+			$correct_value = FALSE;
+			// First check for a correct value
+			// otherwise do nothing ($problem = TRUE)
+			$posted = trim($_POST['track_me']);
+			$correct = array('YES','NO', '');
+			foreach ($correct as $check) {
+				if ($check == $posted) {
+					$correct_value = TRUE;
 				}
 			}
-		} else {
-			$problem = TRUE;
+
+			// Cookie action (does not affect box in form)
+			if ($correct_value) { // Proceed with cookie
+				if ($posted == 'YES') { // Track
+					setcookie("track", "yes", time() + 31556926, "/"); // One year
+					// $feedback = 'track cookie set to yes';
+				} elseif ($posted == 'NO') { // Don't track, so set track cookie no (see footer)
+					setcookie("track", "no", time() + 31556926, "/"); // One year
+					// $feedback = 'track cookie set to no';
+				} elseif ($posted == '') { // Don't track, so unset track cookie (see footer)
+					if (isset($_COOKIE["track"])) {
+						setcookie("track", "", time() - 3600, "/");
+					// $feedback = 'track cookie deleted';
+					}
+				}
+			} else {
+				$problem = TRUE;
+			}
+
+		} // End of 'if submit'
+
+	} else { // Do this on page load
+
+		if (isset($_COOKIE["track"])) {
+			setcookie("track", "", time() - 3600, "/");
+			$feedback = 'Track hits defined but FALSE so track cookie deleted';
 		}
 
-	} // End of 'if submit'
+	} // End of 'if TRACK HITS'
+
 } // End of 'if defined'
 
+
+// Uncomment for testing:
 /*
-// For testing
+if (defined('TRACK_HITS')) {
+	if (TRACK_HITS) {
+		_print_nlb('Track hits = ' . TRACK_HITS . ' (YES)<br>');
+	} else {
+		_print_nlb('Track hits = 0 (NO)<br>');
+	}
+} else {
+	_print_nlb('Track hits = not defined<br>');
+}
 _print_nlb('$posted = ' . $posted . '<br>');
 if ($correct_value == '') {
-	$correct_value = 'Left blank';
+	$correct_value_feedback = 'Left blank';
 }
 _print_nlb('$correct_value = ' . $correct_value . '<br>');
+_print_nlb('$correct_value_feedback = ' . $correct_value_feedback . '<br>');
 _print_nlb('$feedback = ' . $feedback . '<br>');
 _print_nlb('$response1 = ' . $response1 . '<br>');
 if (isset($_COOKIE["track"])) {
@@ -64,7 +100,6 @@ if (isset($_COOKIE["track"])) {
 	_print_nlb('track cookie does not exist<br>');
 }
 */
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -758,25 +793,33 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Track my hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking#myhits" target="_blank">info</a> ]</label>
 <input type="text" name="track_me" size="60" value="<?php
 
-	if (defined('TRACK_HITS')) { // Regardless of anything else
+	if (defined('TRACK_HITS')) {
+		if (isset($_POST['submit1']) && TRACK_HITS) { // If not TRACK_HITS, do nothing
 
-		if (isset($_POST['submit1'])) {
-
-			if (!$correct_value) {
+			if ($correct_value === FALSE) {
 				_print('Enter YES or NO or leave empty');
-			} else { // Various conditions
-				if (($track == 'NO') || (TRACK_HITS == FALSE)) {
-					_print('Track hits not activated');
-				}
-				if (($track == 'YES') && TRACK_HITS && ($_POST['track_me'] == 'YES')) {
-					_print('YES');
-				}
-				if (($track == 'YES') && TRACK_HITS && ($_POST['track_me'] == 'NO')) {
-					_print('NO');
+			} else {
+				if ($track == 'NO') { // Only for when actually posted
+					_print('');
+				} elseif ($track == 'YES') {
+					if ($_POST['track_me'] == 'YES') {
+						_print('YES');
+					}
+					if ($_POST['track_me'] == 'NO') {
+						_print('NO');
+					}
+					if ($_POST['track_me'] == '') {
+						_print('');
+					}
+				} else {
+					_print('');
 				}
 			}
 
-		} else { // Not POSTed
+		} elseif (isset($_POST['submit2']) && (TRACK_HITS === FALSE)) {
+			_print(''); // Make sure nothing appears in the box
+		} else { // Nothing posted
+
 			if (isset($_COOKIE["track"]) && ($_COOKIE["track"] == 'yes')) {
 				_print('YES');
 			}
@@ -786,14 +829,9 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 			if (!isset($_COOKIE["track"])) {
 				_print('');
 			}
-		}
 
-	// Track hits not yet defined
-	} elseif (isset($_POST['submit1']) && ($_POST['track_me'] == 'NO')) {
-		_print('NO');
-	} else {
-		_print('');
-	}
+		}
+	} // Not defined so nothing in this box
 
 ?>
 " maxlength="3">
