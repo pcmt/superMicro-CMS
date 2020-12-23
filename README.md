@@ -11,8 +11,8 @@ intellectual property.
 https://patricktaylor.com/
 https://supermicrocms.com/
 
-The program is released under the Open Software License v. 3.0 (OSL-3.0).
-See https://opensource.org/licenses/OSL-3.0
+The program is released under the GNU General Public License (GPL) version 3
+See http://www.gnu.org/licenses/gpl-3.0.html
 
 superMicro CMS is not to be distributed for a fee.
 
@@ -25,7 +25,7 @@ PROVE DEFECTIVE YOU ASSUME THE COST OF ALL SERVICING, REPAIR OR CORRECTION.
 
 ---------------------------------------------------------------------------
 
-Current version: 3.10 (build: 15th December 2020).
+Current version: 3.11 (build: 22nd December 2020).
 
 (1) Designed for Linux / APACHE web server - superMicro CMS uses .htaccess.
 The server must also be php-enabled with PHP 5.2.0+ (the later the better).
