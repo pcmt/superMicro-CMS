@@ -11,8 +11,8 @@ intellectual property.
 https://patricktaylor.com/
 https://supermicrocms.com/
 
-The program is released under the Open Software License v. 3.0 (OSL-3.0).
-See https://opensource.org/licenses/OSL-3.0
+The program is released under the GNU General Public License (GPL) version 3
+See http://www.gnu.org/licenses/gpl-3.0.html
 
 superMicro CMS is not to be distributed for a fee.
 
