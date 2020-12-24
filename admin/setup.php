@@ -8,7 +8,7 @@
 /* Last updated 24 Dec 2020 */
 
 // Declare variables ($feedback and $value used only when testing)
-$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = $submitted_language = $correct_value = $track_me = $posted = "";
+$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $submitted_language = $correct_value = $track_me = $posted = "";
 
 $thisPage = 'setup';
 
@@ -26,37 +26,50 @@ require('./language.php');
 
 // Temporary $_values for get 'Current setup' after updating
 
-$_home_link = trim($_POST['home_link']);
-$_name = trim($_POST['name']);
-$_email = trim($_POST['email']);
-$_site_name = trim($_POST['site_name']);
-$_own_name = trim($_POST['own_name']);
-$_contact_text = trim(stripslashes($_POST['contact_text']));
-$_contact_menu = trim(stripslashes($_POST['contact_menu']));
-$_contact_menu = allowedChars($contact_menu);
-
-if (ALPHABETICAL) {
-	$_menu = 'YES';
-} elseif (ALPHABETICAL == FALSE) {
-	$_menu = 'NO';
+if (isset($_POST['home_link'])) { $_home_link = trim($_POST['home_link']); }
+if (isset($_POST['name'])) { $_name = trim($_POST['name']); }
+if (isset($_POST['email'])) { $_email = trim($_POST['email']); }
+if (isset($_POST['site_name'])) { $_site_name = trim($_POST['site_name']); }
+if (isset($_POST['own_name'])) { $_own_name = trim($_POST['own_name']); }
+if (isset($_POST['contact_text'])) { $_contact_text = trim(stripslashes($_POST['contact_text'])); }
+if (isset($_POST['contact_menu'])) {
+	$_contact_menu = trim(stripslashes($_POST['contact_menu']));
+	$_contact_menu = allowedChars($_contact_menu);
 }
 
-if (SHOW_ERRORS) {
-	$_debug = 'YES';
-} elseif (SHOW_ERRORS == FALSE) {
-	$_debug = 'NO';
-}
+if (isset($_POST['submit1'])) {
 
-if (TRACK_HITS) {
-	$_track = 'YES';
-} elseif (TRACK_HITS == FALSE) {
-	$_track = 'NO';
-}
+	$_menu = trim($_POST['menu']);
+	$_debug = trim($_POST['debug']);
+	$_track = trim($_POST['track']);
+	$_suffix_it = trim($_POST['suffix_it']);
 
-if (PHP_EXT) {
-	$_suffix_it = 'YES';
-} elseif (PHP_EXT == FALSE) {
-	$_suffix_it = 'NO';
+} else {
+
+	if (ALPHABETICAL) {
+		$_menu = 'YES';
+	} elseif (ALPHABETICAL == FALSE) {
+		$_menu = 'NO';
+	}
+
+	if (SHOW_ERRORS) {
+		$_debug = 'YES';
+	} elseif (SHOW_ERRORS == FALSE) {
+		$_debug = 'NO';
+	}
+
+	if (TRACK_HITS) {
+		$_track = 'YES';
+	} elseif (TRACK_HITS == FALSE) {
+		$_track = 'NO';
+	}
+
+	if (PHP_EXT) {
+		$_suffix_it = 'YES';
+	} elseif (PHP_EXT == FALSE) {
+		$_suffix_it = 'NO';
+	}
+
 }
 
 // For 'Track my hits' track cookie
@@ -1080,7 +1093,12 @@ if (isset($_POST['submit1'])) {
 </form><!-- Form contains 'boxes' and 'buttons' divs //-->
 
 <?php
-
+/*
+// Uncomment this for tests (add more tests as required)
+if (file_exists('./test.php')) {
+	include('./test.php');
+}
+*/
 	include('./footer.php');
 } else {
 

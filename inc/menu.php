@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Dec 2020 */
+/* Last updated 24 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to menu.php.');
@@ -22,7 +22,7 @@ if (defined('SITE_NAME') && (strlen(SITE_NAME) > 0)) { // &nbsp; nudges right fo
 <ul>
 <?php
 
-if ($pageID == 'index') {
+if (isset($pageID) && ($pageID == 'index')) {
 	_print('<li class="home"><strong>' . HOME_LINK . "</strong></li>");
 } else {
 	_print('<li class="home"><a href="' . LOCATION . '" title="' . HOME_LINK . '">' . HOME_LINK . '</a></li>');
@@ -76,7 +76,7 @@ or, if used, [anchor text] as from v7.12
 		$anchor = stripslashes(ucwords($anchor));
 		$anchor = trim($anchor);
 
-		if (($pageID == $link) || (($pageID . '.php') == $link)) {
+		if (isset($pageID) && (($pageID == $link) || (($pageID . '.php') == $link))) {
 			_print('<li><strong>' . $anchor . '</strong></li>');
 		} else {
 			_print('<li><a href="' . LOCATION . $link . '" title="' . $anchor . '">' . $anchor . '</a></li>');
@@ -88,7 +88,7 @@ or, if used, [anchor text] as from v7.12
 }
 
 if (file_exists('s.php')) { // Nothing if there isn't a file
-	if ($pageID == 's') { // In search page, so must be on it
+	if (isset($pageID) && ($pageID == 's')) { // In search page, so must be on it
 			_print('<li><strong>' . TEXT16 . '</strong></li>');
 	} else { // Not on search page
 		if ($rewrite) {
@@ -101,7 +101,7 @@ if (file_exists('s.php')) { // Nothing if there isn't a file
 
 if (file_exists('e.php')) { // Nothing if there isn't a file
 	if (defined('CONTACT_MENU') && (CONTACT_MENU != '')) { // Nothing if blank in setup
-		if ($pageID == 'e') { // In contact page, so must be on it
+		if (isset($pageID) && ($pageID == 'e')) { // In contact page, so must be on it
 			_print('<li><strong>' . CONTACT_MENU . '</strong></li>');
 		} else { // Not on contact page
 			if ($rewrite) {

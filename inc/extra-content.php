@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 24 Dec 2020 */
 
 // Declare variables
 $commentfile = $leavecomment = $closecomments = '';
@@ -33,7 +33,7 @@ if ($share) { // See html.php ($share)
 /* -------------------------------------------------- */
 // Extras
 
-if ($extras) {
+if ($extras && isset($pageID)) {
 	$extrafile = './extras/' . $pageID . '.txt';
 	if (file_exists($extrafile)) {
 		$extrafile = file_get_contents($extrafile);
@@ -50,7 +50,7 @@ if ($extras) {
 /* -------------------------------------------------- */
 // Comments
 
-if ($comments) { // See html.php ($comments)
+if ($comments && isset($pageID)) { // See html.php ($comments)
 
 	if (APACHE) {
 
