@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 23 Dec 2020 */
+/* Last updated 24 Dec 2020 */
 
 // Declare variables ($feedback and $value used only when testing)
-$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = $submitted_language = $correct_value = $track_me = $posted = $feedback = $value = "";
+$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $contact_text = $submitted_language = $correct_value = $track_me = $posted = "";
 
 $thisPage = 'setup';
 
@@ -24,6 +24,42 @@ require('./language.php');
 (4) IF TRACK_HITS is not yet defined, do nothing
 */
 
+// Temporary $_values for get 'Current setup' after updating
+
+$_home_link = trim($_POST['home_link']);
+$_name = trim($_POST['name']);
+$_email = trim($_POST['email']);
+$_site_name = trim($_POST['site_name']);
+$_own_name = trim($_POST['own_name']);
+$_contact_text = trim(stripslashes($_POST['contact_text']));
+$_contact_menu = trim(stripslashes($_POST['contact_menu']));
+$_contact_menu = allowedChars($contact_menu);
+
+if (ALPHABETICAL) {
+	$_menu = 'YES';
+} elseif (ALPHABETICAL == FALSE) {
+	$_menu = 'NO';
+}
+
+if (SHOW_ERRORS) {
+	$_debug = 'YES';
+} elseif (SHOW_ERRORS == FALSE) {
+	$_debug = 'NO';
+}
+
+if (TRACK_HITS) {
+	$_track = 'YES';
+} elseif (TRACK_HITS == FALSE) {
+	$_track = 'NO';
+}
+
+if (PHP_EXT) {
+	$_suffix_it = 'YES';
+} elseif (PHP_EXT == FALSE) {
+	$_suffix_it = 'NO';
+}
+
+// For 'Track my hits' track cookie
 if (defined('TRACK_HITS')) {
 
 	if (TRACK_HITS) {
@@ -46,14 +82,11 @@ if (defined('TRACK_HITS')) {
 			if ($correct_value) { // Proceed with cookie
 				if ($posted == 'YES') { // Track
 					setcookie("track", "yes", time() + 31556926, "/"); // One year
-					// $feedback = 'track cookie set to yes';
-				} elseif ($posted == 'NO') { // Don't track, so set track cookie no (see footer)
+				} elseif ($posted == 'NO') { // Don't track, so set track cookie
 					setcookie("track", "no", time() + 31556926, "/"); // One year
-					// $feedback = 'track cookie set to no';
-				} elseif ($posted == '') { // Don't track, so unset track cookie (see footer)
+				} elseif ($posted == '') { // Don't track, so unset track cookie
 					if (isset($_COOKIE["track"])) {
 						setcookie("track", "", time() - 3600, "/");
-					// $feedback = 'track cookie deleted';
 					}
 				}
 			} else {
@@ -66,40 +99,12 @@ if (defined('TRACK_HITS')) {
 
 		if (isset($_COOKIE["track"])) {
 			setcookie("track", "", time() - 3600, "/");
-			$feedback = 'Track hits defined but FALSE so track cookie deleted';
 		}
 
 	} // End of 'if TRACK HITS'
 
 } // End of 'if defined'
 
-
-// Uncomment for testing:
-/*
-if (defined('TRACK_HITS')) {
-	if (TRACK_HITS) {
-		_print_nlb('Track hits = ' . TRACK_HITS . ' (YES)<br>');
-	} else {
-		_print_nlb('Track hits = 0 (NO)<br>');
-	}
-} else {
-	_print_nlb('Track hits = not defined<br>');
-}
-_print_nlb('$posted = ' . $posted . '<br>');
-if ($correct_value == '') {
-	$correct_value_feedback = 'Left blank';
-}
-_print_nlb('$correct_value = ' . $correct_value . '<br>');
-_print_nlb('$correct_value_feedback = ' . $correct_value_feedback . '<br>');
-_print_nlb('$feedback = ' . $feedback . '<br>');
-_print_nlb('$response1 = ' . $response1 . '<br>');
-if (isset($_COOKIE["track"])) {
-	$value = $_COOKIE["track"];
-	_print_nlb('track cookie "' . $value . '" exists<br>');
-} elseif (!isset($_COOKIE["track"])) {
-	_print_nlb('track cookie does not exist<br>');
-}
-*/
 ?>
 <!DOCTYPE html>
 <html>
@@ -400,7 +405,6 @@ if (!$login) {
 			$invalid_email = TRUE;
 		}
 
-		// Added Feb 2020
 		$site_name = '';
 		$site_name = trim($_POST['site_name']);
 		$site_name = allowedChars($site_name);
@@ -419,7 +423,6 @@ if (!$login) {
 		}
 
 		if ($contact_page) {
-
 			$contact_text = trim($_POST['contact_text']);
 			$contact_text = allowedChars($contact_text);
 			if (strlen($contact_text) < 1) {
@@ -429,7 +432,6 @@ if (!$login) {
 
 			$contact_menu = trim($_POST['contact_menu']);
 			$contact_menu = allowedChars($contact_menu);
-
 		}
 
 		$font_type = $_POST['font_type']; // No option not to Post
@@ -495,7 +497,7 @@ define('LANG_ATTR', '{$lang_attr}');
 define('VERSION', '{$version}');
 
 ?>";
-			$fp2 = @fopen($settings, 'w+'); // Changed from 'wb' 30 Nov 18
+			$fp2 = @fopen($settings, 'w+');
 			fwrite($fp2, $settings_text);
 			@fclose($fp2);
 
@@ -606,7 +608,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Menu text for home page</label>
 <input type="text" name="home_link" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_home_link)) {
+			_print($_home_link);
+		} else {
+			_print(HOME_LINK);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$home_link && $problem) {
 			_print('Enter menu text');
 		} else {
@@ -624,7 +632,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Name in footer</label>
 <input type="text" name="name" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_name)) {
+			_print($_name);
+		} else {
+			_print(NAME);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$name && $problem) {
 			_print('Enter a name');
 		} else {
@@ -642,7 +656,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Alphabetical menu (YES/NO)</label>
 <input type="text" name="menu" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_menu)) {
+			_print($_menu);
+		} else {
+			_print(ALPHABETICAL);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$menu && $problem) {
 			_print('Enter YES or NO');
 		} else {
@@ -664,7 +684,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Debug (YES/NO) [ <a href="https://supermicrocms.com/debug" target="_blank">info</a> ]</label>
 <input type="text" name="debug" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_debug)) {
+			_print($_debug);
+		} else {
+			_print(SHOW_ERRORS);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$debug && $problem) {
 			_print('Enter YES or NO');
 		} else {
@@ -686,7 +712,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Track hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]</label>
 <input type="text" name="track" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_track)) {
+			_print($_track);
+		} else {
+			_print(TRACK_HITS);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$track && $problem) {
 			_print('Enter YES or NO');
 		} else {
@@ -713,7 +745,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <input type="text" name="email" size="60" value="<?php
 
 	$invalid_email = ""; // Required to re-declare variable
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_email)) {
+			_print($_email);
+		} else {
+			_print(EMAIL);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$email && $problem) {
 			_print('Invalid email address');
 		} else {
@@ -735,7 +773,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Your name</label>
 <input type="text" name="own_name" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_own_name)) {
+			_print($_own_name);
+		} else {
+			_print(OWN_NAME);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$own_name && $problem) {
 			_print('Enter a name');
 		} else {
@@ -753,7 +797,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Site name (20 max)</label>
 <input type="text" name="site_name" size="20" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_site_name)) {
+			_print($_site_name);
+		} else {
+			_print(SITE_NAME);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$site_name && $problem) {
 			_print('Enter site name');
 		} else {
@@ -771,7 +821,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>.php it (YES/NO) [ <a href="https://supermicrocms.com/links" target="_blank">info</a> ]</label>
 <input type="text" name="suffix_it" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_suffix_it)) {
+			_print($_suffix_it);
+		} else {
+			_print(PHP_EXT);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$suffix_it && $problem) {
 			_print('Enter YES or NO');
 		} else {
@@ -796,7 +852,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 	if (defined('TRACK_HITS')) {
 		if (isset($_POST['submit1']) && TRACK_HITS) { // If not TRACK_HITS, do nothing
 
-			if ($correct_value === FALSE) {
+			if (!$correct_value) {
 				_print('Enter YES or NO or leave empty');
 			} else {
 				if ($track == 'NO') { // Only for when actually posted
@@ -816,7 +872,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 				}
 			}
 
-		} elseif (isset($_POST['submit2']) && (TRACK_HITS === FALSE)) {
+		} elseif (isset($_POST['submit2']) && (TRACK_HITS == FALSE)) {
 			_print(''); // Make sure nothing appears in the box
 		} else { // Nothing posted
 
@@ -850,7 +906,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Contact page introductory text</label>
 <textarea name="contact_text" size="60" rows="4" cols="30"><?php
 
-		if (isset($_POST['submit1'])) {
+		if (isset($_POST['submit2'])) {
+			if (isset($_contact_text)) {
+				_print($_contact_text);
+			} else {
+				_print(CONTACT_TEXT);
+			}
+		} elseif (isset($_POST['submit1'])) {
 			if (!$contact_text && $problem) {
 				_print('Enter some text');
 			} else {
@@ -867,7 +929,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Menu text for contact page (leave blank to hide contact page from menu)</label>
 <input type="text" name="contact_menu" size="60" value="<?php
 
-		if (isset($_POST['submit1'])) {
+		if (isset($_POST['submit2'])) {
+			if (isset($_contact_menu)) {
+				_print($_contact_menu);
+			} else {
+				_print(CONTACT_MENU);
+			}
+		} elseif (isset($_POST['submit1'])) {
 			_print(stripslashes($contact_menu)); // Whatever was entered in the form
 		} elseif (file_exists('../inc/settings.php') && defined('CONTACT_MENU')) {
 			_print(CONTACT_MENU); // Blank if defined as ''
