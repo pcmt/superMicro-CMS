@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 Dec 2020 */
+/* Last updated 25 Dec 2020 */
 
 // Declare variables ($feedback and $value used only when testing)
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $submitted_language = $correct_value = $track_me = $posted = "";
@@ -37,40 +37,11 @@ if (isset($_POST['contact_menu'])) {
 	$_contact_menu = allowedChars($_contact_menu);
 }
 
-if (isset($_POST['submit1'])) {
-
-	$_menu = trim($_POST['menu']);
-	$_debug = trim($_POST['debug']);
-	$_track = trim($_POST['track']);
-	$_suffix_it = trim($_POST['suffix_it']);
-
-} else {
-
-	if (ALPHABETICAL) {
-		$_menu = 'YES';
-	} elseif (ALPHABETICAL == FALSE) {
-		$_menu = 'NO';
-	}
-
-	if (SHOW_ERRORS) {
-		$_debug = 'YES';
-	} elseif (SHOW_ERRORS == FALSE) {
-		$_debug = 'NO';
-	}
-
-	if (TRACK_HITS) {
-		$_track = 'YES';
-	} elseif (TRACK_HITS == FALSE) {
-		$_track = 'NO';
-	}
-
-	if (PHP_EXT) {
-		$_suffix_it = 'YES';
-	} elseif (PHP_EXT == FALSE) {
-		$_suffix_it = 'NO';
-	}
-
-}
+// YES / NO constants
+if (isset($_POST['menu'])) { $_menu = trim($_POST['menu']); }
+if (isset($_POST['debug'])) { $_debug = trim($_POST['debug']); }
+if (isset($_POST['track'])) { $_track = trim($_POST['track']); }
+if (isset($_POST['suffix_it'])) { $_suffix_it = trim($_POST['suffix_it']); }
 
 // For 'Track my hits' track cookie
 if (defined('TRACK_HITS')) {
@@ -1093,12 +1064,14 @@ if (isset($_POST['submit1'])) {
 </form><!-- Form contains 'boxes' and 'buttons' divs //-->
 
 <?php
-/*
+
 // Uncomment this for tests (add more tests as required)
+/*
 if (file_exists('./test.php')) {
 	include('./test.php');
 }
 */
+
 	include('./footer.php');
 } else {
 
