@@ -5,12 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 25 Dec 2020 */
+/* Last updated 29 Dec 2020 */
 
 // Declare variables ($feedback and $value used only when testing)
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $submitted_language = $correct_value = $track_me = $posted = "";
 
-$thisPage = 'setup';
+$thisAdmin = 'setup'; // For nav
 
 require('./top.php'); // Loads functions.php
 require('./language.php');
@@ -527,23 +527,24 @@ define('VERSION', '{$version}');
 
 <h1><?php
 
-if (function_exists('h1')) {
-	h1('setup');
-} else {
-	_print('Install the latest version of functions.php');
-}
+	if (function_exists('h1')) {
+		h1('setup');
+	} else {
+		_print('Install the latest version of functions.php');
+	}
+
 ?></h1>
 
-<p id="nav"><?php if ($settings) { ?>
-<a href="<?php _print($site_location); ?>">&#171;&nbsp;Site</a> 
-<a href="./index.php" title="Create/edit/delete pages">Pages</a> 
-<a href="./images.php" title="Upload or delete images">Images</a> 
-<a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
-<a href="./backup.php" title="Backup">Backup</a><?php } ?> 
-<span>Setup</span> 
-<a href="./visits/" title="Visits" target="_blank">Visits</a> 
-<a href="?status=logout" title="Logout">Logout</a> 
-<a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
+<?php
+
+	if (file_exists('./nav.php')) {
+		require('./nav.php');
+	} else {
+		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
+		exit();
+	}
+
+?>
 
 <h3>Settings for superMicro CMS</h3>
 

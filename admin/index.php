@@ -5,11 +5,13 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 29 Dec 2020 */
 // Switched all echo to _print()
 
 // Declare variables
-$notice = $thisPage = $page_id = $filetitle = $pagecontent = $file_contents = $response = $do_page = $theme_selection = $theme = $do_stylesheet = $do_menu = $problem = $homepage = $page = $addmenu = $line_exists = $menuline = $menutext = $cssfilename = $rewrite = $ext = $mode = "";
+$notice = $page_id = $filetitle = $pagecontent = $file_contents = $response = $do_page = $theme_selection = $theme = $do_stylesheet = $do_menu = $problem = $homepage = $page = $addmenu = $line_exists = $menuline = $menutext = $cssfilename = $rewrite = $ext = $mode = "";
+
+$thisAdmin = 'index'; // For nav
 
 if (!file_exists('./top.php')) { // Leave this
 	echo "Error. The file '/admin/<strong>top.php</strong>' does not exist.";
@@ -177,25 +179,22 @@ if (!$login) {
 
 <h1><?php
 
-if (function_exists('h1')) {
-	h1('pages');
-} else {
-	_print('Install the latest version of functions.php');
-}
+	if (function_exists('h1')) {
+		h1('pages');
+	} else {
+		_print('Install the latest version of functions.php');
+	}
 
 ?></h1>
 
-<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
-<span>Pages</span> 
-<a href="./images.php" title="Upload or delete images">Images</a> 
-<a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
-<a href="./backup.php" title="Backup">Backup</a> 
-<a href="./setup.php" title="Setup">Setup</a> 
-<a href="./visits/" title="Visits" target="_blank">Visits</a> 
-<a href="?status=logout" title="Logout">Logout</a> 
-<a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
-
 <?php
+
+	if (file_exists('./nav.php')) {
+		require('./nav.php');
+	} else {
+		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
+		exit();
+	}
 
 /* ================================================== */
 /* SUBMITS */

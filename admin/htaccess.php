@@ -5,10 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 29 Dec 2020 */
 
 // Declare variables (see also top.php)
 $root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = "";
+
+$thisAdmin = 'htaccess'; // For nav
 
 require('./top.php');
 
@@ -288,23 +290,24 @@ if (!$login) {
 
 <h1><?php
 
-if (function_exists('h1')) {
-	h1('.htaccess file');
-} else {
-	_print('Install the latest version of functions.php');
-}
+	if (function_exists('h1')) {
+		h1('.htaccess file');
+	} else {
+		_print('Install the latest version of functions.php');
+	}
 
 ?></h1>
 
-<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
-<a href="./index.php" title="Create/edit/delete pages">Pages</a> 
-<a href="./images.php" title="Upload or delete images">Images</a> 
-<span>.htaccess</span> 
-<a href="./backup.php" title="Backup">Backup</a> 
-<a href="./setup.php" title="Setup">Setup</a> 
-<a href="./visits/" title="Visits" target="_blank">Visits</a> 
-<a href="?status=logout" title="Logout">Logout</a> 
-<a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
+<?php
+
+	if (file_exists('./nav.php')) {
+		require('./nav.php');
+	} else {
+		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
+		exit();
+	}
+
+?>
 
 <h3>.htaccess generator for superMicro CMS (Apache Web Server only)</h3>
 

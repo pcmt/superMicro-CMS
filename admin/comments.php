@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 29 Dec 2020 */
 
 // Declare variables
 $page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = "";
@@ -71,8 +71,12 @@ if (!$login) {
 			$commentfilename = $filetitle . '.txt';
 			if (file_exists("../comments/{$commentfilename}")) {
 				$file_contents = stripslashes(file_get_contents("../comments/{$commentfilename}"));
-				$fileurl = LOCATION . $filetitle . $ext;
-				$response = "<em>Comments on <b><a href=\"{$fileurl}\">{$filetitle}</a></b></em>";
+				if ($filetitle == 'index') {
+					$fileurl = LOCATION;
+				} else {
+					$fileurl = LOCATION . $filetitle . $ext;
+				}
+				$response = "<em>Comments on <b><a href=\"{$fileurl}\">{$filetitle}</a></b>. <a href=\"index.php?page={$filetitle}\">Edit page</a>&nbsp;&raquo;</em>";
 			} else {
 				$response = '<em>Sorry, this comments file does not exist.</em>';
 			}
@@ -87,24 +91,22 @@ if (!$login) {
 
 <h1><?php
 
-if (function_exists('h1')) {
-	h1('comments');
-} else {
-	_print('Install the latest version of functions.php');
-}
+	if (function_exists('h1')) {
+		h1('comments');
+	} else {
+		_print('Install the latest version of functions.php');
+	}
+
 ?></h1>
 
-<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
-<a href="./index.php" title="Create/edit/delete pages">Pages</a> 
-<a href="./images.php" title="Upload or delete images">Images</a> 
-<a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
-<a href="./backup.php" title="Backup">Backup</a> 
-<a href="./setup.php" title="Setup">Setup</a> 
-<a href="./visits/" title="Visits" target="_blank">Visits</a> 
-<a href="?status=logout" title="Logout">Logout</a> 
-<a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
-
 <?php
+
+	if (file_exists('./nav.php')) {
+		require('./nav.php');
+	} else {
+		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
+		exit();
+	}
 
 /* ---------------------------------------------------------------------- */
 /* Get comments */
@@ -149,7 +151,7 @@ if (function_exists('h1')) {
 			if (!file_exists("../comments/{$commentsfilename}")) {
 				$response = '<em>Sorry, this comments file does not exist. Try another.</em>';
 			} else {
-				$response = "<em>You are about to edit comments on <b>{$filetitle}</b> &raquo; click 'Update comments' again, or [ <a href=\"comments.php\" title=\"Abort\">abort</a> ]</em>";
+				$response = "<em>You are about to edit comments on <b>{$filetitle}</b> &raquo; click 'Update comments' again, or [ <a href=\"index.php?page={$filetitle}\" title=\"Abort\">abort</a> ]</em>";
 			}
 		}
 	}
@@ -184,7 +186,7 @@ if (function_exists('h1')) {
 				} else {
 					$fileurl = LOCATION . $filetitle . $ext;
 				}
-				$response = "<em>Comments on <b><a href=\"{$fileurl}\">{$filetitle}</a></b> were successfully updated. <a href=\"index.php?page={$filetitle}\">Edit</a>&nbsp;&raquo;</em>";
+				$response = "<em>Comments on <b><a href=\"{$fileurl}\">{$filetitle}</a></b> were successfully updated. <a href=\"index.php?page={$filetitle}\">Edit page</a>&nbsp;&raquo;</em>";
 			}
 		}
 	}
@@ -214,7 +216,7 @@ if (function_exists('h1')) {
 	<div id="boxes">
 
 <label>Page title:</label>
-<input type="text" name="comments_id" size="60" style="font-weight: bold; color: #c63;" value="<?php
+<input type="text" name="comments_id" size="60" value="<?php
 
 	if (isset($_POST['presubmit']) || isset($_POST['get_comments'])) {
 		_print($_POST['comments_id']);

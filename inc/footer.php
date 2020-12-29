@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 29 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php.');
@@ -39,6 +39,12 @@ $output2 .= ' &copy; ' . NAME . ' ' . date("Y");
 $output2 .= '</p>';
 
 _print_nlab($output2);
+
+?>
+
+	</footer>
+
+<?php
 
 if ($admin) {
 	$logged = 'Logged in';
@@ -111,5 +117,3 @@ $servetime = number_format((float)$servetime, 4, '.', '');
 _print_nlab('<!-- Served in ' . $servetime . ' secs //-->');
 
 ?>
-
-	</footer>

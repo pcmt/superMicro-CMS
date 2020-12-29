@@ -5,12 +5,13 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
-/* Form action */
+/* Last updated 29 Dec 2020 */
 
 // Declare variables
 $response = $response1 = $display = $problem = "";
 $num = "0";
+
+$thisAdmin = 'images'; // For nav
 
 require('./top.php');
 
@@ -65,24 +66,22 @@ if (!$login) {
 
 <h1><?php
 
-if (function_exists('h1')) {
-	h1('images');
-} else {
-	_print('Install the latest version of functions.php');
-}
+	if (function_exists('h1')) {
+		h1('images');
+	} else {
+		_print('Install the latest version of functions.php');
+	}
+
 ?></h1>
 
-<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> 
-<a href="./index.php" title="Create/edit/delete pages">Pages</a> 
-<span>Images</span> 
-<a href="./htaccess.php" title="Create .htaccess file">.htaccess</a> 
-<a href="./backup.php" title="Backup">Backup</a> 
-<a href="./setup.php" title="Setup">Setup</a> 
-<a href="./visits/" title="Visits" target="_blank">Visits</a> 
-<a href="?status=logout" title="Logout">Logout</a> 
-<a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
-
 <?php
+
+	if (file_exists('./nav.php')) {
+		require('./nav.php');
+	} else {
+		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
+		exit();
+	}
 
 	$imgfolder = LOCATION . 'img/';
 
