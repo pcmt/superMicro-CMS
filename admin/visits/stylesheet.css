@@ -1,12 +1,34 @@
-/* [ last update 21 Dec 2020 ] */
+/* [ last update 29 Dec 2020 ] */
 
 body {
   font-size: 100%;
   font-family: 'Verdana', 'Arial', Sans-Serif;
+  margin: 0;
+  padding: 0 0 10px 0;
+}
+
+h1 {
+  margin: 0 0 0.4em 0;
+  padding: 14px 20px 0 21px;
+  height: 28px;
+  font-size: 0.9em;
+  line-height: 1.0;
+  font-weight: normal;
+  color: #fff;
+  background: #222;
+}
+
+h1 a {
+  color: #cff;
+}
+
+h1 a:hover {
+  color: #fff;
 }
 
 #wrap {
-  padding: 2.0em 10px;
+  margin: 0;
+  padding: 1.0em 20px;
   font-size: 0.8em;
   line-height: 1.1;
 }
@@ -17,12 +39,6 @@ body {
   padding-bottom: 4px;
   border-top: 1px solid #bbb;
   border-bottom: 1px solid #bbb;
-}
-
-h1 {
-  margin: 0 0 1.4em 0;
-  font-size: 1.3em;
-  font-weight: normal;
 }
 
 p {

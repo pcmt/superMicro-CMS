@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 22 Dec 2020 */
+/* Last updated 29 Dec 2020 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -32,6 +32,8 @@ if (file_exists('./top.php')) {
 
 <body>
 
+<h1>Hits for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
+
 <div id="wrap">
 
 <?php
@@ -41,8 +43,6 @@ if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 ?>
 
 <!-- CONTENT (correct password entered) -->
-
-<h1>Hits for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
 
 <?php
 
