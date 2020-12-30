@@ -5,58 +5,27 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 30 Dec 2020 */
 
-// No PHP errors detected in testing so
-// normally leave error reporting off
-error_reporting(0);
-ini_set('display_errors', 0);
-
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+define('ACCESS', TRUE);
 
 // Declare variables
 $num_pages = $num_excluded = $terms = $search_time = $pagestime = "";
-
-if (isset($_COOKIE['adminlink'])) {
-	$admin = TRUE;
-} else {
-	$admin = FALSE;
-}
-
-$pageID = 's'; // For menu.php (normally comes from html.php)
-
-// define('SEARCHPAGE', TRUE); // For the menu (no longer required since 26 Nov 20)
-define('ACCESS', TRUE);
-
-// See footer
-$time = explode(' ', microtime());
-$starttime = $time[1] + $time[0];
+$pageID = 's';
 
 // Define absolute path to /inc/ folder (as in html.php)
 $_inc = str_replace('\\', '/', dirname(__FILE__)) . '/inc/';
 define('INC', $_inc);
 
-if (file_exists(INC . 'error-reporting.php')) {
-	require(INC . 'error-reporting.php');
+if (file_exists(INC . 'prelims.php')) {
+	require(INC . 'prelims.php');
 } else {
-	echo 'Error. Please install the file /inc/error-reporting.php';
+	echo 'Error. Please install the file /inc/prelims.php';
 	exit();
 }
 
-if (file_exists(INC . 'lang.php')) { // <- here
-	require(INC . 'lang.php');
-} else {
-	echo 'Error. Please install the file /inc/lang.php';
-	exit();
-}
-
-// Next bit in top.php but not loaded here
-if ((APACHE == FALSE) || (!file_exists('./.htaccess'))) {
-	$rewrite = FALSE;
-} else {
-	$rewrite = TRUE; // When not WINDOWS and .htaccess exists
-}
+/* -------------------------------------------------- */
+// Search submitted
 
 if (isset($_POST['terms'])) { // Searches are only from this page
 	$terms = trim($_POST['terms']);

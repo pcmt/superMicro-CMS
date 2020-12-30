@@ -5,52 +5,23 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
-
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
-
-// Declare variables
-$ip = $problem = NULL;
-
-if (isset($_COOKIE['adminlink'])) {
-	$admin = TRUE;
-} else {
-	$admin = FALSE;
-}
-
-$pageID = 'e'; // For menu.php (normally comes from html.php)
+/* Last updated 30 Dec 2020 */
 
 define('ACCESS', TRUE);
 
-$time = microtime();
-$time = explode(' ', $time);
-$starttime = $time[1] + $time[0];
-
+// Declare variables
+$ip = $problem = NULL;
+$pageID = 'e';
 $showform = TRUE;
 
-// Define absolute path to /inc/ folder (as in page.class.php)
+// Define absolute path to /inc/ folder (as in html.php)
 $_inc = str_replace('\\', '/', dirname(__FILE__)) . '/inc/';
 define('INC', $_inc);
 
-if (file_exists(INC . 'error-reporting.php')) {
-	require(INC . 'error-reporting.php');
+if (file_exists(INC . 'prelims.php')) {
+	require(INC . 'prelims.php');
 } else {
-	echo 'Error. Please install the file /inc/error-reporting.php';
-	exit();
-}
-
-// Next bit in top.php but not loaded here
-if ((APACHE == FALSE) || (!file_exists('./.htaccess'))) {
-	$rewrite = FALSE;
-} else {
-	$rewrite = TRUE; // When not WINDOWS and .htaccess exists
-}
-
-if (file_exists(INC . 'lang.php')) {
-	require(INC . 'lang.php');
-} else {
-	echo 'Error. Please install the file /inc/lang.php';
+	echo 'Error. Please install the file /inc/prelims.php';
 	exit();
 }
 

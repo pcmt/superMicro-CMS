@@ -5,56 +5,24 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
-
-// No PHP errors detected in testing so
-// normally leave error reporting off
-error_reporting(0);
-// error_reporting(E_ALL);
-
-// Declare variables
-$admin = $response1 = $response2 = $problem1 = $problem2 = "";
+/* Last updated 30 Dec 2020 */
 
 define('ACCESS', TRUE);
 
-// See also footer.php
-$time = microtime();
-$time = explode(' ', $time);
-$starttime = $time[1] + $time[0];
+// Declare variables
+$admin = $response1 = $response2 = $problem1 = $problem2 = "";
+$pageID = 'hash-sha256';
 
 // Define absolute path to /inc/ folder (as in html.php)
 $_inc = str_replace('\\', '/', dirname(__FILE__)) . '/inc/';
 define('INC', $_inc);
 
-if (file_exists(INC . 'settings.php')) { // <- here
-	require(INC . 'settings.php');
+if (file_exists(INC . 'prelims.php')) {
+	require(INC . 'prelims.php');
 } else {
-	echo "Error. Can't open /inc/settings.php";
+	echo 'Error. Please install the file /inc/prelims.php';
 	exit();
 }
-
-if (file_exists(INC . 'functions.php')) {
-	require(INC . 'functions.php');
-} else {
-	echo 'Error. Please install the file /inc/functions.php';
-	exit();
-}
-
-if (file_exists(INC . 'lang.php')) { // <- here
-	require(INC . 'lang.php');
-} else {
-	echo 'Error. Please install the file /inc/lang.php';
-	exit();
-}
-
-// Next bit in top.php but not loaded here
-if ((APACHE == FALSE) || (!file_exists('./.htaccess'))) {
-	$rewrite = FALSE;
-} else {
-	$rewrite = TRUE; // When not WINDOWS and .htaccess exists
-}
-
-$pageID = 'hash-sha256'; // For visitor tracking
 
 function allowedChars($str) {
 
