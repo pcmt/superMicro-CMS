@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 30 Dec 2020 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php.');
@@ -55,10 +55,7 @@ if ($admin) {
 /* Visitor tracking ============================== */
 if (defined('TRACK_HITS')) {
 
-// $_COOKIE["untrack"] = don't track your own hits
-// $admin = logged in
-
-	if (TRACK_HITS) {
+	if (TRACK_HITS && ($pageID != 'preview')) { // Previews disappear
 
 		// (1) All hits are tracked
 		$tracking = TRUE;
