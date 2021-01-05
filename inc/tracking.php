@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 22 Dec 2020 */
+/* Last updated 03 Jan 2021 */
 
 // This file adds formatted hits to 'listhits.txt'
 // to be read by /admin/visits/
@@ -16,7 +16,7 @@ error_reporting(0);
 // error_reporting(E_ALL);
 
 // Declare variables
-$blocked = $url = $escaped_url = $error = "";
+$blocked = $url = $escaped_url = $error = $info = "";
 
 // IP address
 if (isset($_SERVER['REMOTE_ADDR'])) {
@@ -45,7 +45,7 @@ $the_date = date('l jS F Y H:i:s');
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	// Ignore some user agent strings (add manually):
-	$ignore = array('crawl', 'spider', 'bot', 'slurp', 'archiver', 'indexer', 'python-requests', 'go-http', 'scrapy');
+	$ignore = array('crawl', 'spider', 'bot', 'slurp', 'archiver', 'indexer', 'python-requests', 'go-http', 'scrap', 'batch', 'facebookexternalhit', 'WhatsApp');
 	foreach ($ignore as $val) {
 		if (stripos($user_agent, $val) !== FALSE) {
 			$blocked = TRUE;
@@ -54,19 +54,27 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
 
 	// Try to detect device
 	if (stristr($user_agent, 'iPhone')) {
-		$user_agent = 'iPhone';
+		$info = 'iPhone';
 	} elseif (stristr($user_agent, 'iPad')) {
-		$user_agent = 'iPad';
-	} elseif (stristr($user_agent, 'Android')) {
-		$user_agent = 'Android';
+		$info = 'iPad';
+	} elseif (stristr($user_agent, 'Android') || stristr($user_agent, 'Opera Mini')) {
+		$info = 'Android';
 	} elseif (stristr($user_agent, 'Windows')) {
-		$user_agent = 'Windows';
+		$info = 'Windows';
 	} elseif (stristr($user_agent, 'Macintosh')) {
-		$user_agent = 'Macintosh';
+		$info = 'Macintosh';
+	} elseif (stristr($user_agent, 'X11; CrOS')) {
+		$info = 'Chrome desktop';
 	} elseif (stristr($user_agent, 'Mobi')) {
-		$user_agent = 'Mobile';
+		$info = 'Mobile';
+	} elseif (stristr($user_agent, 'Ubuntu; Linux')) {
+		$info = 'Ubuntu Linux';
+	} elseif (stristr($user_agent, 'Linux')) {
+		$info = 'only Linux detected';
+	} elseif (stristr($user_agent, 'HttpClient')) {
+		$info = 'HttpClient (GET, POST, proxy)';
 	} else {
-		$user_agent = 'other';
+		$info = 'other';
 	}
 
 	if ($ip_hostaddress) {
@@ -112,7 +120,7 @@ if (!$blocked) {
 	$escaped_url = htmlspecialchars( $url, ENT_QUOTES, 'UTF-8' );
 
 	// Build the data to display
-	$hitinfo = 'Page: <a href="' . $escaped_url . '" target="_blank">' . $escaped_url . '</a><br>' . $the_date . '<br>IP address: <span class="mute">https://ip-address.us/lookup/</span>' . $ip . ' User info: ' . $user_agent . '<br>Referrer: <span>' . $referer . '</span>';
+	$hitinfo = 'Page: <a href="' . $escaped_url . '" target="_blank">' . $escaped_url . '</a><br>' . $the_date . ' [ <span class="info">' . $info . '</span> ]<br>IP: <span class="mute">https://ip-address.us/lookup/</span>' . $ip . '<br>Referrer: <span>' . $referer . '</span>';
 
 	$visits = './' . ADMIN . '/visits/';
 	if (file_exists($visits)) {
@@ -219,6 +227,6 @@ if ($ip) {
 	_print_nlb('<!-- No ip //-->');
 }
 
-_print('<!-- Tracking file: 12:20 22 DEC 20 //-->');
+_print('<!-- Tracking file: 03 JAN 21, 20:40 //-->');
 
 ?>

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 03 Jan 2021 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -32,13 +32,15 @@ if (file_exists('./top.php')) {
 
 <body>
 
-<h1>Hits for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
-
 <div id="wrap">
+
+<h1>List of Hits<br><span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
+
+	<main>
 
 <?php
 
-if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
+if (isset($_SESSION['password']) && $_SESSION['password'] == "v") {
 
 ?>
 
@@ -94,11 +96,11 @@ if ($response) {
 	}
 
 	$temp  = file_get_contents("tempcount.txt");
-	_print_nlb('<p>The most recent 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):');
+	_print_nlb('<p>Up to 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):');
 
 ?>
 
-	<div id="results">
+		<div id="results">
 
 <ol reversed>
 
@@ -112,7 +114,6 @@ if ($response) {
 	for ($i = 0; $i < 250; $i++) {
 		// Read a line
 		$line = fgets($fh);
-
 		// If a line was read then output it
 		if ($line !== FALSE) {
 			_print_nlb("<li>{$line}</li>\n");
@@ -124,15 +125,15 @@ if ($response) {
 
 ?></ol>
 
-	</div>
+		</div>
 
-<p><a href="https://supermicrocms.com/" target="_blank">supermicrocms.com</a></p>
+<p class="footer"><a href="https://supermicrocms.com/" target="_blank">supermicrocms.com</a></p>
 
 <!-- END OF CONTENT -->
 
 <?php } else { ?>
 
-<form method="post" action="">
+<form class="pw" method="post" action="">
 <input type="password" name="pass">
 <input class="password" type="submit" name="submit_pass" value="Submit">
 </form>
@@ -146,6 +147,8 @@ if ($response) {
 }
 
 ?>
+
+	</main>
 
 </div>
 

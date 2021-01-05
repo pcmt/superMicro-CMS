@@ -1,18 +1,46 @@
 @charset "UTF-8";
-@import url('https://fonts.googleapis.com/css?family=Open+Sans:400,400i,600,600i');
 
-/* [last update 30 Oct 2020] */
+/* open-sans-regular - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 400;
+  src: local('Open Sans Regular'), local('OpenSans-Regular'),
+    url('../fonts/open-sans-v18-latin-regular.woff2') format('woff2'),
+    url('../fonts/open-sans-v18-latin-regular.woff') format('woff');
+}
 
-/*
-Breakpoints:
-Less than 1201px and more than 660px
-More than 1200px
-Adjustments 1 less than 961px
-Adjustments 2 less than 641px
-Adjustments 3 less than 561px
-*/
+/* open-sans-italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 400;
+  src: local('Open Sans Italic'), local('OpenSans-Italic'),
+    url('../fonts/open-sans-v18-latin-italic.woff2') format('woff2'),
+    url('../fonts/open-sans-v18-latin-italic.woff') format('woff');
+}
 
-/* #boxes4/#buttons4 removed Jan 30 2020 (no 'links') */
+/* open-sans-600 - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: normal;
+  font-weight: 600;
+  src: local('Open Sans SemiBold'), local('OpenSans-SemiBold'),
+    url('../fonts/open-sans-v18-latin-600.woff2') format('woff2'),
+    url('../fonts/open-sans-v18-latin-600.woff') format('woff');
+}
+
+/* open-sans-600italic - latin */
+@font-face {
+  font-family: 'Open Sans';
+  font-style: italic;
+  font-weight: 600;
+  src: local('Open Sans SemiBold Italic'), local('OpenSans-SemiBoldItalic'),
+    url('../fonts/open-sans-v18-latin-600italic.woff2') format('woff2'),
+    url('../fonts/open-sans-v18-latin-600italic.woff') format('woff');
+}
+
+/* [last update 04 Jan 2021] */
 
 * { margin: 0; padding: 0; }
 
@@ -44,7 +72,6 @@ body {
 /* Login form */
 
 #loginform {
-  margin: 3.0em auto;
   padding: 10px 20px 70px 20px;
   text-align: center;
   font-size: 1.3em;
@@ -56,10 +83,19 @@ body {
 @media screen and (min-width: 481px) {
 
   #loginform {
+    margin: 3.0em auto;
     max-width: 360px;
     -webkit-border-radius: 6px;
     -moz-border-radius: 6px;
     border-radius: 6px;
+  }
+
+}
+
+@media screen and (max-width: 480px) {
+
+  #loginform {
+    margin: 0 auto 3.0em auto;
   }
 
 }
@@ -278,7 +314,7 @@ p#nav {
 }
 
 p#nav a,
-p#nav span {
+p#nav span { /* For 'page on' (no link) */
   padding: 0 14px 0 10px;
   border-right: 3px solid #ebebeb;
 }
@@ -289,6 +325,20 @@ p#nav a.ext {
 
 p#nav span {
   color: #999;
+}
+
+p#nav span.zap {
+  padding: 0;
+  border: none;
+  color: #000;
+}
+
+@media screen and (max-width: 640px) {
+
+  p#nav span.zap {
+    display: none;
+  }
+
 }
 
 /* #info is for backup.php */
@@ -794,10 +844,10 @@ input.fade:hover {
 /* End forms */
 
 /* -------------------------------------------------- */
-/* Adjustments 1 when screen width is less than 961 */
+/* Adjustments 1 when screen width is less than 981 */
 /* Puts 'buttons' below 'boxes' */
 
-@media screen and (max-width: 981px) {
+@media screen and (max-width: 980px) {
 
   #wrap {
     width: auto;
@@ -811,7 +861,7 @@ input.fade:hover {
   p#nav a,
   p#nav span {
     padding: 0 10px 0 10px;
-    border-right: none;
+    border: none;
   }
 
   #boxes {
@@ -896,7 +946,7 @@ input.fade:hover {
   #boxes input[type=text],
   #boxes2 input[type=text],
   input[type=text].n {
-    width: 97%;
+    width: 96%;
   }
 
   #boxes3 input[type=submit] { /* Backup */
@@ -905,7 +955,7 @@ input.fade:hover {
 
   #boxes textarea,
   #boxes2 textarea {
-    width: 97%;
+    width: 96%;
   }
 
   #bottom {
@@ -950,7 +1000,7 @@ input.fade:hover {
   }
 
   #boxes2 textarea {
-    width: 96.5%;
+    width: 96%;
   }
 
 } /* End adjustments 3 */

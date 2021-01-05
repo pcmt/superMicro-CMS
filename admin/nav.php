@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 04 Jan 2021 */
 
 ?>
-<p id="nav"><a href="<?php _print(LOCATION); ?>">&#171;&nbsp;Site</a> <?php
+<p id="nav"><a href="<?php _print(LOCATION); ?>"><span class="zap">&#171;&nbsp;</span>Site</a> <?php
 
 if ($thisAdmin == 'index') {
 	_print('<span>Pages</span> ');
@@ -40,4 +40,4 @@ if ($thisAdmin == 'setup') {
 	_print('<a href="./setup.php" title="Setup">Setup</a> ');
 }
 
-?><a href="./visits/" title="Visits" target="_blank">Visits</a> <a href="?status=logout" title="Logout">Logout</a> <a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help&nbsp;&#187;</a></p>
+?><a href="./visits/" title="Visits" target="_blank">Visits</a> <a href="?status=logout" title="Logout">Logout</a> <a href="https://supermicrocms.com/information" title="Help" class="ext" target="_blank">Help<span class="zap">&nbsp;&#187;</span></a></p>

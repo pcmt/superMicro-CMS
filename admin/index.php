@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 04 Jan 2021 */
 // Switched all echo to _print()
 
 // Declare variables
@@ -782,7 +782,7 @@ The default styles can be restored with <em>Get styles</em> &raquo; <em>Default 
 
 	<?php } else { ?>
 
-<strong>Line 1</strong> not displayed. Add plus symbol <em>+</em> to add page to menu <span>&#124;</span> <em>~~password~~</em> to password protect<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3 leave blank</strong></span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [ <a href="markup.html" target="_blank">get HTML markup</a> ]
+<strong>Line 1</strong> not displayed. Add plus symbol <em>+</em> to add page to menu <span>&#124;</span> <em>~~password~~</em> to password protect<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3 leave blank</strong></span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [&nbsp;<a href="markup.html" target="_blank">get&nbsp;HTML&nbsp;markup</a>&nbsp;]
 
 	<?php } ?></label>
 

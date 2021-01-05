@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 04 Jan 2021 */
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
@@ -30,11 +30,11 @@ if (isset($_POST['submit_pass']) && $_POST['pass']) {
 		if ($p_word == "v") {
 			$_SESSION['password'] = $p_word;
 		} else {
-			$error = "<p>Wrong Password</p>";
+			$error = '<p class="pword">Wrong Password</p>';
 		}
 
 	} else {
-		$error = "<p>Invalid character(s)</p>";
+		$error = '<p class="pword">Invalid character(s)</p>';
 	}
 
 }

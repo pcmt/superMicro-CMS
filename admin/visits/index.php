@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 03 Jan 2021 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -32,13 +32,15 @@ if (file_exists('./top.php')) {
 
 <body>
 
-<h1>Page stats for <span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
-
 <div id="wrap">
+
+<h1>Page Stats<br><span><a href="<?php _print($site); ?>" target="_blank"><?php _print($site); ?></a></span></h1>
+
+	<main>
 
 <?php
 
-if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
+if (isset($_SESSION['password']) && $_SESSION['password'] == "v") {
 
 ?>
 
@@ -94,7 +96,7 @@ if ($response) {
 
 <p>Hits per page:</p>
 
-	<div id="results">
+		<div id="results">
 
 <ol>
 <?php
@@ -112,21 +114,21 @@ if ($response) {
 		} elseif ($page == 'index') {
 			$page = str_replace("index", "", $page);
 		}
-		_print_nlb('<li><a href="' . LOCATION . $page . '" target="_blank"><span>' . LOCATION .'</span>' . $page . '</a> : ' . $num .'</li>');
+		_print_nlb('<li class="index"><a href="' . LOCATION . $page . '" target="_blank"><span>' . LOCATION .'</span>' . $page . '</a> : ' . $num .'</li>');
 	}
 
 ?>
 </ol>
 
-	</div>
+		</div>
 
-<p><a href="https://supermicrocms.com/" target="_blank">supermicrocms.com</a></p>
+<p class="footer"><a href="https://supermicrocms.com/" target="_blank">supermicrocms.com</a></p>
 
 <!-- END OF CONTENT -->
 
 <?php } else { ?>
 
-<form method="post" action="">
+<form class="pw" method="post" action="">
 <input type="password" name="pass">
 <input class="password" type="submit" name="submit_pass" value="Submit">
 </form>
@@ -140,6 +142,8 @@ if ($response) {
 }
 
 ?>
+
+	</main>
 
 </div>
 
