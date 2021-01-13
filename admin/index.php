@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Jan 2021 */
+/* Last updated 06 Jan 2021 */
 // Switched all echo to _print()
 
 // Declare variables
@@ -793,11 +793,14 @@ The default styles can be restored with <em>Get styles</em> &raquo; <em>Default 
 /* MAIN TEXTAREA */
 
 	if ($mode == 'preview') {
-		$previewtext = file_get_contents('../pages/preview.txt');
-		_print(stripslashes(htmlentities($previewtext)));
-		// Delete preview when viewed to prevent appearing in list
-		// Relies on 'edit' link (https only - see edit page)
-		unlink('../pages/preview.txt');
+		if (file_exists('../pages/preview.txt')) {
+			$previewtext = file_get_contents('../pages/preview.txt');
+			_print(stripslashes(htmlentities($previewtext)));
+			// Delete preview after viewed
+			unlink('../pages/preview.txt');
+		} else {
+			_print("The file '../pages/preview.txt' does not exist. Try again.");
+		}
 
 	/* -------------------------------------------------- */
 	// Clear all

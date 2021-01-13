@@ -40,7 +40,7 @@
     url('../../fonts/open-sans-v18-latin-600italic.woff') format('woff');
 }
 
-/* [ last update 04 Jan 2021 ] */
+/* [ last update 05 Jan 2021 ] */
 
 body {
   font-size: 100%;
@@ -151,7 +151,7 @@ ol {
 }
 
 li {
-  margin-left: 25px;
+  margin-left: 22px;
   margin-bottom: 3px;
   line-height: 1.3;
 }

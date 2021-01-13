@@ -5,17 +5,17 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 12 Dec 2020
+// Last updated 05 Jan 2021
 // Rewrote password routine due to problem reported
 
 // Declare variables
 $sh_password = $salt = $domain = $cookie_status = $test_cookie = $missing_password_php = $incorrect_form_problem = $admin_shp = $admin_s = $file_write_problem = $error = $admin_password_problem = $install = '';
 
-error_reporting(0);
-ini_set('display_errors', 0);
+#error_reporting(0);
+#ini_set('display_errors', 0);
 
-// error_reporting(E_ALL);
-// ini_set('display_errors', 1);
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -79,7 +79,7 @@ if ($secure_cookie) {
 /* -------------------------------------------------- */
 /* Verify all the required admin files */
 
-$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/index.txt', './text/inc_inmenu.txt', './text/stylesheet.txt', './text/extra-css.txt', './text/password.txt');
+$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/count.txt', './text/extra-css.txt', './text/inmenu.txt', './text/index.txt', './text/listhits.txt', './text/pageid.txt', './text/password.txt', './text/since.txt', './text/stylesheet.txt', './text/tempcount.txt');
 
 foreach ($required as $file) {
 	if (!file_exists($file)) { // Exit if a file is missing
@@ -159,7 +159,7 @@ so that when an update is uploaded they are not overwritten
 		// /inc/inmenu.txt
 		$inmenu = '../inc/inmenu.txt';
 		if (!file_exists($inmenu)) {
-			$text = './text/inc_inmenu.txt';
+			$text = './text/inmenu.txt';
 			if (!copy($text, $inmenu)) {
 				$file_write_problem = TRUE;
 				$error = "Install can't proceed. Could not create <b>{$inmenu}.</b>";
@@ -183,6 +183,56 @@ so that when an update is uploaded they are not overwritten
 			if (!copy($text, $extra)) {
 				$file_write_problem = TRUE;
 				$error = "Install can't proceed. Could not create <b>{$extra}.</b>";
+			}
+		}
+
+		// /admin/visits/count.txt
+		$count = './visits/count.txt';
+		if (!file_exists($count)) {
+			$text = './text/count.txt';
+			if (!copy($text, $count)) {
+				$file_write_problem = TRUE;
+				$error = "Install can't proceed. Could not create <b>{$count}.</b>";
+			}
+		}
+
+		// /admin/visits/listhits.txt
+		$listhits = './visits/listhits.txt';
+		if (!file_exists($listhits)) {
+			$text = './text/listhits.txt';
+			if (!copy($text, $listhits)) {
+				$file_write_problem = TRUE;
+				$error = "Install can't proceed. Could not create <b>{$listhits}.</b>";
+			}
+		}
+
+		// /admin/visits/pageid.txt
+		$pageid = './visits/pageid.txt';
+		if (!file_exists($pageid)) {
+			$text = './text/pageid.txt';
+			if (!copy($text, $pageid)) {
+				$file_write_problem = TRUE;
+				$error = "Install can't proceed. Could not create <b>{$pageid}.</b>";
+			}
+		}
+
+		// /admin/visits/since.txt
+		$since = './visits/since.txt';
+		if (!file_exists($since)) {
+			$text = './text/since.txt';
+			if (!copy($text, $since)) {
+				$file_write_problem = TRUE;
+				$error = "Install can't proceed. Could not create <b>{$since}.</b>";
+			}
+		}
+
+		// /admin/visits/tempcount.txt
+		$tempcount = './visits/tempcount.txt';
+		if (!file_exists($tempcount)) {
+			$text = './text/tempcount.txt';
+			if (!copy($text, $tempcount)) {
+				$file_write_problem = TRUE;
+				$error = "Install can't proceed. Could not create <b>{$tempcount}.</b>";
 			}
 		}
 

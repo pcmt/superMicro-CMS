@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 14 Jan 2021 */
 
 // Declare variables
 $_pages = $_images = $response = "";
@@ -134,6 +134,19 @@ if (!$login) {
 			// print_r($filesArray);
 			// print '</pre>';
 
+			/* Create backup */
+			$backup = zip($filesArray, $destination); // See functions.php
+
+			if ($backup) {
+				if (file_exists('./backup.zip')) {
+					$response = '<em>Backup ' . $type . 'successful. <a href="backup.zip">Download backup</a> then click \'Delete backup\'.</em>';
+				} else {
+					$response = '<em>Backup did not succeed.</em>';
+				}
+			} else {
+				$response = '<em>ZIP function failed. Check status&#8212;does a backup already exist?</em>';
+			}
+
 		} else { // No files
 			$_pages = FALSE;
 			$response = '<em>Error. Could not open the pages folder.</em>';
@@ -142,61 +155,37 @@ if (!$login) {
 
 	/* -------------------------------------------------- */
 	// ZIP images
+	// No function, no array, different to pages (only one folder)
 	if (isset($_POST['submit2'])) {
-		$destination = './backup.zip';
-		$type = 'of images ';
-		$_images = $_root . '/img';
 
-		if ($files = opendir($_images)) {
+		if (!file_exists('./backup.zip')) {
 
-			$filesArray = array(); // New array
-			while (FALSE !== ($file = readdir($files))) {
+			$source = $_root . '/img/'; // Source folder
+			$backup_ZIP = './backup.zip'; // New ZIP file
 
-				// Ignore '.' and '..' folders
-				if (in_array(substr($file, strrpos($file, '/')+1), array('.', '..'))) {
-					continue;
-				}
+			// Create new zip class
+			$zip = new ZipArchive;
 
-				$imgfile = str_replace($_root . '/', '', $file);  // Get the filename
-				if (!is_dir('../' . $imgfile)) {
+			if ($zip -> open($backup_ZIP, ZipArchive::CREATE ) === TRUE) {
 
-					// Ignore .php files
-					if (strpos($file, '.php') !== FALSE) {
-						continue;
+				// Store the path into the variable
+				$dir = opendir($source);
+				while($file = readdir($dir)) {
+					if(is_file($source . $file)) {
+						$zip -> addFile($source . $file, $file);
 					}
-
-					// Add file into the array
-					$filesArray[] = $_root . '/img/' . $imgfile;
 				}
-			}
 
-			closedir($files);
+				$zip ->close();
 
-			// print '<pre>';
-			// print_r($filesArray);
-			// print '</pre>';
+				$response = '<em>Image backup successful. <a href="backup.zip">Download backup</a> then click \'Delete backup\'.</em>';
 
-		} else { // No files
-			$_images = FALSE;
-			$response = '<em>Error. Could not open the images folder.</em>';
-		}
-	}
-
-/* ---------------------------------------------------------------------- */
-/* Create backup */
-
-	if ($_pages || $_images) {
-
-		$backup = zip($filesArray, $destination); // See functions.php
-
-		if ($backup) {
-			if (file_exists('./backup.zip')) {
-				$response = '<em>Backup ' . $type . 'successful. <a href="backup.zip">Download backup</a> then click \'Delete backup\'.</em>';
 			} else {
-				$response = '<em>Backup did not succeed.</em>';
+				$response = '<em>Image backup failed. Check status&#8212;does a backup already exist?</em>';
 			}
+
 		} else {
-			$response = '<em>ZIP function failed. Check status&#8212;does a backup already exist?</em>';
+			$response = '<em>Backup already exists. <a href="backup.zip">Download backup</a> then click \'Delete backup\'.</em>';
 		}
 	}
 
@@ -261,8 +250,7 @@ if (!$login) {
 <li>The written content pages you have created.</li>
 <li>The menu file.</li>
 <li>The stylesheets 'stylesheet.css' and 'extra.css' (backed up with pages).</li>
-<li>The contents of the images folder, including any images you uploaded. Please note: there may be a limit imposed by the Operating System or server administrator on the total size of the ZIP file. This may be an issue if you have a large number of images.</li>
-<li>Server error logs (if they exist).</li>
+<li>The contents of the images folder, including any images you uploaded. There may be a limit imposed by the Operating System or the server administrator (usually memory limit or maximum execution time). This may be an issue if you have a large number of images to zip. Tested to work with up to 250 average size jpg files (about 10 seconds).</li>
 </ul>
 <p>For security, after creating a backup do not leave it on the server. Download it to your hard drive by clicking 'Download backup' then click 'Delete backup'. Check whether a backup exists on the server by clicking 'Check status'.</p>
 <p>See also <a href="https://supermicrocms.com/backups" target="_blank">restoring from backups&nbsp;&raquo;</a></p>

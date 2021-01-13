@@ -332,7 +332,7 @@ function zip($files = array(), $destination = '', $overwrite = FALSE) {
 	$valid_files = array();
 	if (is_array($files)) { // If files were passed in
 		foreach($files as $file) {
-			if (file_exists($file)) {
+			if (file_exists($file) && is_file($file)) {
 				$valid_files[] = $file;
 			}
 		}

@@ -108,7 +108,7 @@ if ($comments && isset($pageID)) { // See html.php ($comments)
 
 		_print('
 <hr>
-<p>Sorry, commenting not available. Microsoft-IIS does not support the PHP mail function.</p>
+<p>Sorry, commenting not available. Microsoft-IIS does not support PHP mail.</p>
 		');
 
 	}
