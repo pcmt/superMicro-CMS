@@ -5,10 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 14 Jan 2021 */
 
 // Declare variables
 $page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = "";
+
+$thisAdmin = 'extras'; // For nav
 
 require('./top.php');
 

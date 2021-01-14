@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 14 Jan 2021 */
 
 // Declare variables
-$response = $response1 = $display = $problem = "";
+$response = $response1 = $display = $delete = $_file = $problem = "";
 $num = "0";
 
 $thisAdmin = 'images'; // For nav
@@ -130,30 +130,29 @@ if (!$login) {
 
 	if (array_key_exists('submit2', $_POST)) { // Delete
 
-		$imagename = trim($_POST['delete']);
-		$delete = '../img/' . $imagename;
-		// $disallowed = array('img-loading.gif', 'nav-icon.jpg');
+		$delete = trim($_POST['delete']);
+		$_file = '../img/' . $delete;
 
-		if (strlen($imagename) < 1) {
+		if (!file_exists($_file)) {
 			$problem = TRUE;
-			$response = '<em>No image filename was entered.</em>';
+			$response = '<em>Error: the image <b>' . $delete . '</b> does not exist.</em>';
 		}
 
-		// Admin images moved to admin
+		if ($delete == '') {
+			$problem = TRUE;
+			$response = '<em>Error: no image filename was entered. Enter a filename.</em>';
+		}
 
-		if (($imagename == 'og.jpg') || ($imagename == 'bg_footer.gif') || ($imagename == 'bg_footer_monochrome.gif')) {
+		if (($delete == 'og.jpg') || ($delete == 'bg_footer.gif') || ($delete == 'bg_footer_monochrome.gif')) {
 			$problem = TRUE;
 			$response = "<em>The default images can't be deleted. Maybe upload a new one (<b>og.jpg</b> must be 200 pixels square).</em>";
 		}
 
-		if (!$problem) {
-			if (file_exists($delete)) {
-				unlink($delete);
-				$response = '<em>Success. <b>' . $imagename . '</b> was deleted.</em>';
-			} else {
-				$response = '<em>Image <b>' . $imagename . '</b> doesn\'t exist. Try another.</em>';
-			}
+		if (!$problem && file_exists($_file)) {
+			unlink($_file);
+			$response = '<em>Success. <b>' . $delete . '</b> was deleted.</em>';
 		}
+
 	}
 
 ?>

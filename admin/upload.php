@@ -5,12 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 14 Jan 2021 */
 /* Form action */
 
 // Declare variables
 $response = $problem = "";
 $num = "0";
+
+$thisAdmin = 'upload'; // For nav
 
 require('./top.php');
 
@@ -151,6 +153,29 @@ if (!$login) {
 				$response = '<em>The file <b>' . $name . '</b> doesn\'t exist. Try another.</em>';
 			}
 		}
+	}
+
+
+	if (array_key_exists('submit2', $_POST)) { // Delete
+
+		$delete = trim($_POST['delete']);
+		$_file = '../uploads/' . $delete;
+
+		if (!file_exists($_file)) {
+			$problem = TRUE;
+			$response = '<em>Error: the file <b>' . $delete . '</b> does not exist.</em>';
+		}
+
+		if ($delete == '') {
+			$problem = TRUE;
+			$response = '<em>Error: no filename was entered. Enter a filename.</em>';
+		}
+
+		if (!$problem && file_exists($_file)) {
+			unlink($_file);
+			$response = '<em>Success. <b>' . $delete . '</b> was deleted.</em>';
+		}
+
 	}
 
 ?>

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 14 Jan 2021 */
 
 // Declare variables ($feedback and $value used only when testing)
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $submitted_language = $correct_value = $track_me = $posted = "";
@@ -418,7 +418,14 @@ if (!$login) {
 			$contact_menu = allowedChars($contact_menu);
 		}
 
-		$font_type = $_POST['font_type']; // No option not to Post
+		// This value is not visible on the page and can be submitted with burp suite
+		if ((!$_POST['font_type'] == 'google') || (!$_POST['font_type'] == 'hosted')) {
+			$problem = TRUE;
+			$font_type = FALSE;
+		} else {
+			$font_type = $_POST['font_type']; // No option not to Post
+		}
+
 		$lang_attr = $_POST['lang_attr']; // No option not to Post
 
 		if ($lang_attr == 'en') {
@@ -974,16 +981,24 @@ $google_selected = '
 <option value="hosted">Hosted fonts</option>
 ';
 
+$nothing_selected = '
+<option>Select</option>
+<option value="google">Google fonts</option>
+<option value="hosted">Hosted fonts</option>
+';
+
 // If posted
 if (isset($_POST['submit1'])) {
 
 	if ($font_type == 'google') { // If google
 		_print($google_selected); // Show google top
-	} else { // hosted
+	} elseif ($font_type == 'hosted') { // hosted
 		_print($hosted_selected); // Show hosted top
+	} else {
+		_print($nothing_selected);
 	}
 
-// Else not posted
+// else not posted
 } elseif (defined('FONT_TYPE') && (FONT_TYPE == 'google')) { // From settings
 	_print($google_selected); // Show google top
 } else { // Starting position: nothing posted, nothing defined
