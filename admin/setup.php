@@ -8,7 +8,7 @@
 /* Last updated 14 Jan 2021 */
 
 // Declare variables ($feedback and $value used only when testing)
-$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $fileError = $submitted_language = $correct_value = $track_me = $posted = "";
+$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $submitted_language = $correct_value = $track_me = $posted = "";
 
 $thisAdmin = 'setup'; // For nav
 
@@ -310,19 +310,17 @@ if (!$login) {
 		/* -------------------------------------------------- */
 		/* CHECK THE FORM */
 
-		$home_link = '';
 		$home_link = trim($_POST['home_link']);
 		$home_link = allowedChars($home_link);
-		if (strlen($home_link) < 1) {
+		if ((strlen($home_link) < 1) || ($home_link == 'Enter menu text')) {
 			$problem = TRUE;
 			$home_link = FALSE;
 		}
 
-		$name = '';
 		$name = trim($_POST['name']);
 		$name = allowedChars($name);
 		// $name = escapeSingle($name);
-		if (strlen($name) < 1) {
+		if ((strlen($name) < 1) || ($name == 'Enter a name')) {
 			$problem = TRUE;
 			$name = FALSE;
 		}
@@ -377,9 +375,8 @@ if (!$login) {
 			$php_ext = 'FALSE';
 		}
 
-		$email = '';
 		$email = trim($_POST['email']);
-		if (strlen($email) < 1) {
+		if ((strlen($email) < 1) || ($email == 'Invalid email address')) {
 			$problem = TRUE;
 			$email = FALSE;
 		}
@@ -389,27 +386,24 @@ if (!$login) {
 			$invalid_email = TRUE;
 		}
 
-		$site_name = '';
-		$site_name = trim($_POST['site_name']);
-		$site_name = allowedChars($site_name);
-		// $site_name = escapeSingle($site_name);
-		if (strlen($site_name) < 1) {
-			$problem = TRUE;
-			$name = FALSE;
-		}
-
-		$own_name = '';
 		$own_name = trim($_POST['own_name']);
 		$own_name = allowedChars($own_name);
-		if (strlen($own_name) < 1) {
+		if ((strlen($own_name) < 1) || ($own_name == 'Enter a name')) {
 			$problem = TRUE;
 			$own_name = FALSE;
+		}
+
+		$site_name = trim($_POST['site_name']);
+		$site_name = allowedChars($site_name);
+		if ((strlen($site_name) < 1) || ($site_name == 'Enter site name')) {
+			$problem = TRUE;
+			$name = FALSE;
 		}
 
 		if ($contact_page) {
 			$contact_text = trim($_POST['contact_text']);
 			$contact_text = allowedChars($contact_text);
-			if (strlen($contact_text) < 1) {
+			if ((strlen($contact_text) < 1) || ($contact_text == 'Enter some text')) {
 				$problem = TRUE;
 				$contact_text = FALSE;
 			}
@@ -452,15 +446,8 @@ if (!$login) {
 		}
 
 		if ($problem) {
-			if ($fileError) {
-				$response1 = '<em>Setup cannot proceed until the error is corrected.</em>';
-			} else {
-				$response1 = '<em>There was a problem with the settings you entered (see below).</em>';
-			}
-		}
-
-		if (!$problem) {
-
+			$response1 = '<em>There was a problem with the settings you entered.</em>';
+		} else {
 			/* -------------------------------------------------- */
 			/* WRITE SETTINGS */
 
@@ -610,18 +597,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Menu text for home page</label>
 <input type="text" name="home_link" size="60" value="<?php
 
-	if (isset($_POST['submit2'])) {
-		if (isset($_home_link)) {
-			_print($_home_link);
-		} else {
-			_print(HOME_LINK);
-		}
-	} elseif (isset($_POST['submit1'])) {
+	if (isset($_POST['submit1'])) {
 		if (!$home_link && $problem) {
 			_print('Enter menu text');
 		} else {
 			_print(stripslashes($home_link));
 		}
+	// else nothing submitted
 	} elseif (file_exists('../inc/settings.php') && defined('HOME_LINK')) {
 		_print(HOME_LINK);
 	} else {
@@ -634,13 +616,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Name in footer</label>
 <input type="text" name="name" size="60" value="<?php
 
-	if (isset($_POST['submit2'])) {
-		if (isset($_name)) {
-			_print($_name);
-		} else {
-			_print(NAME);
-		}
-	} elseif (isset($_POST['submit1'])) {
+	if (isset($_POST['submit1'])) {
 		if (!$name && $problem) {
 			_print('Enter a name');
 		} else {
@@ -747,13 +723,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <input type="text" name="email" size="60" value="<?php
 
 	$invalid_email = ""; // Required to re-declare variable
-	if (isset($_POST['submit2'])) {
-		if (isset($_email)) {
-			_print($_email);
-		} else {
-			_print(EMAIL);
-		}
-	} elseif (isset($_POST['submit1'])) {
+	if (isset($_POST['submit1'])) {
 		if (!$email && $problem) {
 			_print('Invalid email address');
 		} else {
@@ -775,13 +745,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Your name</label>
 <input type="text" name="own_name" size="60" value="<?php
 
-	if (isset($_POST['submit2'])) {
-		if (isset($_own_name)) {
-			_print($_own_name);
-		} else {
-			_print(OWN_NAME);
-		}
-	} elseif (isset($_POST['submit1'])) {
+	if (isset($_POST['submit1'])) {
 		if (!$own_name && $problem) {
 			_print('Enter a name');
 		} else {
@@ -799,13 +763,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Site name (20 max)</label>
 <input type="text" name="site_name" size="20" value="<?php
 
-	if (isset($_POST['submit2'])) {
-		if (isset($_site_name)) {
-			_print($_site_name);
-		} else {
-			_print(SITE_NAME);
-		}
-	} elseif (isset($_POST['submit1'])) {
+	if (isset($_POST['submit1'])) {
 		if (!$site_name && $problem) {
 			_print('Enter site name');
 		} else {
@@ -908,13 +866,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Contact page introductory text</label>
 <textarea name="contact_text" size="60" rows="4" cols="30"><?php
 
-		if (isset($_POST['submit2'])) {
-			if (isset($_contact_text)) {
-				_print($_contact_text);
-			} else {
-				_print(CONTACT_TEXT);
-			}
-		} elseif (isset($_POST['submit1'])) {
+		if (isset($_POST['submit1'])) {
 			if (!$contact_text && $problem) {
 				_print('Enter some text');
 			} else {
