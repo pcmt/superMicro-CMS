@@ -418,27 +418,37 @@ if (!$login) {
 			$contact_menu = allowedChars($contact_menu);
 		}
 
-		// This value is not visible on the page and can be submitted with burp suite
+		// This value is not visible on the page
 		if ((!$_POST['font_type'] == 'google') || (!$_POST['font_type'] == 'hosted')) {
 			$problem = TRUE;
 			$font_type = FALSE;
 		} else {
-			$font_type = $_POST['font_type']; // No option not to Post
+			$font_type = $_POST['font_type'];
 		}
 
-		$lang_attr = $_POST['lang_attr']; // No option not to Post
+		// This value is not visible on the page
+		$lang_attr = $_POST['lang_attr'];
+		$langs = array('en', 'fr', 'de', 'es');
+		foreach ($langs as $val) {
+			if (!$langs == $val) {
+				$problem = TRUE;
+				$lang_attr = FALSE;
+			}
+		}
 
-		if ($lang_attr == 'en') {
-			$submitted_language = 'English';
-		}
-		if ($lang_attr == 'fr') {
-			$submitted_language = 'French';
-		}
-		if ($lang_attr == 'de') {
-			$submitted_language = 'German';
-		}
-		if ($lang_attr == 'es') {
-			$submitted_language = 'Spanish';
+		if ($lang_attr) {
+			if ($lang_attr == 'en') {
+				$submitted_language = 'English';
+			}
+			if ($lang_attr == 'fr') {
+				$submitted_language = 'French';
+			}
+			if ($lang_attr == 'de') {
+				$submitted_language = 'German';
+			}
+			if ($lang_attr == 'es') {
+				$submitted_language = 'Spanish';
+			}
 		}
 
 		if ($problem) {
