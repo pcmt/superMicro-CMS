@@ -1,5 +1,5 @@
 # superMicro CMS
-Website building system developed 2008 - 2021 by Patrick Taylor.
+Website building system developed 2008 - 2021 by Patrick Taylor (hobbyist).
 
 No database. Web content stored in plain text files.
 
