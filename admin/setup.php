@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 Jan 2021 */
+/* Last updated 16 Jan 2021 */
 
 // Declare variables ($feedback and $value used only when testing)
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $submitted_language = $correct_value = $track_me = $posted = "";
@@ -306,6 +306,12 @@ if (!$login) {
 /* ================================================== */
 
 	if (isset($_POST['submit1']) && $do_setup) {
+
+		// Check referrer to make sure form was submitted from this page
+		if (!strcmp($_SERVER['HTTP_REFERER'], (LOCATION . ADMIN . '/setup.php')) == 0) {
+			// _print('$_SERVER[\'HTTP_REFERER\'] = ' . $_SERVER['HTTP_REFERER'] . ''); // For testing
+			$problem = TRUE;
+		}
 
 		/* -------------------------------------------------- */
 		/* CHECK THE FORM */
