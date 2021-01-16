@@ -15,6 +15,16 @@ $thisAdmin = 'setup'; // For nav
 require('./top.php'); // Loads functions.php
 require('./language.php');
 
+// Check form submitted from this page even if not logged in
+// Not effective against spoofed HTTP_REFERER
+if (isset($_POST['submit1']) && defined('LOCATION') && defined('ADMIN')) {
+	if (!strcmp($_SERVER['HTTP_REFERER'], (LOCATION . ADMIN . '/setup.php')) == 0) {
+		$problem = TRUE;
+		echo 'Error: incorrect referrer';
+		exit();
+	}
+}
+
 /*
 (1) TRACK_HITS is defined on setup as TRUE or FALSE
 (2) If TRUE, check correct value then set cookie to
@@ -308,10 +318,11 @@ if (!$login) {
 	if (isset($_POST['submit1']) && $do_setup) {
 
 		// Check referrer to make sure form was submitted from this page
-		if (!strcmp($_SERVER['HTTP_REFERER'], (LOCATION . ADMIN . '/setup.php')) == 0) {
-			// _print('$_SERVER[\'HTTP_REFERER\'] = ' . $_SERVER['HTTP_REFERER'] . ''); // For testing
-			$problem = TRUE;
-		}
+		// Moved to top of file
+		// if (!strcmp($_SERVER['HTTP_REFERER'], (LOCATION . ADMIN . '/setup.php')) == 0) {
+		// 	// _print('$_SERVER[\'HTTP_REFERER\'] = ' . $_SERVER['HTTP_REFERER'] . ''); // For testing
+		// 	$problem = TRUE;
+		// }
 
 		/* -------------------------------------------------- */
 		/* CHECK THE FORM */
