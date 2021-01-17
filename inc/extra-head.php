@@ -9,7 +9,7 @@
 /* $canonical from top.php */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to extra-head.php.');
+	die('Direct access not permitted to extra-head.php');
 }
 
 _print("<!-- extra-head //-->");

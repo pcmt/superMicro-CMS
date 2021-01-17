@@ -7,6 +7,10 @@
 
 /* Last updated 03 Dec 2020 */
 
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to list.php');
+}
+
 // Declare variables
 $mark = NULL;
 

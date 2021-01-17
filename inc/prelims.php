@@ -7,6 +7,10 @@
 
 /* Last updated 30 Dec 2020 */
 
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to prelims.php');
+}
+
 $time = microtime();
 $time = explode(' ', $time);
 $starttime = $time[1] + $time[0];

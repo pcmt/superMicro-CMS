@@ -8,7 +8,7 @@
 /* Last updated 13 Dec 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to stylesheets.php.');
+	die('Direct access not permitted to stylesheets.php');
 }
 
 // Get absolute path to /css/ folder

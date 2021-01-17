@@ -5,7 +5,11 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 Jan 2021 */
+/* Last updated 15 Jan 2021 */
+
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to tracking.php');
+}
 
 // This file adds formatted hits to 'listhits.txt'
 // to be read by /admin/visits/
@@ -17,6 +21,10 @@ error_reporting(0);
 
 // Declare variables
 $blocked = $url = $escaped_url = $error = $info = "";
+
+// Relative path from root to directory
+$visits = ADMIN . '/visits/';
+// _print_nlb('<!-- visits file: ' . $visits . ' //-->'); // NEVER EXPOSE THIS
 
 // IP address
 if (isset($_SERVER['REMOTE_ADDR'])) {
@@ -122,7 +130,6 @@ if (!$blocked) {
 	// Build the data to display
 	$hitinfo = 'Page: <a href="' . $escaped_url . '" target="_blank">' . $escaped_url . '</a><br>' . $the_date . ' [ <span class="info">' . $info . '</span> ]<br>IP: <span class="mute">https://ip-address.us/lookup/</span>' . $ip . '<br>Referrer: <span>' . $referer . '</span>';
 
-	$visits = './' . ADMIN . '/visits/';
 	if (file_exists($visits)) {
 		// Text file where hits listed
 		$hitsfile = $visits . 'listhits.txt';
@@ -199,14 +206,14 @@ if (!$blocked) {
 	} // End of 'if hitsfile exists'
 
 	// If hit recorded add pageID
-	if (isset($pageID)) {
+	if ($pageID) {
 
 		// Text file where pageID listed
 		$pageidfile = $visits . 'pageid.txt';
 		if (file_exists($pageidfile)) {
 			$current = file_get_contents($pageidfile);
 			// Append to the file
-			$current .= ($pageID . "\n");
+			$current .= $pageID . "\n";
 			// Write the contents back to the file
 			file_put_contents($pageidfile, $current);
 		}
@@ -227,6 +234,6 @@ if ($ip) {
 	_print_nlb('<!-- No ip //-->');
 }
 
-_print('<!-- Tracking file: 03 JAN 21, 20:40 //-->');
+_print('<!-- Tracking file: 15 JAN 21, 22:00 //-->');
 
 ?>

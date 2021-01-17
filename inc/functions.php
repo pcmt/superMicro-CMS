@@ -9,7 +9,7 @@
 /* .svg added */
 
 if(!defined('ACCESS')) {
-	die('Direct access not permitted to functions.php.');
+	die('Direct access not permitted to functions.php');
 }
 
 /* --------------------------------------------------

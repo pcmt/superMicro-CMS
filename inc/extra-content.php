@@ -11,7 +11,7 @@
 $commentfile = $leavecomment = $closecomments = '';
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to extra-content.php.');
+	die('Direct access not permitted to extra-content.php');
 }
 
 _print_nlb('<!-- extra-content //-->');

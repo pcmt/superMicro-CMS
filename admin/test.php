@@ -8,7 +8,7 @@
 /* Last updated 24 Dec 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to test.php.');
+	die('Direct access not permitted to test.php');
 }
 
 ?>

@@ -8,7 +8,7 @@
 /* Last updated 30 Dec 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to footer.php.');
+	die('Direct access not permitted to footer.php');
 }
 
 // Declare variables

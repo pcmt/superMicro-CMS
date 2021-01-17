@@ -8,7 +8,7 @@
 /* Last updated 15 Sept 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to content.php.');
+	die('Direct access not permitted to content.php');
 }
 
 /* START CONTENT ==================================== */

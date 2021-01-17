@@ -18,7 +18,7 @@ WINDOWS constant set to TRUE or FALSE in settings.php
 $close_comments = "";
 
 if(!defined('ACCESS')) {
-	die('Direct access not permitted to comment-form.php.');
+	die('Direct access not permitted to form.php');
 }
 
 // Form action

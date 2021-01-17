@@ -8,7 +8,7 @@
 /* Last updated 21 Dec 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to error-reporting.php.');
+	die('Direct access not permitted to error-reporting.php');
 }
 
 if (defined('SHOW_ERRORS')) {

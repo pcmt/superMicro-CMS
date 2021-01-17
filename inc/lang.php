@@ -8,7 +8,7 @@
 /* Last updated 19 Jan 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to lang.php.');
+	die('Direct access not permitted to lang.php');
 }
 
 if (defined('LANG_ATTR')) {

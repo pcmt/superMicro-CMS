@@ -11,7 +11,7 @@
 $protected = $the_page = "";
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to top.php.');
+	die('Direct access not permitted to top.php');
 }
 
 // See also footer.php

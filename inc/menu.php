@@ -8,7 +8,7 @@
 /* Last updated 24 Dec 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to menu.php.');
+	die('Direct access not permitted to menu.php');
 }
 
 if (defined('SITE_NAME') && (strlen(SITE_NAME) > 0)) { // &nbsp; nudges right for centred letter-spacing

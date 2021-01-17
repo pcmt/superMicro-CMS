@@ -8,7 +8,7 @@
 /* Last updated 13 Dec 2020 */
 
 if (!defined('ACCESS')) {
-	die('Direct access not permitted to login-form.php.');
+	die('Direct access not permitted to login-form.php');
 }
 
 // See ppp.php for why logout form is not displayed (18 Jan 20)

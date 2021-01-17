@@ -5,7 +5,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 17 Jan 2021 */
+
+define('ACCESS', TRUE);
 
 // Declare variables
 $status = $notice = $user = $dofooter = $word = $login = $dom = $secure = $secure_cookie = $path = '';
@@ -43,7 +45,6 @@ if (!function_exists('_print_nla')) {
 // setup.php edits /inc/settings.php
 
 if (file_exists('../inc/settings.php')) {
-	define('ACCESS', TRUE);
 	include('../inc/settings.php');
 }
 
@@ -74,8 +75,10 @@ if (!defined('PHP_EOL')) {
 
 if (function_exists('phpSELF')) {
 	$self = htmlspecialchars(phpSELF(), ENT_QUOTES, "utf-8");
-} else {
+} elseif (isset($_SERVER['PHP_SELF'])) {
 	$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
+} else {
+	$self = '';
 }
 
 /* -------------------------------------------------- */

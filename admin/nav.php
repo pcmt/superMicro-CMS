@@ -5,10 +5,22 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Jan 2021 */
+/* Last updated 17 Jan 2021 */
+
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to nav.php');
+}
 
 ?>
-<p id="nav"><a href="<?php _print(LOCATION); ?>"><span class="zap">&#171;&nbsp;</span>Site</a> <?php
+<p id="nav"><a href="<?php
+
+if (defined('LOCATION')) {
+	_print(LOCATION);
+} else {
+	_print('../');
+}
+
+?>"><span class="zap">&#171;&nbsp;</span>Site</a> <?php
 
 if ($thisAdmin == 'index') {
 	_print('<span>Pages</span> ');

@@ -150,7 +150,7 @@ if (!$login) {
 
 		if (!$problem && file_exists($_file)) {
 			unlink($_file);
-			$response = '<em>Success. <b>' . $delete . '</b> was deleted.</em>';
+			$response = '<em>Paff! <b>' . $delete . '</b> was deleted.</em>';
 		}
 
 	}

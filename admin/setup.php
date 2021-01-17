@@ -91,7 +91,7 @@ if (defined('TRACK_HITS')) {
 
 	} else { // Do this on page load
 
-		if (isset($_COOKIE["track"])) {
+		if (!isset($_COOKIE["track"])) {
 			setcookie("track", "", time() - 3600, "/");
 		}
 

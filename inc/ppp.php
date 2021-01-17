@@ -14,6 +14,10 @@
 // (4) compares the entered password with the one in the page (html.php)
 // (5) if correct starts $_SESSION['password'] containing the password
 
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to ppp.php');
+}
+
 // Declare variables
 $error = NULL;
 

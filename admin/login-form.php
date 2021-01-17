@@ -8,6 +8,10 @@
 /* Last updated 13 Dec 2020 */
 // This file is included in all admin pages
 
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to login-form.php');
+}
+
 ?>
 
 	<div id="loginform">

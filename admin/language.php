@@ -7,6 +7,10 @@
 
 /* Last updated 19 Oct 2020 */
 
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to language.php');
+}
+
 // Declare variables
 $lang = $language = $problem = $response2 = "";
 
