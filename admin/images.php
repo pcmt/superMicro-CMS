@@ -5,15 +5,15 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Jan 2021 */
+/* Last updated 19 Jan 2021 */
 
 define('ACCESS', TRUE);
 
-// Declare variables
+// Declare variables etc
 $response = $response1 = $display = $delete = $_file = $problem = "";
 $num = "0";
-
 $thisAdmin = 'images'; // For nav
+$imgfolder = '../img/';
 
 require('./top.php');
 
@@ -81,15 +81,11 @@ if (!$login) {
 	if (file_exists('./nav.php')) {
 		require('./nav.php');
 	} else {
-		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
+		_print("Error: the file '/admin/nav.php' does not exist. It must be installed.");
 		exit();
 	}
 
-	$imgfolder = LOCATION . 'img/';
-
 	if (array_key_exists('submit1', $_POST)) { // Upload
-
-		@chmod($imgfolder, 0775);
 
 		$filename = trim($_POST['filename']);
 
@@ -133,7 +129,7 @@ if (!$login) {
 	if (array_key_exists('submit2', $_POST)) { // Delete
 
 		$delete = trim($_POST['delete']);
-		$_file = '../img/' . $delete;
+		$_file = $imgfolder . $delete;
 
 		if (!file_exists($_file)) {
 			$problem = TRUE;
@@ -152,7 +148,7 @@ if (!$login) {
 
 		if (!$problem && file_exists($_file)) {
 			unlink($_file);
-			$response = '<em>Paff! <b>' . $delete . '</b> was deleted.</em>';
+			$response = '<em>Paff. <b>' . $delete . '</b> was deleted.</em>';
 		}
 
 	}

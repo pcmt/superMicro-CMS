@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Jan 2021 */
+/* Last updated 19 Jan 2021 */
 
 define('ACCESS', TRUE);
 
@@ -319,8 +319,7 @@ if (!$login) {
 
 	if (isset($_POST['submit1']) && $do_setup) {
 
-		// Check referrer to make sure form was submitted from this page
-		// Moved to top of file
+		// Check referrer moved to top of file
 		// if (!strcmp($_SERVER['HTTP_REFERER'], (LOCATION . ADMIN . '/setup.php')) == 0) {
 		// 	// _print('$_SERVER[\'HTTP_REFERER\'] = ' . $_SERVER['HTTP_REFERER'] . ''); // For testing
 		// 	$problem = TRUE;
@@ -431,7 +430,6 @@ if (!$login) {
 			$contact_menu = allowedChars($contact_menu);
 		}
 
-		// This value is not visible on the page
 		if ((!$_POST['font_type'] == 'google') || (!$_POST['font_type'] == 'hosted')) {
 			$problem = TRUE;
 			$font_type = FALSE;
@@ -439,7 +437,6 @@ if (!$login) {
 			$font_type = $_POST['font_type'];
 		}
 
-		// This value is not visible on the page
 		$lang_attr = $_POST['lang_attr'];
 		$langs = array('en', 'fr', 'de', 'es');
 		foreach ($langs as $val) {
@@ -452,15 +449,15 @@ if (!$login) {
 		if ($lang_attr) {
 			if ($lang_attr == 'en') {
 				$submitted_language = 'English';
-			}
-			if ($lang_attr == 'fr') {
+			} elseif ($lang_attr == 'fr') {
 				$submitted_language = 'French';
-			}
-			if ($lang_attr == 'de') {
+			} elseif ($lang_attr == 'de') {
 				$submitted_language = 'German';
-			}
-			if ($lang_attr == 'es') {
+			} elseif ($lang_attr == 'es') {
 				$submitted_language = 'Spanish';
+			} else { // Belt and braces
+				$problem = TRUE;
+				$lang_attr = FALSE;
 			}
 		}
 
@@ -480,7 +477,7 @@ if (!$login) {
 			$settings_text = "<?php
 
 if(!defined('ACCESS')) {
-	die('Direct access not permitted to settings.php.');
+	die('Direct access not permitted to settings.php');
 }
 
 define('LOCATION', '{$site_location}');

@@ -5,16 +5,15 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Jan 2021 */
-/* Form action */
+/* Last updated 19 Jan 2021 */
 
 define('ACCESS', TRUE);
 
-// Declare variables
+// Declare variables etc
 $response = $problem = "";
 $num = "0";
-
 $thisAdmin = 'upload'; // For nav
+$uploadfolder = '../uploads/';
 
 require('./top.php');
 
@@ -86,10 +85,9 @@ if (!$login) {
 		exit();
 	}
 
-	$uploadfolder = LOCATION . 'uploads/';
-
 	if (array_key_exists('submit1', $_POST)) { // Upload
 
+		// Because it's a new folder
 		if (file_exists('../uploads') && is_dir('../uploads')) {
 			@chmod($uploadfolder, 0775);
 		} else {
@@ -139,29 +137,8 @@ if (!$login) {
 
 	if (array_key_exists('submit2', $_POST)) { // Delete
 
-		$name = trim($_POST['delete']);
-		$delete = '../uploads/' . $name;
-
-		if (strlen($name) < 1) {
-			$problem = TRUE;
-			$response = '<em>No filename was entered.</em>';
-		}
-
-		if (!$problem) {
-			if (file_exists($delete)) {
-				unlink($delete);
-				$response = '<em>Success. <b>' . $name . '</b> was deleted.</em>';
-			} else {
-				$response = '<em>The file <b>' . $name . '</b> doesn\'t exist. Try another.</em>';
-			}
-		}
-	}
-
-
-	if (array_key_exists('submit2', $_POST)) { // Delete
-
 		$delete = trim($_POST['delete']);
-		$_file = '../uploads/' . $delete;
+		$_file = $uploadfolder . $delete;
 
 		if (!file_exists($_file)) {
 			$problem = TRUE;
@@ -175,7 +152,7 @@ if (!$login) {
 
 		if (!$problem && file_exists($_file)) {
 			unlink($_file);
-			$response = '<em>Success. <b>' . $delete . '</b> was deleted.</em>';
+			$response = '<em>Paff. <b>' . $delete . '</b> was deleted.</em>';
 		}
 
 	}
