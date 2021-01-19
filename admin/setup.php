@@ -430,22 +430,15 @@ if (!$login) {
 			$contact_menu = allowedChars($contact_menu);
 		}
 
-		if ((!$_POST['font_type'] == 'google') || (!$_POST['font_type'] == 'hosted')) {
+		$fonts = substr(trim($_POST['font_type']), 0, 6); // First 6 chars
+		if ((!$fonts == 'google') || (!$fonts == 'hosted')) {
 			$problem = TRUE;
 			$font_type = FALSE;
 		} else {
-			$font_type = $_POST['font_type'];
+			$font_type = $fonts;
 		}
 
-		$lang_attr = $_POST['lang_attr'];
-		$langs = array('en', 'fr', 'de', 'es');
-		foreach ($langs as $val) {
-			if (!$langs == $val) {
-				$problem = TRUE;
-				$lang_attr = FALSE;
-			}
-		}
-
+		$lang_attr = substr(trim($_POST['lang_attr']), 0, 2); // First 2 chars
 		if ($lang_attr) {
 			if ($lang_attr == 'en') {
 				$submitted_language = 'English';
