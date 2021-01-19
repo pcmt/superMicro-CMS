@@ -5,9 +5,11 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 Jan 2021 */
+/* Last updated 18 Jan 2021 */
 
-define('ACCESS', TRUE);
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to top.php');
+}
 
 // Declare variables
 $status = $notice = $user = $dofooter = $word = $login = $dom = $secure = $secure_cookie = $path = '';

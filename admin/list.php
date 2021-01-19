@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 Dec 2020 */
+/* Last updated 18 Jan 2021 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to list.php');

@@ -5,8 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 05 Jan 2021
+// Last updated 18 Jan 2021
 // Rewrote password routine due to problem reported
+
+define('ACCESS', TRUE);
 
 // Declare variables
 $sh_password = $salt = $domain = $cookie_status = $test_cookie = $missing_password_php = $incorrect_form_problem = $admin_shp = $admin_s = $file_write_problem = $error = $admin_password_problem = $install = '';
@@ -83,7 +85,7 @@ $required = array('./backup.php', './comments.php', './extras.php', './footer.ph
 
 foreach ($required as $file) {
 	if (!file_exists($file)) { // Exit if a file is missing
-		echo "Error. The file '{$file}' does not exist. It must be installed.";
+		echo "Error: the file '{$file}' does not exist. It must be installed.";
 		exit();
 	}
 }

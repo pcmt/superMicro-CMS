@@ -5,7 +5,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 16 Jan 2021 */
+/* Last updated 18 Jan 2021 */
+
+define('ACCESS', TRUE);
 
 // Declare variables ($feedback and $value used only when testing)
 $setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $submitted_language = $correct_value = $track_me = $posted = "";

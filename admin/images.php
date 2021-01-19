@@ -5,7 +5,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 Jan 2021 */
+/* Last updated 18 Jan 2021 */
+
+define('ACCESS', TRUE);
 
 // Declare variables
 $response = $response1 = $display = $delete = $_file = $problem = "";

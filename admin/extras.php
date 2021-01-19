@@ -7,6 +7,8 @@
 
 /* Last updated 14 Jan 2021 */
 
+define('ACCESS', TRUE);
+
 // Declare variables
 $page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = "";
 

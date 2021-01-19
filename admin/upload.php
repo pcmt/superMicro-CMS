@@ -5,8 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 Jan 2021 */
+/* Last updated 18 Jan 2021 */
 /* Form action */
+
+define('ACCESS', TRUE);
 
 // Declare variables
 $response = $problem = "";

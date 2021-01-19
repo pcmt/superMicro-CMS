@@ -7,6 +7,10 @@
 
 /* Last updated 16 Jan 2021 */
 
+if (!defined('ACCESS')) {
+	die('Direct access not permitted to functions.php');
+}
+
 /* --------------------------------------------------
  * General
  */

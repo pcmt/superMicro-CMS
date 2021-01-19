@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 18 Jan 2021 */
 // This file is included in all admin pages
 
 if (!defined('ACCESS')) {

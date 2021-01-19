@@ -5,7 +5,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Dec 2020 */
+/* Last updated 18 Jan 2021 */
+
+define('ACCESS', TRUE);
 
 // Declare variables (see also top.php)
 $root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = "";

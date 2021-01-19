@@ -5,8 +5,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 06 Jan 2021 */
-// Switched all echo to _print()
+/* Last updated 18 Jan 2021 */
+
+define('ACCESS', TRUE);
 
 // Declare variables
 $notice = $page_id = $filetitle = $pagecontent = $file_contents = $response = $do_page = $theme_selection = $theme = $do_stylesheet = $do_menu = $problem = $homepage = $page = $addmenu = $line_exists = $menuline = $menutext = $cssfilename = $rewrite = $ext = $mode = "";
