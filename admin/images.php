@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 19 Jan 2021 */
+/* Last updated 20 Jan 2021 */
 
 define('ACCESS', TRUE);
 
@@ -51,7 +51,7 @@ if (!$login) {
 // Logged out
 
 	if (!file_exists('./login-form.php')) {
-		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
+		_print("Error: the file '/admin/login-form.php' does not exist. It must be installed.");
 		exit();
 	} else {
 		require('./login-form.php');
@@ -128,12 +128,12 @@ if (!$login) {
 
 	if (array_key_exists('submit2', $_POST)) { // Delete
 
-		$delete = trim($_POST['delete']);
+		$delete = str_replace('/', '', trim($_POST['delete'])); // No folders
 		$_file = $imgfolder . $delete;
 
 		if (!file_exists($_file)) {
 			$problem = TRUE;
-			$response = '<em>Error: the image <b>' . $delete . '</b> does not exist.</em>';
+			$response = '<em>Error: an image <b>' . $delete . '</b> does not exist.</em>';
 		}
 
 		if ($delete == '') {
@@ -148,7 +148,7 @@ if (!$login) {
 
 		if (!$problem && file_exists($_file)) {
 			unlink($_file);
-			$response = '<em>Paff. <b>' . $delete . '</b> was deleted.</em>';
+			$response = '<em>Gone <b>' . $delete . '</b> was deleted.</em>';
 		}
 
 	}

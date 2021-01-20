@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 19 Jan 2021 */
+/* Last updated 20 Jan 2021 */
 
 define('ACCESS', TRUE);
 
@@ -137,22 +137,22 @@ if (!$login) {
 
 	if (array_key_exists('submit2', $_POST)) { // Delete
 
-		$delete = trim($_POST['delete']);
+		$delete = str_replace('/', '', trim($_POST['delete'])); // No folders
 		$_file = $uploadfolder . $delete;
 
 		if (!file_exists($_file)) {
 			$problem = TRUE;
-			$response = '<em>Error: the file <b>' . $delete . '</b> does not exist.</em>';
+			$response = '<em>Error: a file <b>' . $delete . '</b> does not exist.</em>';
 		}
 
 		if ($delete == '') {
 			$problem = TRUE;
-			$response = '<em>Error: no filename was entered. Enter a filename.</em>';
+			$response = '<em>Error: no document filename was entered. Enter a filename.</em>';
 		}
 
 		if (!$problem && file_exists($_file)) {
 			unlink($_file);
-			$response = '<em>Paff. <b>' . $delete . '</b> was deleted.</em>';
+			$response = '<em>Gone. <b>' . $delete . '</b> was deleted.</em>';
 		}
 
 	}
