@@ -148,7 +148,7 @@ if (!$login) {
 
 		if (!$problem && file_exists($_file)) {
 			unlink($_file);
-			$response = '<em>Gone <b>' . $delete . '</b> was deleted.</em>';
+			$response = '<em>Gone. <b>' . $delete . '</b> was deleted.</em>';
 		}
 
 	}
@@ -226,39 +226,43 @@ function displayLoading() {
 
 <?php
 
-	$view = LOCATION . 'img/';
+	if (defined('LOCATION')) {
 
-	_print_nlb('<ul>');
-	_print_nlb('<li class="top"><em>Click to view or copy markup to paste in pages</em></li>');
-	$dirname = "../img";
-	if ($folder = @opendir($dirname)) {
-		$filesArray = array();
-		while (FALSE !== ($file = readdir($folder))) {
-			if ((strstr($file, '.jpg')) || (strstr($file, '.jpeg')) || (strstr($file, '.gif')) || (strstr($file, '.png'))) {
-				$filesArray[] = $file;
-			}
-		}
+		$view = LOCATION . 'img/';
 
-		natcasesort($filesArray);
-		foreach ($filesArray as $file) {
-			$image = "../img/{$file}";
-			$size = getimagesize($image);
-
-			// For image just uploaded, otherwise no class
-			if (isset($_POST['submit1']) && ($file == $filename)) {
-				$mark = ' class="mark"';
-			} else {
-				$mark = NULL;
+		_print_nlb('<ul>');
+		_print_nlb('<li class="top"><em>Click to view or copy markup to paste in pages</em></li>');
+		$dirname = "../img";
+		if ($folder = @opendir($dirname)) {
+			$filesArray = array();
+			while (FALSE !== ($file = readdir($folder))) {
+				if ((strstr($file, '.jpg')) || (strstr($file, '.jpeg')) || (strstr($file, '.gif')) || (strstr($file, '.png'))) {
+					$filesArray[] = $file;
+				}
 			}
 
-			(int)$num = $num + 1;
-			$num_padded = sprintf("[%03d]", $num);
+			natcasesort($filesArray);
+			foreach ($filesArray as $file) {
+				$image = "../img/{$file}";
+				$size = getimagesize($image);
 
-			_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;img src="img/' . $file . '" ' . $size[3] . ' alt=""&gt;</span></li>');
+				// For image just uploaded, otherwise no class
+				if (isset($_POST['submit1']) && ($file == $filename)) {
+					$mark = ' class="mark"';
+				} else {
+					$mark = NULL;
+				}
+
+				(int)$num = $num + 1;
+				$num_padded = sprintf("[%03d]", $num);
+
+				_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;img src="img/' . $file . '" ' . $size[3] . ' alt=""&gt;</span></li>');
+			}
+
+			closedir($folder);
+			_print_nlb('</ul>');
 		}
 
-		closedir($folder);
-		_print_nlb('</ul>');
 	}
 
 ?>

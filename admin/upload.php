@@ -229,37 +229,41 @@ function displayLoading() {
 
 <?php
 
-	$view = LOCATION . 'uploads/';
+	if (defined('LOCATION')) {
 
-	_print_nlb('<ul>');
-	_print_nlb('<li class="top"><em>Click to view or copy markup to paste in pages</em></li>');
-	$dirname = "../uploads";
-	if ($folder = @opendir($dirname)) {
-		$filesArray = array();
-		while (FALSE !== ($file = readdir($folder))) {
-			if ((stristr($file, '.pdf')) || (stristr($file, '.doc')) || (stristr($file, '.docx')) || (stristr($file, '.rtf')) || (stristr($file, '.zip')) || (stristr($file, '.txt'))) {
-				$filesArray[] = $file;
-			}
-		}
+		$view = LOCATION . 'uploads/';
 
-		natcasesort($filesArray);
-		foreach ($filesArray as $file) {
-
-			// For file just uploaded, otherwise no class
-			if (isset($_POST['submit1']) && ($file == $name . '.' . $ext)) {
-				$mark = ' class="mark"';
-			} else {
-				$mark = NULL;
+		_print_nlb('<ul>');
+		_print_nlb('<li class="top"><em>Click to view or copy markup to paste in pages</em></li>');
+		$dirname = "../uploads";
+		if ($folder = @opendir($dirname)) {
+			$filesArray = array();
+			while (FALSE !== ($file = readdir($folder))) {
+				if ((stristr($file, '.pdf')) || (stristr($file, '.doc')) || (stristr($file, '.docx')) || (stristr($file, '.rtf')) || (stristr($file, '.zip')) || (stristr($file, '.txt'))) {
+					$filesArray[] = $file;
+				}
 			}
 
-			(int)$num = $num + 1;
-			$num_padded = sprintf("[%03d]", $num);
+			natcasesort($filesArray);
+			foreach ($filesArray as $file) {
 
-			_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;a href="./uploads/' . $file . '"&gt;' . $file . '&lt;/a&gt;</span></li>');
+				// For file just uploaded, otherwise no class
+				if (isset($_POST['submit1']) && ($file == $name . '.' . $ext)) {
+					$mark = ' class="mark"';
+				} else {
+					$mark = NULL;
+				}
+
+				(int)$num = $num + 1;
+				$num_padded = sprintf("[%03d]", $num);
+
+				_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;a href="./uploads/' . $file . '"&gt;' . $file . '&lt;/a&gt;</span></li>');
+			}
+
+			closedir($folder);
+			_print_nlb('</ul>');
 		}
 
-		closedir($folder);
-		_print_nlb('</ul>');
 	}
 
 ?>
