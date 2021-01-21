@@ -5,12 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 19 Jan 2021 */
+/* Last updated 21 Jan 2021 */
 
 define('ACCESS', TRUE);
 
 // Declare variables ($feedback and $value used only when testing)
-$setupstatus = $response = $response1 = $response2 = $response3 = $setupstatus = $update = $problem = $invalid_email = $submitted_language = $correct_value = $track_me = $posted = "";
+$setupstatus = $response = $response1 = $response2 = $response3 = $update = $problem = $invalid_email = $submitted_language = $correct_value = $track_me = $posted = "";
 
 $thisAdmin = 'setup'; // For nav
 
@@ -300,7 +300,7 @@ if (!$login) {
 	// For navigation links and response box
 	if (!file_exists('../inc/settings.php')) {
 		$settings = FALSE;
-		$setupstatus = '<em><b>Setup does not yet exist.</b></em>';
+		$setupstatus = '<em><b>Settings not found. Submit setup?</b></em>';
 	} else {
 		$settings = TRUE;
 		// unset ($setupstatus);
@@ -515,7 +515,7 @@ define('VERSION', '{$version}');
 
 	} else { // Form not submitted
 
-		$response1 = "{$setupstatus}<em> No action requested. Example settings shown.</em>";
+		$response1 = "{$setupstatus} <em>No action requested. Example settings shown.</em>";
 	}
 
 	// End submit setup
@@ -526,7 +526,7 @@ define('VERSION', '{$version}');
 		if (file_exists('../inc/settings.php')) {
 			$response1 = '<em>Current settings shown. To change the settings, edit as required then <b>Submit setup</b>.</em>';
 		} else {
-			$response1 = '<em><b>Setup does not yet exist.</b> Example settings shown.</em>';
+			$response1 = "{$setupstatus} <em>Example settings shown.</em>";
 		}
 	}
 
