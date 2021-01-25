@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 Jan 2021 */
+/* Last updated 23 Jan 2021 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -40,7 +40,7 @@ if (file_exists('./top.php')) {
 
 <?php
 
-if (isset($_SESSION['password']) && $_SESSION['password'] == "v") {
+if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
 
 ?>
 
@@ -106,15 +106,20 @@ if ($response) {
 	$pageidArray = file('pageid.txt');
 	$list = array_count_values($pageidArray);
 	arsort($list, SORT_NUMERIC);
+
+	$running = 0;
+
 	foreach ($list as $page => $num) {
 		$page = str_replace("\n", "", trim($page));
-		// $anchor = $page;
 		if (!APACHE) { // Add .php extension
 			$page = $page . '.php';
 		} elseif ($page == 'index') {
 			$page = str_replace("index", "", $page);
 		}
-		_print_nlb('<li class="index"><a href="' . LOCATION . $page . '" target="_blank"><span>' . LOCATION .'</span>' . $page . '</a> : ' . $num .'</li>');
+
+		$running = $running + $num;
+
+		_print_nlb('<li class="index"><a href="' . LOCATION . $page . '" target="_blank"><span>' . LOCATION .'</span>' . $page . '</a> : ' . $num . ' <span class="mute">: ' . $running . '</span></li>');
 	}
 
 ?>

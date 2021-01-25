@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Jan 2021 */
+/* Last updated 25 Jan 2021 */
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
@@ -17,7 +17,7 @@ error_reporting(0);
 define('ACCESS', TRUE); // All includes in /visits/
 
 // Declare variables
-$error = "";
+$p_word = $error = "";
 
 session_start();
 
@@ -25,16 +25,17 @@ if (isset($_POST['submit_pass']) && $_POST['pass']) {
 
 	$p_word = trim($_POST['pass']);
 
-	if (preg_match('/[a-z_\-0-9]/i', $p_word)) {
-
-		if ($p_word == "v") {
-			$_SESSION['password'] = $p_word;
-		} else {
-			$error = '<p class="pword">Wrong Password</p>';
-		}
-
-	} else {
+	// At least some letters + (optional) numbers, underscore and dash
+	if (!preg_match('/^[a-zA-Z]+[a-zA-Z\-0-9._]+$/', $p_word)) {
 		$error = '<p class="pword">Invalid character(s)</p>';
+		$_SESSION['password'] = FALSE;
+	} else {
+		if ($p_word !== "v") { // As index.php and list.php
+			$error = '<p class="pword">Wrong Password</p>';
+			$_SESSION['password'] = FALSE;
+		} else {
+			$_SESSION['password'] = $p_word;
+		}
 	}
 
 }

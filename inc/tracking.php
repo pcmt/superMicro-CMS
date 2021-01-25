@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 15 Jan 2021 */
+/* Last updated 24 Jan 2021 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to tracking.php');
@@ -187,41 +187,44 @@ if (!$blocked) {
 				$file_data .= file_get_contents($hitsfile); // Add previous hits
 				file_put_contents($hitsfile, $file_data); // Update list
 
-			} else { // More than 1000 hits
+			} elseif ($temp_count >= 1000) { // If 1000 or more
 
 				// Delete all hits and start again
-				$fp4 = @fopen($hitsfile, "w");
-				fwrite($fp4, "");
-				fclose($fp4);
+				$fp3 = @fopen($hitsfile, "w");
+				fwrite($fp3, "");
+				fclose($fp3);
 
 				// Do the same with the temporary count file
-				$fp5 = @fopen($temp_countfile, "w");
-				fwrite($fp5, "0");
-				fclose($fp5);
+				$fp4 = @fopen($temp_countfile, "w");
+				fwrite($fp4, "0");
+				fclose($fp4);
 
-			} // End of 'if less than 1000 hits'
+			} else { // Do nothing
+				$temp_count = (int)fread($fp2, filesize($temp_countfile));
+			} // End of delete if 1000 or more
+
+			// If temporary count, add pageID list (here to match numbers)
+			// Total hits per page should add up to $temp_count
+			if ($pageID) {
+
+				// Text file where pageID listed
+				$pageidfile = $visits . 'pageid.txt';
+				if (file_exists($pageidfile)) {
+					$current = file_get_contents($pageidfile);
+					// Append to the file
+					$current .= $pageID . "\n";
+					// Write the contents back to the file
+					file_put_contents($pageidfile, $current);
+				}
+
+				// For info
+				_print_nlb('<!-- Tracking "/' . $pageID . '" //-->');
+
+			} // End 'if hit recorded add pageID'
 
 		} // End of 'if tempcount file exists'
 
 	} // End of 'if hitsfile exists'
-
-	// If hit recorded add pageID
-	if ($pageID) {
-
-		// Text file where pageID listed
-		$pageidfile = $visits . 'pageid.txt';
-		if (file_exists($pageidfile)) {
-			$current = file_get_contents($pageidfile);
-			// Append to the file
-			$current .= $pageID . "\n";
-			// Write the contents back to the file
-			file_put_contents($pageidfile, $current);
-		}
-
-		// For info
-		_print_nlb('<!-- Tracking "/' . $pageID . '" //-->');
-
-	} // End 'if hit recorded add pageID'
 
 } // End of 'if not blocked'
 
@@ -234,6 +237,6 @@ if ($ip) {
 	_print_nlb('<!-- No ip //-->');
 }
 
-_print('<!-- Tracking file: 15 JAN 21, 22:00 //-->');
+_print('<!-- Tracking file: 23 JAN 21, 23:50 //-->');
 
 ?>
