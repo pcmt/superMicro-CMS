@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 23 Jan 2021 */
+/* Last updated 26 Jan 2021 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -18,13 +18,10 @@ if (file_exists('./top.php')) {
 <html lang="en">
 
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>superMicro CMS stats</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Expires" content="Mon, 26 Jul 1997 05:00:00 GMT">
-<meta http-equiv="Pragma" content="no-cache">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <meta name="robots" content="noindex,nofollow">
 
@@ -40,7 +37,7 @@ if (file_exists('./top.php')) {
 
 <?php
 
-if ( isset($_SESSION['password']) && $_SESSION['password'] == "v" ) {
+if (isset($_SESSION['password']) && $_SESSION['password'] == "v") {
 
 ?>
 

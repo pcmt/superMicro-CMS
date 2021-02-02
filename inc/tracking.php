@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 Jan 2021 */
+/* Last updated 02 Feb 2021 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to tracking.php');
@@ -48,6 +48,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
 
 // Date
 $the_date = date('l jS F Y H:i:s');
+$time = time();
 
 // User agent
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
@@ -130,101 +131,86 @@ if (!$blocked) {
 	// Build the data to display
 	$hitinfo = 'Page: <a href="' . $escaped_url . '" target="_blank">' . $escaped_url . '</a><br>' . $the_date . ' [ <span class="info">' . $info . '</span> ]<br>IP: <span class="mute">https://ip-address.us/lookup/</span>' . $ip . '<br>Referrer: <span>' . $referer . '</span>';
 
-	if (file_exists($visits)) {
-		// Text file where hits listed
-		$hitsfile = $visits . 'listhits.txt';
+	// Text file where hits counted
+	$countfile = $visits . 'count.txt';
+	// Text file where hits listed
+	$hitsfile = $visits . 'listhits.txt';
+	// Temporary text file where hits counted
+	$temp_countfile = $visits . 'tempcount.txt';
+	// Text file for tempcount.txt reset date/time
+	$temp_count_reset = $visits . 'tempcountreset.txt';
+	// Text file where pageID listed
+	$pageidfile = $visits . 'pageid.txt';
 
-		// Permanent text file where hits counted
-		$countfile = $visits . 'count.txt';
+	// Update total count
+	// Nothing in this script resets the total count
+	$fp1 = @fopen($countfile, 'c+');
+	flock($fp1, LOCK_EX);
+	$count = (int)fread($fp1, filesize($countfile));
+	ftruncate($fp1, 0);
+	fseek($fp1, 0);
+	fwrite($fp1, $count + 1);
+	flock($fp1, LOCK_UN);
+	fclose($fp1);
 
-		// Temporary text file where hits counted
-		$temp_countfile = $visits . 'tempcount.txt';
+	// Get temporary count
+	$temp_count = file_get_contents($temp_countfile);
+
+	// Prevent large files being written
+	if ($temp_count > 999) {
+
+		// Delete all hits and start again
+		$fp3 = @fopen($hitsfile, "w");
+		fwrite($fp3, "");
+		fclose($fp3);
+
+		// Do the same with the temporary count file
+		$fp4 = @fopen($temp_countfile, "w");
+		fwrite($fp4, "1"); // The hit which triggered the reset
+		fclose($fp4);
+
+		// Do the same with the page id file
+		$fp5 = @fopen($pageidfile, "w");
+		fwrite($fp5, "");
+		fclose($fp5);
+
+		// Store temporary count reset date/time
+		$fp6 = @fopen($temp_count_reset, "w");
+		fwrite($fp6, $time);
+		fclose($fp6);
+
 	} else {
-		$error = 'cannot find /visits/';
+
+		// Add 1 to temporary count
+		$fp2 = @fopen($temp_countfile, 'c+');
+		flock($fp2, LOCK_EX);
+		$temp_count = (int)fread($fp2, filesize($temp_countfile));
+		ftruncate($fp2, 0);
+		fseek($fp2, 0);
+		fwrite($fp2, $temp_count + 1);
+		flock($fp2, LOCK_UN);
+		@fclose($fp2);
+
 	}
 
-	// Nothing happens if no hits file
-	if (file_exists($hitsfile)) {
+	/* Carry on regardless */
 
-		// Update total count
-		// Nothing in this script resets the total count
-		if (file_exists($countfile)) {
+	// Add pageID to list
+	// Total hits per page should add up to $temp_count
+	if ($pageID) {
+		$current = file_get_contents($pageidfile);
+		// Append to the file
+		$current .= $pageID . "\n";
+		// Write the contents back to the file
+		file_put_contents($pageidfile, $current);
+		// For info
+		_print_nlb('<!-- Tracking "/' . $pageID . '" //-->');
+	}
 
-			$fp1 = @fopen($countfile, 'c+');
-			flock($fp1, LOCK_EX);
-
-			$count = (int)fread($fp1, filesize($countfile));
-			ftruncate($fp1, 0);
-			fseek($fp1, 0);
-			fwrite($fp1, $count + 1);
-
-			flock($fp1, LOCK_UN);
-			fclose($fp1);
-
-		}
-
-		// Update temporary count
-		// If more than 1000, reset file to 0 and delete all hit info
-		// otherwise record hit
-		if (file_exists($temp_countfile)) {
-
-			$fp2 = @fopen($temp_countfile, 'c+');
-			flock($fp2, LOCK_EX);
-
-			$temp_count = (int)fread($fp2, filesize($temp_countfile));
-			ftruncate($fp2, 0);
-			fseek($fp2, 0);
-			fwrite($fp2, $temp_count + 1);
-
-			flock($fp2, LOCK_UN);
-			fclose($fp2);
-
-			// Prevent huge hits file being written
-			if ($temp_count < 1000) { // If less than 1000 hits
-
-				// Add hit details to top of listhits.txt
-				$file_data = $hitinfo . "\n"; // New hit
-				$file_data .= file_get_contents($hitsfile); // Add previous hits
-				file_put_contents($hitsfile, $file_data); // Update list
-
-			} elseif ($temp_count >= 1000) { // If 1000 or more
-
-				// Delete all hits and start again
-				$fp3 = @fopen($hitsfile, "w");
-				fwrite($fp3, "");
-				fclose($fp3);
-
-				// Do the same with the temporary count file
-				$fp4 = @fopen($temp_countfile, "w");
-				fwrite($fp4, "0");
-				fclose($fp4);
-
-			} else { // Do nothing
-				$temp_count = (int)fread($fp2, filesize($temp_countfile));
-			} // End of delete if 1000 or more
-
-			// If temporary count, add pageID list (here to match numbers)
-			// Total hits per page should add up to $temp_count
-			if ($pageID) {
-
-				// Text file where pageID listed
-				$pageidfile = $visits . 'pageid.txt';
-				if (file_exists($pageidfile)) {
-					$current = file_get_contents($pageidfile);
-					// Append to the file
-					$current .= $pageID . "\n";
-					// Write the contents back to the file
-					file_put_contents($pageidfile, $current);
-				}
-
-				// For info
-				_print_nlb('<!-- Tracking "/' . $pageID . '" //-->');
-
-			} // End 'if hit recorded add pageID'
-
-		} // End of 'if tempcount file exists'
-
-	} // End of 'if hitsfile exists'
+	// Add hit details to top of listhits.txt
+	$file_data = $hitinfo . "\n"; // New hit
+	$file_data .= file_get_contents($hitsfile); // Add previous hits
+	file_put_contents($hitsfile, $file_data); // Update list
 
 } // End of 'if not blocked'
 
@@ -237,6 +223,6 @@ if ($ip) {
 	_print_nlb('<!-- No ip //-->');
 }
 
-_print('<!-- Tracking file: 23 JAN 21, 23:50 //-->');
+_print('<!-- Tracking file: 02 FEB 21, 10:30 //-->');
 
 ?>

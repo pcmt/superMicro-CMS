@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 18 Jan 2021
+// Last updated 01 Feb 2021
 // Rewrote password routine due to problem reported
 
 define('ACCESS', TRUE);
@@ -13,11 +13,8 @@ define('ACCESS', TRUE);
 // Declare variables
 $sh_password = $salt = $domain = $cookie_status = $test_cookie = $missing_password_php = $incorrect_form_problem = $admin_shp = $admin_s = $file_write_problem = $error = $admin_password_problem = $install = '';
 
-#error_reporting(0);
-#ini_set('display_errors', 0);
-
-error_reporting(E_ALL);
-ini_set('display_errors', 1);
+error_reporting(0);
+// error_reporting(E_ALL);
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -81,7 +78,7 @@ if ($secure_cookie) {
 /* -------------------------------------------------- */
 /* Verify all the required admin files */
 
-$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/count.txt', './text/extra-css.txt', './text/inmenu.txt', './text/index.txt', './text/listhits.txt', './text/pageid.txt', './text/password.txt', './text/since.txt', './text/stylesheet.txt', './text/tempcount.txt');
+$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/count.txt', './text/extra-css.txt', './text/inmenu.txt', './text/index.txt', './text/listhits.txt', './text/pageid.txt', './text/password.txt', './text/since.txt', './text/stylesheet.txt', './text/tempcount.txt', './text/tempcountreset.txt');
 
 foreach ($required as $file) {
 	if (!file_exists($file)) { // Exit if a file is missing
@@ -235,6 +232,16 @@ so that when an update is uploaded they are not overwritten
 			if (!copy($text, $tempcount)) {
 				$file_write_problem = TRUE;
 				$error = "Install can't proceed. Could not create <b>{$tempcount}.</b>";
+			}
+		}
+
+		// /admin/visits/tempcount.txt
+		$tempcount_reset = './visits/tempcountreset.txt';
+		if (!file_exists($tempcount_reset)) {
+			$text = './text/tempcountreset.txt';
+			if (!copy($text, $tempcount_reset)) {
+				$file_write_problem = TRUE;
+				$error = "Install can't proceed. Could not create <b>{$tempcount_reset}.</b>";
 			}
 		}
 

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 Jan 2021 */
+/* Last updated 26 Jan 2021 */
 
 if(!defined('ACCESS')) {
 	die('Direct access not permitted to counts.php');
@@ -20,7 +20,6 @@ _print_nlb('<p>Total hits: <strong>' . $visits . '</strong> since delete on ' . 
 $start = strtotime(date('Y-m-d', (int)$since));
 $end = strtotime(date('Y-m-d', time()));
 
-// $days_between = ceil(abs($end - $start) / 86400);
 $days_between = (($end - $start) / 86400);
 $dayscounted = $days_between + 1;
 $hitsperday = ceil(abs($visits / $dayscounted));

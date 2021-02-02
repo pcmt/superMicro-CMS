@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 25 Jan 2021 */
+/* Last updated 01 Feb 2021 */
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
@@ -26,7 +26,7 @@ if (isset($_POST['submit_pass']) && $_POST['pass']) {
 	$p_word = trim($_POST['pass']);
 
 	// At least some letters + (optional) numbers, underscore and dash
-	if (!preg_match('/^[a-zA-Z]+[a-zA-Z\-0-9._]+$/', $p_word)) {
+	if (!preg_match('/[a-z_\-0-9]/i', $p_word)) {
 		$error = '<p class="pword">Invalid character(s)</p>';
 		$_SESSION['password'] = FALSE;
 	} else {

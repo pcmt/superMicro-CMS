@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 16 Jan 2021 */
+/* Last updated 01 Feb 2021 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -272,7 +272,7 @@ function loggedoutFooter() {
 		echo '<p><a href="' . LOCATION . '">' . $anchor . '</a> (logged out)</p>';
 	}
 
-	if (file_exists('./install.php') && !defined('ADMIN')) { // For when not installed
+	if (file_exists('./install.php') && !file_exists('./password.php')) { // For when not installed
 		echo '<p>It seems superMicro CMS is not yet installed.</p>
 <p><a href="./install.php">Install here&nbsp;&raquo;</a></p>';
 	} else { // Is installed

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 Jan 2021 */
+/* Last updated 01 Feb 2021 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -18,13 +18,10 @@ if (file_exists('./top.php')) {
 <html lang="en">
 
 <head>
+
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-
 <title>superMicro CMS visits</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<meta http-equiv="Expires" content="Mon, 26 Jul 1997 05:00:00 GMT">
-<meta http-equiv="Pragma" content="no-cache">
 <link rel="stylesheet" href="stylesheet.css" type="text/css">
 <meta name="robots" content="noindex,nofollow">
 
@@ -95,8 +92,12 @@ if ($response) {
 		die('Error: /admin/visits/counts.php not found');
 	}
 
-	$temp  = file_get_contents("tempcount.txt");
-	_print_nlb('<p>Up to 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):');
+	$temp = file_get_contents("tempcount.txt");
+	_print_nlb('<p>Up to 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):</p>');
+
+	$since_reset = file_get_contents("tempcountreset.txt"); // Timestamp
+	$formatsince_reset = date('D d M Y (H:i:s)', (int)$since_reset);
+	_print_nlb('<p>Temporary count last emptied ' . $formatsince_reset . '</p>');
 
 ?>
 
