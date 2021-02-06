@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Jan 2021 */
+/* Last updated 05 Feb 2021 */
 // This file is included in all admin pages
 
 if (!defined('ACCESS')) {
@@ -13,8 +13,7 @@ if (!defined('ACCESS')) {
 }
 
 ?>
-
-	<div id="loginform">
+<div id="loginform">
 
 <h1>superMicro CMS <i>login</i></h1>
 
@@ -54,4 +53,4 @@ if (!defined('ACCESS')) {
 
 ?>
 
-	</div>
+</div>

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Jan 2021 */
+/* Last updated 05 Feb 2021 */
 
 define('ACCESS', TRUE);
 
@@ -268,6 +268,7 @@ if (!$login) {
 	}
 
 	include('./footer.php');
+
 } else {
 
 	/* -------------------------------------------------- */
@@ -277,8 +278,6 @@ if (!$login) {
 }
 
 ?>
-
-</div>
 
 </body>
 </html>

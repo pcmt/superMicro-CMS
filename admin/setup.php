@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Jan 2021 */
+/* Last updated 05 Feb 2021 */
 
 define('ACCESS', TRUE);
 
@@ -16,16 +16,6 @@ $thisAdmin = 'setup'; // For nav
 
 require('./top.php'); // Loads functions.php
 require('./language.php');
-
-// Check form submitted from this page even if not logged in
-// Not effective against spoofed HTTP_REFERER
-if (isset($_POST['submit1']) && defined('LOCATION') && defined('ADMIN')) {
-	if (!strcmp($_SERVER['HTTP_REFERER'], (LOCATION . ADMIN . '/setup.php')) == 0) {
-		$problem = TRUE;
-		echo 'Error: incorrect referrer';
-		exit();
-	}
-}
 
 /*
 (1) TRACK_HITS is defined on setup as TRUE or FALSE
@@ -1060,18 +1050,16 @@ if (file_exists('./test.php')) {
 */
 
 	include('./footer.php');
+
 } else {
 
-/* ================================================== */
-/* END 'IF LOGGED IN' */
-/* ================================================== */
+	/* -------------------------------------------------- */
+	// No $login or !$login
 
 	_print('<p>Login could not be verified.</p>');
 }
 
 ?>
-
-</div>
 
 </body>
 </html>

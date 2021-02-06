@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Jan 2021 */
+/* Last updated 05 Feb 2021 */
 
 define('ACCESS', TRUE);
 
@@ -212,6 +212,13 @@ if (!$login) {
 <IfModule mod_rewrite.c>
   RewriteEngine on
 
+# QUERY STRING
+
+# Redirect Facebook query string to non-query string
+  RewriteCond %{QUERY_STRING} ^(.*)(?:^|&)fbclid=(?:[^&]*)((?:&|$).*)$ [NC]
+  RewriteCond %1%2 (^|&)([^&].*|$)
+  RewriteRule ^(.*) /$1?%2 [R=301,L]
+
 # EXTERNAL REDIRECTS
 
 # Remove index php root only
@@ -226,13 +233,6 @@ if (!$login) {
 ' . $canonical_1 . '
 
 ' . $canonical_2 . '
-
-# FACEBOOK QUERY STRING
-
-# Redirect Facebook query string to non-query string
-  RewriteCond %{QUERY_STRING} ^(.*)(?:^|&)fbclid=(?:[^&]*)((?:&|$).*)$ [NC]
-  RewriteCond %1%2 (^|&)([^&].*|$)
-  RewriteRule ^(.*) /$1?%2 [R=301,L]
 
 # INTERNAL REWRITES
 
@@ -378,16 +378,13 @@ echo "\n";
 
 } else {
 
-/* ================================================== */
-/* END 'IF LOGGED IN' */
-/* ================================================== */
+	/* -------------------------------------------------- */
+	// No $login or !$login
 
 	_print('<p>Login could not be verified.</p>');
 }
 
 ?>
-
-</div>
 
 </body>
 </html>
