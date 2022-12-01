@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Nov 2022 */
+/* Last updated 01 Dec 2022 */
 
 define('ACCESS', TRUE);
 
@@ -303,7 +303,7 @@ $obj->Template();
 				}
 
 				$extrafilename = "../extras/{$extrafilename}";
-				// Create comment file only if it doesn't exist
+				// Create extras file only if it doesn't exist
 				if (!file_exists($extrafilename)) {
 					$fp = fopen($extrafilename, 'w+');
 					fwrite($fp, '<p>No extras so far.</p>');
