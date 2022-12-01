@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 Dec 2020 */
+/* Last updated 29 July 2021 */
 
 // Declare variables
 $commentfile = $leavecomment = $closecomments = '';
@@ -18,6 +18,14 @@ _print_nlb('<!-- extra-content //-->');
 
 if (file_exists('./js/slides.js')) { // From the website root
 	_print_nlb('<script src="' . LOCATION . 'js/slides.js"></script>');
+}
+
+if (file_exists('./js/simpleToggle.js')) { // From the website root
+	_print_nlb('<script src="' . LOCATION . 'js/simpleToggle.js"></script>');
+}
+
+if (file_exists('./js/read-more.js')) { // From the website root
+	_print_nlb('<script src="' . LOCATION . 'js/read-more.js"></script>');
 }
 
 if ($share) { // See html.php ($share)

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 29 Nov 2022 */
 
 /*
 Determine whether to display the comment form which uses
@@ -15,7 +15,7 @@ WINDOWS constant set to TRUE or FALSE in settings.php
 */
 
 // Declare variables
-$close_comments = "";
+$comment = $close_comments = $problem = "";
 
 if(!defined('ACCESS')) {
 	die('Direct access not permitted to form.php');
@@ -58,7 +58,11 @@ if (isset($_POST['submit'])) {
 
 	if ($_POST['url'] != '') {
 		$problem = TRUE;
-		unset($comment);
+		if (isset($comment)) {
+			unset($comment);
+		} else {
+			$comment = ''; /* 29nov22 */
+		}
 		$response .= TEXT21 . '<br>';
 	}
 
@@ -101,19 +105,12 @@ if (isset($_POST['submit'])) {
 		}
 	}
 
-	// Block specified IP addresses
-	$badIPs = array('76.164.219.139', '76.164.219.143');
-	foreach ($badIPs as $spammer) {
-		if ($spammer == $ip) {
-			echo TEXT23;
-			exit;
-		}
-	}
-
 	// Dec 18 'stopwords' blocker
 	if (file_exists(INC . 'stopwords.txt')) {
 		$stopwordsArray = file(INC . 'stopwords.txt'); // Get stopword as array
-		$string = stripslashes($comment);
+		if (isset($comment)) {
+			$string = stripslashes($comment);
+		}
 		foreach ($stopwordsArray as $word) {
 			if (stripos($string, trim($word)) !== FALSE) {
 				// echo 'Stopword = ' . $word . "<br>";

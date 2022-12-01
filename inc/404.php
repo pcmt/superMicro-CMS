@@ -47,7 +47,7 @@ if ($protocol) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Page Not Found</title>
+<title>Page not found</title>
 
 <style>
 
@@ -102,7 +102,7 @@ p {
 
 	<div id="wrap">
 
-<h1>Page not found</h1>
+<h1>Page not found.</h1>
 <?php
 
 if ($protocol) { // No protocol, no output

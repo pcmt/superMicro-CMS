@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 21 Nov 2022 */
 
 define('ACCESS', TRUE);
 
@@ -121,6 +121,8 @@ if (!$login) {
 						// Add files into the array
 						$filesArray[] = $_root . '/' . $phpfile;
 						$filesArray[] = $_root . '/pages/' . $txtfile;
+						$filesArray[] = $_root . '/comments/' . $txtfile;
+						$filesArray[] = $_root . '/extras/' . $txtfile;
 					}
 				}
 			}
@@ -250,12 +252,13 @@ if (!$login) {
 <p>Backup ZIPs may contain:</p>
 <ul>
 <li>The written content pages you have created.</li>
+<li>All associated comments and 'extras' files.</li>
 <li>The menu file.</li>
-<li>The stylesheets 'stylesheet.css' and 'extra.css' (backed up with pages).</li>
+<li>The stylesheets 'stylesheet.css' and 'extra.css'.</li>
 <li>The contents of the images folder, including any images you uploaded. There may be a limit imposed by the Operating System or the server administrator (usually memory limit or maximum execution time). This may be an issue if you have a large number of images to zip. Tested to work with up to 250 average size jpg files (about 10 seconds).</li>
 </ul>
 <p>For security, after creating a backup do not leave it on the server. Download it to your hard drive by clicking 'Download backup' then click 'Delete backup'. Check whether a backup exists on the server by clicking 'Check status'.</p>
-<p>See also <a href="https://supermicrocms.com/backups" target="_blank">restoring from backups&nbsp;&raquo;</a></p>
+<p>See also <a href="https://web.patricktaylor.com/cms-backups" target="_blank">restoring from backups&nbsp;&raquo;</a></p>
 
 	</div>
 

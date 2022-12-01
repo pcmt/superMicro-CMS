@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 01 Feb 2021
+// Last updated 06 June 2022
 // Rewrote password routine due to problem reported
 
 define('ACCESS', TRUE);
@@ -15,6 +15,12 @@ $sh_password = $salt = $domain = $cookie_status = $test_cookie = $missing_passwo
 
 error_reporting(0);
 // error_reporting(E_ALL);
+
+/* -------------------------------------------------- */
+// Delete previous login cookie if it exists
+if (isset($_COOKIE["supermicro"])) {
+	setcookie("supermicro", "", time() - 3600);
+}
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -331,7 +337,7 @@ if (!$install) { // Keeps form visible until form and files OK
 
 <h3>Step 1: [salted and hashed] password and salt</h3>
 
-<p>If you haven't got a <em>[salted and hashed] password</em> and <em>salt</em> <a href="https://supermicrocms.com/hash-sha256" target="_blank">get them here&nbsp;&raquo;</a></p>
+<p>If you haven't got a <em>[salted and hashed] password</em> and <em>salt</em> <a href="https://patricktaylor.com/hash-sha256" target="_blank">get them here&nbsp;&raquo;</a></p>
 <p>IMPORTANT. Remember (or write down) your actual password. Login to admin with <em>your password</em>, <b>not</b> the [salted and hashed] password.</p>
 
 <hr>

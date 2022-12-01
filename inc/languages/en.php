@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 Sept 2020 */
+/* Last updated 29 June 2021 */
 
 /* -------------------------------------------------- */
 // File /inc/content.php
@@ -62,7 +62,7 @@ define("TEXT43", "seconds");
 // File /inc/extra-content.php
 
 define("TEXT50", "Comments");
-define("TEXT51", "No comments yet.");
+define("TEXT51", "No comments so far.");
 define("TEXT52", "Leave a comment");
 define("TEXT53", "Comments are closed.");
 define("TEXT54", "No comments found.");

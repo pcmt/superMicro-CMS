@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 21 Nov 2022 */
 
 define('ACCESS', TRUE);
 
@@ -355,7 +355,7 @@ _print("
 <p>Site location = {$site_location}</p>
 <p>Protocol = {$show_protocol}</p>
 <p>Admin folder = {$admin}</p>
-<p><a href=\"https://supermicrocms.com/htaccess\" target=\"_blank\">Info here</a>&nbsp;&raquo;</p>
+<p><a href=\"https://web.patricktaylor.com/cms-htaccess\" target=\"_blank\">Info here</a>&nbsp;&raquo;</p>
 ");
 
 /* For testing

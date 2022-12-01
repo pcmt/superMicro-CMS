@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 01 Feb 2021 */
+/* Last updated 30 Nov 2022 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -128,7 +128,7 @@ if ($response) {
 
 		</div>
 
-<p class="footer"><a href="https://supermicrocms.com/" target="_blank">supermicrocms.com</a></p>
+<p class="footer"><a href="https://web.patricktaylor.com/cms" target="_blank">superMicro CMS</a></p>
 
 <!-- END OF CONTENT -->
 

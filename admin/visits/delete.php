@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 22 Dec 2020 */
+/* Last updated 14 July 2021 */
 
 if(!defined('ACCESS')) {
 	die('Direct access not permitted to delete.php');
@@ -59,6 +59,13 @@ if (isset($_POST['delete'])) { // Deletes everything
 	}
 	fwrite($fp5, "");
 	fclose($fp5);
+
+	$fp6 = fopen("tempcountreset.txt", "w") or die("Error!");
+	if ($fp6) {
+		_print_nlb('tempcountreset.txt updated<br>');
+	}
+	fwrite($fp6, $time);
+	fclose($fp6);
 
 	_print_nlb('</p>');
 

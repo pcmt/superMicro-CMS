@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Dec 2020 */
+/* Last updated 09 Feb 2022 */
 
 define('ACCESS', TRUE);
 
@@ -73,7 +73,7 @@ _print("\n");
 
 if (!isset($_POST['terms'])) { // No search submitted
 
-// Show H1 and form
+// Show H1 then form and spinner
 ?>
 
 <h1><?php _print(TEXT16); ?></h1>
@@ -82,12 +82,23 @@ if (!isset($_POST['terms'])) { // No search submitted
 
 <p><?php _print(TEXT41); ?></p>
 
-<form class="search" action="" method="post">
+<form class="search" action="" method="post" onSubmit="displayLoading();">
 <input type="search" name="terms" placeholder="<?php _print(TEXT16); ?>" required>
 <input type="submit" name="submit" class="submit" value="<?php _print(TEXT16); ?>">
 </form>
 
 			</div>
+
+<!-- Spinner below form //-->
+
+<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display:none">
+<script type="text/javascript">
+function displayLoading() {
+	if (document.getElementById('search-progress')) {
+		document.getElementById('search-progress').style.display='block';
+	}
+}
+</script>
 
 <?php
 
@@ -104,7 +115,7 @@ if (!isset($_POST['terms'])) { // No search submitted
 
 			<div class="searchform">
 
-<form class="search" action="" method="post">
+<form class="search" action="" method="post" onSubmit="displayLoading();">
 <?php if ($terms) { ?>
 <input type="search" name="terms" value="<?php _print($terms); ?>">
 <?php } else { ?>
@@ -114,6 +125,17 @@ if (!isset($_POST['terms'])) { // No search submitted
 </form>
 
 			</div>
+
+<!-- Spinner below form //-->
+
+<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display:none">
+<script type="text/javascript">
+function displayLoading() {
+	if (document.getElementById('search-progress')) {
+		document.getElementById('search-progress').style.display='block';
+	}
+}
+</script>
 
 <?php
 
@@ -244,7 +266,7 @@ if (!isset($_POST['terms'])) { // No search submitted
 
 <?php _print("<p>" . TEXT41 . "</p>\n"); ?>
 
-<form class="search" action="" method="post">
+<form class="search" action="" method="post" onSubmit="displayLoading();">
 <?php if ($terms) { ?>
 <input type="search" name="terms" value="<?php _print($terms); ?>">
 <?php } else { ?>
@@ -254,6 +276,17 @@ if (!isset($_POST['terms'])) { // No search submitted
 </form>
 
 			</div>
+
+<!-- Spinner below form //-->
+
+<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display:none">
+<script type="text/javascript">
+function displayLoading() {
+	if (document.getElementById('search-progress')) {
+		document.getElementById('search-progress').style.display='block';
+	}
+}
+</script>
 
 <?php
 

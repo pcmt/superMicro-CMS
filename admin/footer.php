@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 30 Nov 2022 */
 /* Updated version to 3.11 */
 
 if (!defined('ACCESS')) {
@@ -14,7 +14,7 @@ if (!defined('ACCESS')) {
 
 ?>
 
-<p id="footer"><a href="https://supermicrocms.com/" title="superMicro CMS" target="_blank">superMicro CMS</a> version <em>3.10</em> &copy;&nbsp;<a href="https://patricktaylor.com/" title="Patrick Taylor" target="_blank">Patrick Taylor</a> 2008&#8211;<?php
+<p id="footer"><a href="https://web.patricktaylor.com/cms" title="superMicro CMS" target="_blank">superMicro CMS</a> version <em>3.11</em> &copy;&nbsp;<a href="https://patricktaylor.com/" title="Patrick Taylor" target="_blank">Patrick Taylor</a> 2008&#8211;<?php
 
 	_print(date("Y"));
 	global $tm_start;

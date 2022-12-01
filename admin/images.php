@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 17 July 2021 */
 
 define('ACCESS', TRUE);
 
@@ -141,7 +141,7 @@ if (!$login) {
 			$response = '<em>Error: no image filename was entered. Enter a filename.</em>';
 		}
 
-		if (($delete == 'og.jpg') || ($delete == 'bg_footer.gif') || ($delete == 'bg_footer_monochrome.gif')) {
+		if (($delete == 'og.jpg') || ($delete == 'bg_footer.gif') || ($delete == 'bg_footer_monochrome.gif') || ($delete == 'bg-dots1.gif')) {
 			$problem = TRUE;
 			$response = "<em>The default images can't be deleted. Maybe upload a new one (<b>og.jpg</b> must be 200 pixels square).</em>";
 		}

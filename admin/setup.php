@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 21 Nov 2022 */
 
 define('ACCESS', TRUE);
 
@@ -658,7 +658,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Debug (YES/NO) [ <a href="https://supermicrocms.com/debug" target="_blank">info</a> ]</label>
+<label>Debug (YES/NO) [ <a href="https://web.patricktaylor.com/cms-debug" target="_blank">info</a> ]</label>
 <input type="text" name="debug" size="60" value="<?php
 
 	if (isset($_POST['submit2'])) {
@@ -686,7 +686,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Track hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking" target="_blank">info</a> ]</label>
+<label>Track hits (YES/NO) [ <a href="https://web.patricktaylor.com/cms-visitor-tracking" target="_blank">info</a> ]</label>
 <input type="text" name="track" size="60" value="<?php
 
 	if (isset($_POST['submit2'])) {
@@ -777,7 +777,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="100">
 
-<label>.php it (YES/NO) [ <a href="https://supermicrocms.com/links" target="_blank">info</a> ]</label>
+<label>.php it (YES/NO) [ <a href="https://web.patricktaylor.com/cms-links" target="_blank">info</a> ]</label>
 <input type="text" name="suffix_it" size="60" value="<?php
 
 	if (isset($_POST['submit2'])) {
@@ -805,7 +805,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Track my hits (YES/NO) [ <a href="https://supermicrocms.com/visitor-tracking#myhits" target="_blank">info</a> ]</label>
+<label>Track my hits (YES/NO) [ <a href="https://web.patricktaylor.com/cms-visitor-tracking#myhits" target="_blank">info</a> ]</label>
 <input type="text" name="track_me" size="60" value="<?php
 
 	if (defined('TRACK_HITS')) {
@@ -967,7 +967,7 @@ if (isset($_POST['submit1'])) {
 }
 
 ?>
-</select> <label>Font type [ <a href="https://supermicrocms.com/font-styles" target="_blank">info</a> ]</label>
+</select> <label>Font type [ <a href="https://web.patricktaylor.com/cms-font-styles" target="_blank">info</a> ]</label>
 </div>
 
 <select id="dropdown" name="lang_attr"><?php
@@ -1003,7 +1003,7 @@ if (isset($_POST['submit1'])) {
 <option value="fr">French</option>
 <option value="de">German</option>
 <option value="es">Spanish</option>
-</select> <label>Language [ <a href="https://supermicrocms.com/language" target="_blank">info</a> ]</label>
+</select> <label>Language [ <a href="https://web.patricktaylor.com/cms-language" target="_blank">info</a> ]</label>
 
 <hr>
 
@@ -1034,7 +1034,7 @@ if (isset($_POST['submit1'])) {
 
 ?>
 <p>Optional <strong><a href="./stopwords.php">stopwords</a></strong> for contact page and comments.</p>
-<p>See also <a href="https://supermicrocms.com/setup" target="_blank">about setup&nbsp;&#187;</a></p>
+<p>See also <a href="https://web.patricktaylor.com/cms-setup" target="_blank">about setup&nbsp;&#187;</a></p>
 
 	</div>
 

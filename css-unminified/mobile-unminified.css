@@ -1,5 +1,5 @@
 /* 'Standalone' CSS: all the rules required for max-width: 797px */
-/* Unminified version [last update 28 Jan 2021] */
+/* Unminified version [last update 17 July 2021] */
 
 /*
 
@@ -128,14 +128,14 @@ nav strong {
 }
 
 h1 {
-  font-family: "Roboto Slab";
+  font-family: "Ubuntu", sans-serif;
   margin: 1.1em 20px 0 20px;
   padding: 0 0 0.25em 0;
   text-align: center;
-  font-size: 2.0em;
+  font-size: 1.8em;
   line-height: 1.2;
   letter-spacing: 0;
-  font-weight: 600;
+  font-weight: 500;
   text-shadow: 1px 1px 3px #ccc;
   border-bottom: 1px solid #f9f9f9;
 }
@@ -155,14 +155,17 @@ h2, h3 {
   letter-spacing: -1px;
 }
 
-h4, h5, h6 {
+h4, h6 {
   margin: 1.2em 20px 0 20px;
   font-size: 1.3em;
   line-height: 1.4;
 }
 
 h5 {
+  margin: 1.2em auto 0 auto;
   text-align: center;
+  font-size: 1.3em;
+  line-height: 1.4;
 }
 
 #comments h4 {
@@ -250,7 +253,7 @@ div.bg4 p {
 }
 
 blockquote {
-  margin: 1.6em 20px 1.6em 20px;
+  margin: 1.2em 20px 1.2em 20px;
   padding-top: 0.25em;
   padding-bottom: 0.25em;
   border-left: 6px solid #9cc;
@@ -276,8 +279,12 @@ blockquote p {
   font-size: 0.9em;
 }
 
+.bullets br {
+  display: none;
+}
+
 #content ul, ol {
-  margin: 1.6em 20px;
+  margin: 0.6em 20px;
   font-size: 1.0em;
   text-align: left;
 }
@@ -479,6 +486,19 @@ div.box ol {
   display: none;
 }
 
+.dotcontainer {
+  text-align: center;
+  margin: 0 auto;
+}
+
+.bullets { /* For slides (see links) */
+  display: inline-block;
+  text-align: center;
+  margin: 0 auto 1.6em auto;
+  padding: 0;
+  line-height: 1;
+}
+
 /* IMAGES */
 /* ================================================== */
 
@@ -539,7 +559,7 @@ object.box { /* See .box above */
 
 }
 
-@media screen (min-width: 481px) and (max-width: 640px) {
+@media screen and (min-width: 481px) and (max-width: 640px) {
 
   .tv { /* Video lozenge */
     padding: 30px;
@@ -548,7 +568,7 @@ object.box { /* See .box above */
 
 }
 
-@media (min-width: 320px) and (max-width: 480px) {
+@media screen and (min-width: 320px) and (max-width: 480px) {
 
   .tv { /* Video lozenge removed*/
     margin: 1.6em auto 1.6em auto;
@@ -580,7 +600,7 @@ video {
   padding: 0;
 }
 
-@media screen (min-width: 481px) {
+@media screen and (min-width: 481px) {
 
   .tv .video video {
     margin: 0 auto;
@@ -667,6 +687,14 @@ pre {
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
   word-wrap: break-word;
+}
+
+.toggle-content { /* Requires /js/toggle.js */
+  display: none;
+}
+
+.toggle-content.is-visible {
+  display: block;
 }
 
 /* Full-width backgrounds mainly for p class = "w" */
@@ -788,7 +816,29 @@ p#sitename a:hover {
     font-size: 75%;
   }
 
+  .slideshow-container a.slidecaptionlink {
+    font-size: 100%;
+  }
+
 }
+
+.dot {
+  cursor: pointer;
+  height: 25px;
+  width: 25px;
+  margin: 0 1.0em;
+  background-color: #bbb;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background-color 0.6s ease;
+}
+
+.bullets .active,
+.dot:hover {
+  background-color: #649300;
+}
+
+/* End slides */
 
 footer p a {
   color: #000;

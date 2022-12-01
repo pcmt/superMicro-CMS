@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 21 Nov 2022 */
 
 define('ACCESS', TRUE);
 
@@ -775,11 +775,11 @@ $obj->Template();
 
 	if ($do_stylesheet) { ?>
 
-The default styles can be restored with <em>Get styles</em> &raquo; <em>Default styles</em> &raquo; <em>Update styles</em><br>The optional <em>extra styles</em> supplement the active stylesheet: 'stylesheet.css' [ <a href="https://supermicrocms.com/stylesheets" target="_blank">info</a> ]
+The default styles can be restored with <em>Get styles</em> &raquo; <em>Default styles</em> &raquo; <em>Update styles</em><br>The optional <em>extra styles</em> supplement the active stylesheet: 'stylesheet.css' [ <a href="https://web.patricktaylor.com/cms-stylesheets" target="_blank">info</a> ]
 
 <?php } elseif ($do_menu) { ?>
 
-<b>NOTE</b>: (i) preserve the existing page names (listed below) and match the text exactly, (ii) do not include <em>index</em> (the home page is always on the menu), and (iii) ensure each item is on its own line (with no empty lines).<br>A leading # symbol (eg: #example-page) means the page is not in the navigation menu and <i>vice versa</i> [ <a href="https://supermicrocms.com/navigation-menu" target="_blank">info</a> ]
+<b>NOTE</b>: (i) preserve the existing page names (listed below) and match the text exactly, (ii) do not include <em>index</em> (the home page is always on the menu), and (iii) ensure each item is on its own line (with no empty lines).<br>A leading # symbol (eg: #example-page) means the page is not in the navigation menu and <i>vice versa</i> [ <a href="https://web.patricktaylor.com/cms-navigation-menu" target="_blank">info</a> ]
 
 	<?php } else { ?>
 
@@ -882,7 +882,7 @@ Content...');
 
 <?php } else { // Default to: ?>
 
-<p><strong>Line 1</strong> ampersand symbol <em>&</em> enables comments [ <a href="https://supermicrocms.com/commenting" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://supermicrocms.com/page-extras" target="_blank">info</a> ]</p>
+<p><strong>Line 1</strong> ampersand symbol <em>&</em> enables comments [ <a href="https://web.patricktaylor.com/cms-comments" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://web.patricktaylor.com/cms-extras" target="_blank">info</a> ]</p>
 
 <?php } ?>
 

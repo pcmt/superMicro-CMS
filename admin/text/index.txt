@@ -1,12 +1,10 @@
 #
 Home Page Heading
 
-Success. <a href="https://supermicrocms.com/" target="_blank">superMicro CMS</a> version 3.11 installed. This is the home page. Edit as required.
+Success. <strong>superMicro CMS version 3.11</strong> installed. This is the home page. Edit as required.
 
 <p class="w"><img src="img/example-image.jpg" width="740" height="400" alt=""></p>
 
 <p class="caption">Example image</p>
 
 Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.
-
-Start <a href="https://supermicrocms.com/how-to" target="_blank">making pages</a>&nbsp;&raquo;

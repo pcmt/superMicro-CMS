@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 01 Feb 2021 */
+/* Last updated 05 July 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -166,7 +166,6 @@ function stripAnchor($str) {
 /* --------------------------------------------------
  * index.php
  * comments.php
- * extras.php
  * images.php
  * upload.php
  * htaccess.php
@@ -276,7 +275,7 @@ function loggedoutFooter() {
 		echo '<p>It seems superMicro CMS is not yet installed.</p>
 <p><a href="./install.php">Install here&nbsp;&raquo;</a></p>';
 	} else { // Is installed
-		echo '<p><a href="https://supermicrocms.com/passwords" target="_blank">Lost or forgotten password&nbsp;&raquo;</a></p>';
+		echo '<p><a href="https://patricktaylor.com/hash-sha256.php" target="_blank">Lost or forgotten password&nbsp;&raquo;</a></p>';
 	}
 }
 
@@ -336,7 +335,7 @@ function allowedChars($str) {
 
 	$charArray = array(
 		/* Symbols etc */
-		'-', '_', '\,', '\.', '\'', ' ',
+		'-', '_', '\,', '\.', '\'', '~', ' ',
 		/* Numbers */
 		'1', '2', '3', '4', '5','6', '7', '8', '9', '0',
 		/* English */
