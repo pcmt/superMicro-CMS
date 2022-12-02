@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 Jan 2021 */
+/* Last updated 02 Dec 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -24,15 +24,8 @@ $tm_start = array_sum(explode(' ', microtime()));
 /* -------------------------------------------------- */
 // Stuff
 
-if (defined('SHOW_ERRORS')) {
-	if (SHOW_ERRORS) {
-		ini_set('display_errors', 1);
-		ini_set('display_startup_errors', 1);
-		error_reporting(E_ALL);
-	} else {
-		error_reporting(0);
-	}
-}
+// error_reporting(E_ALL);
+error_reporting(0);
 
 // Load functions
 include('./functions.php');

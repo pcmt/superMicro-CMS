@@ -215,7 +215,7 @@ if (!$login) {
 	// Assume there are now no error responses on initial page load checks
 
 /* ================================================== */
-/* SECTION 2: SUBMIT */
+/* SECTION 2: EXTENDED CORE */
 /* ================================================== */
 
 	if (isset($_POST['submit1']) && ($do_htaccess == TRUE)) {
@@ -265,42 +265,17 @@ if (!$login) {
 </IfModule>
 ';
 
-		/* -------------------------------------------------- */
-		// Test for markers / replace core lines
-		if (file_exists('../.htaccess')) {
-
-			// Get entire .htaccess as string
-			$htaccess_text = file_get_contents('../.htaccess');
-
-			if ((strpos($htaccess_text, '# BEGIN superMicro CMS') != FALSE) || (strpos($htaccess_text, '# END superMicro CMS') != FALSE)) {
-				// Get required lines into variable "$to_replace"
-				$to_replace = getBetween($htaccess_text, '# BEGIN superMicro CMS', '# END superMicro CMS');
-				// Replace core lines
-				// $inThis = str_replace("Replace this", "With this", $inThis);
-				$str = str_replace($to_replace, $htaccess_core, $htaccess_text);
-				// Write to file
-				file_put_contents('../.htaccess', $str);
-				// _print($str); /* For testing */
-				$response = '<em>.htaccess file created</em>';
-				$filestatus = 'extended file';
-			} else {
-				$response = '<em>.htaccess file not touched (markers not found)</em>';
-			}
-
-		} else {
-			$response = '<em>.htaccess file does not exist</em>';
-		}
-
-		$cms_dir = NULL;
+	$filestatus = 'extended file';
 
 	}
 
 /* ================================================== */
-/* SECTION 3: RESTORE DEFAULT FILE (NO INFO REQUIRED) */
+/* SECTION 3: DEFAULT CORE */
 /* ================================================== */
 
 	if (isset($_POST['submit2']) && ($do_htaccess == TRUE)) {
-		$htaccess_core2 = '
+
+		$htaccess_core = '
 <IfModule mod_rewrite.c>
   RewriteEngine on
 # Forbid direct viewing of txt files in pages folder
@@ -322,8 +297,17 @@ if (!$login) {
 </IfModule>
 ';
 
+	$filestatus = 'original file';
+
+	}
+
+/* ================================================== */
+/* SECTION 4: SUBMIT SELECTION (1 or 2) */
+/* ================================================== */
+
+	if ( ( isset($_POST['submit1']) || isset($_POST['submit2']) ) && ($do_htaccess == TRUE) ) {
+
 		/* -------------------------------------------------- */
-		/* Repeat of above except $htaccess_core2 ----------- */
 		// Test for markers / replace core lines
 		if (file_exists('../.htaccess')) {
 
@@ -334,12 +318,11 @@ if (!$login) {
 				// Get required lines into variable "$to_replace"
 				$to_replace = getBetween($htaccess_text, '# BEGIN superMicro CMS', '# END superMicro CMS');
 				// Replace core lines
-				$str = str_replace($to_replace, $htaccess_core2, $htaccess_text);
+				$str = str_replace($to_replace, $htaccess_core, $htaccess_text);
 				// Write to file
 				file_put_contents('../.htaccess', $str);
 				// _print($str); /* For testing */
 				$response = '<em>.htaccess file created</em>';
-				$filestatus = 'original file';
 			} else {
 				$response = '<em>.htaccess file not touched (markers not found)</em>';
 			}
@@ -353,7 +336,7 @@ if (!$login) {
 	}
 
 /* ================================================== */
-/* SECTION 4: START PAGE, H1 & NAVIGATION MENU */
+/* SECTION 5: START PAGE, H1 & NAVIGATION MENU */
 /* ================================================== */
 
 ?>
@@ -388,7 +371,7 @@ if (!$login) {
 <?php
 
 /* ================================================== */
-/* SECTION 4: TOP BOX FEEDBACK */
+/* SECTION 6: TOP BOX FEEDBACK */
 /* ================================================== */
 
 	_print('<p><span class="padded-multiline">');
@@ -408,7 +391,7 @@ if (!$login) {
 <?php
 
 /* ================================================== */
-/* SECTION 5: FORM */
+/* SECTION 7: FORM */
 /* ================================================== */
 
 ?>

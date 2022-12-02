@@ -5,11 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 22 Dec 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to error-reporting.php');
 }
+
+// error-reporting.php (this file) is the first file to be loaded by html.php
+require(INC . 'settings.php');
 
 if (defined('SHOW_ERRORS')) {
 	if (SHOW_ERRORS) {
@@ -40,8 +43,6 @@ if (defined('INC')) { // See html.php
 		}
 	}
 
-	// error-reporting.php is the first file to be loaded by html.php
-	require(INC . 'settings.php');
 	require(INC . 'functions.php');
 
 	// Check for new functions
