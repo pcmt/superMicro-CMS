@@ -5,16 +5,28 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Nov 2022 */
+/* Last updated 02 Dec 2022 */
 
 define('ACCESS', TRUE);
 
 // Declare variables (see also top.php)
-$root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = "";
+$root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = $filestatus = "";
 
 $thisAdmin = 'htaccess'; // For nav
 
 require('./top.php');
+
+// Detect current .htaccess file
+$filename = ('../.htaccess');
+if (file_exists($filename)) {
+	if (strpos(file_get_contents($filename), 'Facebook') !== false) {
+		$filestatus = 'extended file';
+	} else {
+		$filestatus = 'original file';
+	}
+} else {
+	$filestatus = '.htaccess file does not exist.';
+}
 
 ?>
 <!DOCTYPE html>
@@ -62,7 +74,7 @@ if (!$login) {
 	// Logged in
 
 /* ================================================== */
-/* SECTION 1: GET THE INFO */
+/* SECTION 1: GET THE INFO FOR EXTENDED FILE */
 /* ================================================== */
 
 	$do_htaccess = TRUE; // Falsified if check fails
@@ -263,13 +275,14 @@ if (!$login) {
 			if ((strpos($htaccess_text, '# BEGIN superMicro CMS') != FALSE) || (strpos($htaccess_text, '# END superMicro CMS') != FALSE)) {
 				// Get required lines into variable "$to_replace"
 				$to_replace = getBetween($htaccess_text, '# BEGIN superMicro CMS', '# END superMicro CMS');
-				// Get entire .htaccess as string
-				$str = file_get_contents('../.htaccess');
 				// Replace core lines
-				$str = str_replace($to_replace, $htaccess_core, $str);
+				// $inThis = str_replace("Replace this", "With this", $inThis);
+				$str = str_replace($to_replace, $htaccess_core, $htaccess_text);
 				// Write to file
 				file_put_contents('../.htaccess', $str);
+				// _print($str); /* For testing */
 				$response = '<em>.htaccess file created</em>';
+				$filestatus = 'extended file';
 			} else {
 				$response = '<em>.htaccess file not touched (markers not found)</em>';
 			}
@@ -283,7 +296,64 @@ if (!$login) {
 	}
 
 /* ================================================== */
-/* SECTION 3: START PAGE, H1 & NAVIGATION MENU */
+/* SECTION 3: RESTORE DEFAULT FILE (NO INFO REQUIRED) */
+/* ================================================== */
+
+	if (isset($_POST['submit2']) && ($do_htaccess == TRUE)) {
+		$htaccess_core2 = '
+<IfModule mod_rewrite.c>
+  RewriteEngine on
+# Forbid direct viewing of txt files in pages folder
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/pages/(.*)\.txt [NC]
+  RewriteRule ^ "-" [F]
+# Rewrite non php URLs to php on server
+# php URLs still usable
+#     is not a directory
+  RewriteCond %{REQUEST_FILENAME} !-d
+#     is a php file
+  RewriteCond %{REQUEST_FILENAME}\.php -f
+# Internally rewrite to actual php file
+  RewriteRule ^(.*)$ $1.php
+# If not found, relative path to error 404 file
+#     is not an actual file or directory
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule .* inc/404.php [L]
+</IfModule>
+';
+
+		/* -------------------------------------------------- */
+		/* Repeat of above except $htaccess_core2 ----------- */
+		// Test for markers / replace core lines
+		if (file_exists('../.htaccess')) {
+
+			// Get entire .htaccess as string
+			$htaccess_text = file_get_contents('../.htaccess');
+
+			if ((strpos($htaccess_text, '# BEGIN superMicro CMS') != FALSE) || (strpos($htaccess_text, '# END superMicro CMS') != FALSE)) {
+				// Get required lines into variable "$to_replace"
+				$to_replace = getBetween($htaccess_text, '# BEGIN superMicro CMS', '# END superMicro CMS');
+				// Replace core lines
+				$str = str_replace($to_replace, $htaccess_core2, $htaccess_text);
+				// Write to file
+				file_put_contents('../.htaccess', $str);
+				// _print($str); /* For testing */
+				$response = '<em>.htaccess file created</em>';
+				$filestatus = 'original file';
+			} else {
+				$response = '<em>.htaccess file not touched (markers not found)</em>';
+			}
+
+		} else {
+			$response = '<em>.htaccess file does not exist</em>';
+		}
+
+		$cms_dir = NULL;
+
+	}
+
+/* ================================================== */
+/* SECTION 4: START PAGE, H1 & NAVIGATION MENU */
 /* ================================================== */
 
 ?>
@@ -355,6 +425,7 @@ _print("
 <p>Site location = {$site_location}</p>
 <p>Protocol = {$show_protocol}</p>
 <p>Admin folder = {$admin}</p>
+<p>Current .htaccess = {$filestatus}</p>
 <p><a href=\"https://web.patricktaylor.com/cms-htaccess\" target=\"_blank\">Info here</a>&nbsp;&raquo;</p>
 ");
 
@@ -368,7 +439,7 @@ echo "\n";
 
 	</div>
 
-<input type="submit" name="submit1" class="images" value="Create new file">
+<input type="submit" name="submit1" class="images" value="Create extended"> <input type="submit" name="submit2" class="images" value="Create original">
 
 </form>
 
