@@ -1,5 +1,5 @@
 # superMicro CMS
-Website building system developed 2008 - 2021 by Patrick Taylor (hobbyist).
+Website building system developed 2008 - 2022 by Patrick Taylor (hobbyist).
 
 No database. Web content stored in plain text files.
 
@@ -9,7 +9,7 @@ superMicro CMS (THE PROGRAM) is written by Patrick Taylor and remains his
 intellectual property.
 
 https://patricktaylor.com/
-https://supermicrocms.com/
+https://web.patricktaylor.com/
 
 The program is released under the GNU General Public License (GPL) version 3
 See http://www.gnu.org/licenses/gpl-3.0.html
@@ -25,7 +25,7 @@ PROVE DEFECTIVE YOU ASSUME THE COST OF ALL SERVICING, REPAIR OR CORRECTION.
 
 ---------------------------------------------------------------------------
 
-Current version: 3.11 (build: 6th February 2021).
+Current version: 3.11 (build: 2nd December 2022).
 
 (1) Designed for Linux / APACHE web server - superMicro CMS uses .htaccess.
 The server must also be php-enabled with PHP 5.2.0+ (the later the better).
