@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Nov 2022 */
+/* Last updated 04 Dec 2022 */
 
 define('ACCESS', TRUE);
 
@@ -142,6 +142,8 @@ if (!$login) {
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
 /* ================================================== */
+
+	$siteID = file_get_contents('siteid.txt'); /* Unique */
 
 	$do_setup = TRUE; // Falsified if check fails
 
@@ -476,6 +478,7 @@ define('TRACK_HITS', {$track_hits});
 define('PHP_EXT', {$php_ext});
 define('EMAIL', '{$email}');
 define('SITE_NAME', '{$site_name}');
+define('SITE_ID', '{$siteID}');
 define('OWN_NAME', '{$own_name}');
 define('CONTACT_TEXT', '{$contact_text}');
 define('CONTACT_MENU', '{$contact_menu}');
@@ -1021,6 +1024,7 @@ if (isset($_POST['submit1'])) {
 <p class=\"break_word\">Home page:<strong><br>{$site_location}</strong></p>
 <p>Server software: <strong>{$serverSoftware}</strong></p>
 <p>Operating system: <strong>{$opSystem}</strong></p>
+<p>Site ID: <strong>{$siteID}</strong> (from install.php)</p>
 
 ");
 

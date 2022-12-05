@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 July 2021 */
+/* Last updated 05 Dec 2022 */
 
 // Declare variables
-$commentfile = $leavecomment = $closecomments = '';
+$commentfile = $leavecomment = $closecomments = $filedate = '';
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to extra-content.php');
@@ -26,16 +26,6 @@ if (file_exists('./js/simpleToggle.js')) { // From the website root
 
 if (file_exists('./js/read-more.js')) { // From the website root
 	_print_nlb('<script src="' . LOCATION . 'js/read-more.js"></script>');
-}
-
-if ($share) { // See html.php ($share)
-
-?>
-
-<!-- Facebook share button HTML here //-->
-
-<?php
-
 }
 
 /* -------------------------------------------------- */
@@ -122,5 +112,27 @@ if ($comments && isset($pageID)) { // See html.php ($comments)
 	}
 
 } // Comments off
+
+if ($share) { // See html.php ($share)
+
+?>
+
+<!-- Facebook share button HTML here //-->
+
+<?php
+
+}
+
+/* -------------------------------------------------- */
+// Date modified
+if (function_exists('filemtime')) {
+	$modified = date("d F, Y", filemtime($source));
+} else {
+	$modified = 'date unknown';
+}
+
+$filedate .= "\n<p class=\"meta\">" . TEXT00 . ' ' . $modified . "</p>\n";
+
+_print($filedate);
 
 ?>

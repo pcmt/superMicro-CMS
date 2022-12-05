@@ -5,14 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 02 Dec 2022 */
+/* Last updated 04 Dec 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
 }
 
 // Declare variables
-$status = $notice = $user = $dofooter = $word = $login = $dom = $secure = $secure_cookie = $path = '';
+$status = $notice = $user = $dofooter = $word = $login = $dom = $secure = $secure_cookie = $path = $siteID = '';
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -24,9 +24,6 @@ $tm_start = array_sum(explode(' ', microtime()));
 /* -------------------------------------------------- */
 // Stuff
 
-// error_reporting(E_ALL);
-error_reporting(0);
-
 // Load functions
 include('./functions.php');
 
@@ -36,12 +33,25 @@ if (!function_exists('_print_nla')) {
 	exit();
 }
 
+if (!function_exists('randomString')) {
+	_print("Error. Missing function 'randomString'. Install the latest version of /admin/functions.php");
+	exit();
+}
+
 /* -------------------------------------------------- */
 // setup.php edits /inc/settings.php
 
 if (file_exists('../inc/settings.php')) {
 	include('../inc/settings.php');
 }
+
+if (defined('SITE_ID')) {
+	$siteID = SITE_ID;
+} else {
+	$siteID = 'x';
+}
+
+$adminlink = "adminlink_{$siteID}";
 
 // Set cross-platform PHP_EOL constant (for 'explode') for backwards compatibility,
 // otherwise is automatically set for the operating system the script is running on
@@ -234,11 +244,11 @@ if (($status == 'logout') || (isset($_POST['submit0']) && ($user == 'unverified'
 	// Delete cookies
 	if ($secure_cookie) {
 		// Delete admin link cookie
-		setcookie("adminlink", "loggedout_sec", time() - 3600, "/", "{$domain}", 1, 1);
+		setcookie($adminlink, "loggedout_sec", time() - 3600, "/", "{$domain}", 1, 1);
 		// Delete password cookie
 		setcookie("supermicro", $word, time() - 3600, "{$path}", "{$domain}", 1, 1);
 	} else {
-		setcookie("adminlink", "loggedout_ins", time() - 3600, "/");
+		setcookie($adminlink, "loggedout_ins", time() - 3600, "/");
 		setcookie("supermicro", $word, time() - 3600, "{$path}");
 	}
 
@@ -254,9 +264,9 @@ if (!$login) {
 	// Keep setting cookie only to show admin link in menu (expires after one hour)
 	// Has to be in root to be accessible from pages (deleted on logout)
 	if ($secure_cookie) {
-		setcookie("adminlink", "loggedin_sec", time() + 3600, "/", "{$domain}", 1, 1); // One hour. Root.
+		setcookie($adminlink, "loggedin_sec", time() + 3600, "/", "{$domain}", 1, 1); // One hour. Root.
 	} else {
-		setcookie("adminlink", "loggedin_ins", time() + 3600, "/"); // One hour. Root.
+		setcookie($adminlink, "loggedin_ins", time() + 3600, "/"); // One hour. Root.
 	}
 }
 

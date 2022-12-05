@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 July 2022 */
+/* Last updated 04 Dec 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -404,6 +404,22 @@ function allChars($str) {
 
 	return $str;
 
+}
+
+/* --------------------------------------------------
+ * install.php
+ */
+
+// For cookies
+function randomString( $length ) {
+	$chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+
+	$size = strlen( $chars );
+	for( $i = 0; $i < $length; $i++ ) {
+		$str .= $chars[ rand( 0, $size - 1 ) ];
+	}
+
+	return $str;
 }
 
 ?>

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 22 Dec 2022 */
+/* Last updated 04 Dec 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to error-reporting.php');

@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Dec 2020 */
+/* Last updated 04 Dec 2022 */
 
 // Declare variables
-$protected = $the_page = "";
+$protected = $the_page = $adminlink = $admin = $titletag = "";
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -32,10 +32,14 @@ if ($password) { // From html.php
 	}
 }
 
+if (defined('SITE_ID')) {
+	$adminlink = 'adminlink_' . SITE_ID;
+}
+
 // For one-hour admin link in menu.php - be careful: reveals admin folder
 // Accessing the cookie only shows the link (can theoretically be logged out)
 // Logout MUST delete the cookie
-if (isset($_COOKIE['adminlink']) && (($_COOKIE['adminlink'] == 'loggedin_sec') || (stripos(LOCATION, 'localhost') !== FALSE))) {
+if (isset($_COOKIE[$adminlink]) && (($_COOKIE[$adminlink] == 'loggedin_sec') || (stripos(LOCATION, 'localhost') !== FALSE))) {
 	$admin = TRUE;
 } else {
 	$admin = FALSE;

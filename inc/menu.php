@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 Dec 2020 */
+/* Last updated 03 Dec 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to menu.php');
@@ -121,8 +121,10 @@ if ($admin) {
 		}
 		_print('<li class="admin"><a href="' . LOCATION . ADMIN . '/index.php?page=' . $page . '&mode=preview" title="' . TEXT47 . '">' . TEXT47 . '</a></li>');
 	} else {
-		$_textfile = str_replace('.txt', '', $_textfile);
-		_print('<li class="admin"><a href="' . LOCATION . ADMIN . '/index.php?page=' . $_textfile . '&mode=normal" title="' . TEXT47 . '">' . TEXT47 . '</a></li>');
+		if (isset($_textfile)) { /* See html.php for $_textfile (in function) */
+			$_textfile = str_replace('.txt', '', $_textfile); /* Use $pageID? */
+			_print('<li class="admin"><a href="' . LOCATION . ADMIN . '/index.php?page=' . $_textfile . '&mode=normal" title="' . TEXT47 . '">' . TEXT47 . '</a></li>');
+		}
 	}
 }
 

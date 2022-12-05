@@ -5,13 +5,13 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 06 June 2022
+// Last updated 04 Dec 2022
 // Rewrote password routine due to problem reported
 
 define('ACCESS', TRUE);
 
 // Declare variables
-$sh_password = $salt = $domain = $cookie_status = $test_cookie = $missing_password_php = $incorrect_form_problem = $admin_shp = $admin_s = $file_write_problem = $error = $admin_password_problem = $install = '';
+$sh_password = $salt = $domain = $cookie_status = $test_cookie = $missing_password_php = $incorrect_form_problem = $admin_shp = $admin_s = $file_write_problem = $error = $admin_password_problem = $install = $siteID = '';
 
 error_reporting(0);
 // error_reporting(E_ALL);
@@ -118,6 +118,11 @@ if (isset($_POST['submit1'])) {
 
 	// Attempt to create and write the files
 	// and report failures, preventing further progress
+
+	$siteid = fopen("siteid.txt", "w") or die("Unable to write siteid.txt");
+	$ID = randomString( 5 );
+	fwrite($siteid, $ID);
+	fclose($siteid);
 
 /*
 Writing these files is because they are not in the download

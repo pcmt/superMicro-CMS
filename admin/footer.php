@@ -6,7 +6,6 @@
  */
 
 /* Last updated 30 Nov 2022 */
-/* Updated version to 3.11 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php');
