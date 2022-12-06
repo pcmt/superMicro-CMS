@@ -6,6 +6,7 @@
  */
 
 /* Last updated 30 Dec 2020 */
+/* This file is required for e.php and search.php */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to prelims.php');
