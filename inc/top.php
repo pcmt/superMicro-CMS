@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Dec 2022 */
+/* Last updated 27 Dec 2022 */
 
 // Declare variables
-$protected = $the_page = $adminlink = $admin = $titletag = "";
+$protected = $the_page = $adminlink = $admin = "";
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
