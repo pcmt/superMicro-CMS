@@ -5,14 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Dec 2022 */
+/* Last updated 28 Jan 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
 }
 
 // Declare variables
-$status = $notice = $user = $dofooter = $word = $login = $dom = $secure = $secure_cookie = $path = $siteID = '';
+$status = $notice = $user = $dofooter = $login = $domain = $secure = $secure_cookie = $path = $siteID = $self = '';
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -26,17 +26,6 @@ $tm_start = array_sum(explode(' ', microtime()));
 
 // Load functions
 include('./functions.php');
-
-// Check for new functions
-if (!function_exists('_print_nla')) {
-	_print("Error. Missing function '_print_nla'. Install the latest version of /admin/functions.php");
-	exit();
-}
-
-if (!function_exists('randomString')) {
-	_print("Error. Missing function 'randomString'. Install the latest version of /admin/functions.php");
-	exit();
-}
 
 /* -------------------------------------------------- */
 // setup.php edits /inc/settings.php
@@ -52,6 +41,7 @@ if (defined('SITE_ID')) {
 }
 
 $adminlink = "adminlink_{$siteID}";
+$login_cookie_name = "superMicro_{$siteID}";
 
 // Set cross-platform PHP_EOL constant (for 'explode') for backwards compatibility,
 // otherwise is automatically set for the operating system the script is running on
@@ -76,7 +66,7 @@ if (!defined('PHP_EOL')) {
 /* 'isWritable' function removed 04 Dec 20 */
 
 /* -------------------------------------------------- */
-// Form action fix for empty PHP_SELF (all admin)
+// Login form action fix for empty PHP_SELF (all admin)
 
 if (function_exists('phpSELF')) {
 	$self = htmlspecialchars(phpSELF(), ENT_QUOTES, "utf-8");
@@ -105,68 +95,6 @@ if (isset($_GET['status'])) {
 
 $sent = 'tempVal_1';
 $allowed = 'tempVal_2';
-
-/* ================================================== */
-/* Normal running, nothing submitted */
-
-// Get admin directory for cookie path
-$path = basename(dirname(__FILE__)); // One level up
-
-// Section to enable secure login cookie
-
-// Try to get the domain
-if (!empty($_SERVER['HTTP_HOST'])) {
-	$domain = $_SERVER['HTTP_HOST'];
-} elseif (!empty($_SERVER['SERVER_NAME'])) {
-	$domain = $_SERVER['SERVER_NAME'];
-} else {
-	$domain = FALSE;
-}
-
-// Try to establish whether SSL or not
-if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
-	$secure = TRUE;
-} else {
-	$secure = FALSE;
-}
-
-if ($domain && $secure) {
-	$secure_cookie = TRUE;
-} else {
-	$secure_cookie = FALSE;
-}
-
-// End of section
-
-// Attempt to set test cookie each time any admin page is accessed
-// Value = current time, duration 1 hour, after which notice given
-// This cookie was also set by install.php with value "installation"
-
-if ($secure_cookie) { // Secure
-	setcookie("supermicro_test_cookie", "installed_sec", time() + 3600, "/", "{$domain}", 1, 1); // One hour
-} else { // Not secure
-	setcookie("supermicro_test_cookie", "installed_ins", time() + 3600, "/"); // One hour.
-}
-
-// Check test cookie
-if (isset($_COOKIE["supermicro_test_cookie"])) {
-	$notice = FALSE; // if($notice) is in every admin page when not logged in
-} else {
-	$notice = "\n<h3><em>Are cookies enabled?</em></h3>\n<p>Site admin uses cookies.</p>\n";
-}
-
-// Check if a login cookie exists
-if (isset($_COOKIE["supermicro"])) {
-
-	// Check if its value matches the submitted password
-	// If it does, stay logged in, otherwise no login
-	if ($_COOKIE["supermicro"] == $sh_password) {
-		$login = TRUE;
-	} else {
-		$login = FALSE;
-	}
-
-}
 
 /* ================================================== */
 /* Password submitted */
@@ -207,23 +135,19 @@ if (isset($_POST['submit0'])) {
 	// If form ok, login
 	// Submitted password is hashed and must match $sh_password in password.php
 	// (plus the user must be verified)
-	if (($sh_submitted == $sh_password) && ($user != 'unverified') && !$dofooter) {
+	if (($sh_submitted == $sh_password) && ($user !== 'unverified') && !$dofooter) {
 
 		$login = TRUE; // $login is picked up in all the admin pages
 
 		// Set adminlink cookie moved to bottom to refresh every admin click
-
 		// Set password cookie to avoid repeated logins (checked in normal running)
-		// Pass value of submitted password to $word variable
-		$word = $sh_submitted;
-
 		// Check test cookie
 		if (isset($_COOKIE["supermicro_test_cookie"])) { // Cookies are working
 			// Update the login cookie
 			if ($secure_cookie) {
-				setcookie("supermicro", $word, time() + (60*60*24*1), "{$path}", "{$domain}", 1, 1); // 1 day
+				setcookie($login_cookie_name, $sh_submitted, time() + (60*60*24*1), $path, $domain, 1, 1); // 1 day
 			} else {
-				setcookie("supermicro", $word, time() + (60*60*24*1), "{$path}"); // 1 day
+				setcookie($login_cookie_name, $sh_submitted, time() + (60*60*24*1), $path); // 1 day
 			}
 		} else { // Cookies aren't working
 			$notice = "\n<h3><em>Test cookie not found.</em></h3>\n<p>Are cookies enabled?</p>\n";
@@ -237,6 +161,68 @@ if (isset($_POST['submit0'])) {
 }
 
 /* ================================================== */
+/* Normal running, nothing submitted */
+
+// Get admin directory for cookie path
+$path = basename(dirname(__FILE__)); // One level up
+
+// Section to enable secure login cookie
+
+// Try to get the domain
+if (!empty($_SERVER['HTTP_HOST'])) {
+	$domain = $_SERVER['HTTP_HOST'];
+} elseif (!empty($_SERVER['SERVER_NAME'])) {
+	$domain = $_SERVER['SERVER_NAME'];
+} else {
+	$domain = FALSE;
+}
+
+// Try to establish whether SSL or not
+if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+	$secure = TRUE;
+} else {
+	$secure = FALSE;
+}
+
+if ($domain && $secure) {
+	$secure_cookie = TRUE;
+} else {
+	$secure_cookie = FALSE;
+}
+
+// End of section
+
+// Attempt to set test cookie each time any admin page is accessed
+// Value = current time, duration 1 hour, after which notice given
+// This cookie was also set by install.php with value "installation"
+
+if ($secure_cookie) { // Secure
+	setcookie("supermicro_test_cookie", "installed_sec", time() + 3600, "/", $domain, 1, 1); // One hour
+} else { // Not secure
+	setcookie("supermicro_test_cookie", "installed_ins", time() + 3600, "/"); // One hour.
+}
+
+// Check test cookie
+if (isset($_COOKIE["supermicro_test_cookie"])) {
+	$notice = FALSE; // if($notice) is in every admin page when not logged in
+} else {
+	$notice = "\n<h3><em>Are cookies enabled?</em></h3>\n<p>Site admin uses cookies.</p>\n";
+}
+
+// Check if a login cookie exists
+if (isset($_COOKIE[$login_cookie_name])) {
+
+	// Check if its value matches the submitted password
+	// If it does, stay logged in, otherwise no login
+	if ($_COOKIE[$login_cookie_name] == $sh_password) {
+		$login = TRUE;
+	} else {
+		$login = FALSE;
+	}
+
+}
+
+/* ================================================== */
 /* Logout, or password submitted by unverified 'user' */
 
 if (($status == 'logout') || (isset($_POST['submit0']) && ($user == 'unverified'))) {
@@ -244,12 +230,12 @@ if (($status == 'logout') || (isset($_POST['submit0']) && ($user == 'unverified'
 	// Delete cookies
 	if ($secure_cookie) {
 		// Delete admin link cookie
-		setcookie($adminlink, "loggedout_sec", time() - 3600, "/", "{$domain}", 1, 1);
+		setcookie($adminlink, "loggedout_sec", time() - 3600, "/", $domain, 1, 1);
 		// Delete password cookie
-		setcookie("supermicro", $word, time() - 3600, "{$path}", "{$domain}", 1, 1);
+		setcookie($login_cookie_name, $sh_password, time() - 3600, $path, $domain, 1, 1);
 	} else {
 		setcookie($adminlink, "loggedout_ins", time() - 3600, "/");
-		setcookie("supermicro", $word, time() - 3600, "{$path}");
+		setcookie($login_cookie_name, $sh_password, time() - 3600, $path);
 	}
 
 	$login = FALSE;
@@ -264,7 +250,7 @@ if (!$login) {
 	// Keep setting cookie only to show admin link in menu (expires after one hour)
 	// Has to be in root to be accessible from pages (deleted on logout)
 	if ($secure_cookie) {
-		setcookie($adminlink, "loggedin_sec", time() + 3600, "/", "{$domain}", 1, 1); // One hour. Root.
+		setcookie($adminlink, "loggedin_sec", time() + 3600, "/", $domain, 1, 1); // One hour. Root.
 	} else {
 		setcookie($adminlink, "loggedin_ins", time() + 3600, "/"); // One hour. Root.
 	}
@@ -274,6 +260,8 @@ if (!$login) {
 /* Test feedback */
 // echo '$path = ' . $path . '<br>';
 /*
+echo '<pre>';
 print_r($_COOKIE);
+echo '</pre>';
 */
 ?>
