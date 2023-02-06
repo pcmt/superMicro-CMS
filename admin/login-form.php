@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 05 Feb 2023 */
 // This file is included in all admin pages
 
 if (!defined('ACCESS')) {
@@ -27,7 +27,7 @@ if (!defined('ACCESS')) {
 
 <form id="pw" action="<?php _print($self); ?>" method="post">
 <label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="login">
+<input type="hidden" name="form" value="<?php _print(SITE_ID); ?>">
 <input type="password" name="password" size="25" maxlength="32">
 <input type="submit" name="submit0" value="Submit Password">
 </form>

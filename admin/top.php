@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 28 Jan 2023 */
+/* Last updated 05 Feb 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -37,7 +37,8 @@ if (file_exists('../inc/settings.php')) {
 if (defined('SITE_ID')) {
 	$siteID = SITE_ID;
 } else {
-	$siteID = 'x';
+	_print("Error. Site ID not defined. Please install the latest version of superMicro CMS.");
+	exit();
 }
 
 $adminlink = "adminlink_{$siteID}";
@@ -93,9 +94,6 @@ if (isset($_GET['status'])) {
 	$status = $_GET['status'];
 }
 
-$sent = 'tempVal_1';
-$allowed = 'tempVal_2';
-
 /* ================================================== */
 /* Password submitted */
 
@@ -103,15 +101,9 @@ $allowed = 'tempVal_2';
 // Check salted and hashed submitted password against file version
 // Set login and cookie only if checks pass
 
-if (isset($_POST['submit0'])) {
+if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
 
-	$allowed = array();
-	$allowed[] = 'form';
-	$allowed[] = 'password';
-	$allowed[] = 'submit0';
-
-	$sent = array_keys($_POST);
-	if ($sent !== $allowed) {
+	if ($_POST['form'] !== SITE_ID) {
 		$user = 'unverified';
 	}
 
