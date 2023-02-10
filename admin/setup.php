@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Dec 2022 */
+/* Last updated 10 Feb 2023 */
 
 define('ACCESS', TRUE);
 
@@ -81,9 +81,10 @@ if (defined('TRACK_HITS')) {
 
 		} // End of 'if submit'
 
-	} else { // Do this on page load
+	} else { // Do this on page load for if TRACK_HITS is FALSE
 
-		if (!isset($_COOKIE["track"])) {
+		// If TRACK_HITS is FALSE, delete cookie if set
+		if (isset($_COOKIE["track"])) { /* Changed 10 Feb 23 */
 			setcookie("track", "", time() - 3600, "/");
 		}
 
@@ -137,7 +138,7 @@ if (!$login) {
 	// Logged in
 
 	// Declare the version
-	$version = '3.11'; // Edit footer.php and text/index.txt as well
+	$version = '4.0'; // Edit footer.php and text/index.txt as well
 
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
