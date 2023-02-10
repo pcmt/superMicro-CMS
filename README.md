@@ -1,5 +1,5 @@
 # superMicro CMS
-Website building system developed 2008 - 2022 by Patrick Taylor (hobbyist).
+Website building system developed 2008 - 2023 by Patrick Taylor (hobbyist).
 
 No database. Web content stored in plain text files.
 
@@ -25,7 +25,7 @@ PROVE DEFECTIVE YOU ASSUME THE COST OF ALL SERVICING, REPAIR OR CORRECTION.
 
 ---------------------------------------------------------------------------
 
-Current version: 3.11 (build: 2nd December 2022).
+Current version: 4.0 (build: 10th February 2023).
 
 (1) Designed for Linux / APACHE web server - superMicro CMS uses .htaccess.
 The server must also be php-enabled with PHP 5.2.0+ (the later the better).
