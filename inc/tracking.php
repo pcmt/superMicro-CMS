@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 02 Feb 2021 */
+/* Last updated 10 Feb 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to tracking.php');
@@ -41,7 +41,7 @@ if (isset($_SERVER['REMOTE_ADDR'])) {
 
 ?>
 
-<!-- Global site tag (gtag.js) - Google Analytics -->
+<!-- Google Analytics -->
 <!-- Code here //-->
 
 <?php
@@ -52,6 +52,7 @@ $time = time();
 
 // User agent
 if (isset($_SERVER['HTTP_USER_AGENT'])) {
+
 	$user_agent = $_SERVER['HTTP_USER_AGENT'];
 	// Ignore some user agent strings (add manually):
 	$ignore = array('crawl', 'spider', 'bot', 'slurp', 'archiver', 'indexer', 'python-requests', 'go-http', 'scrap', 'batch', 'facebookexternalhit', 'WhatsApp');
@@ -60,6 +61,26 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
 			$blocked = TRUE;
 		}
 	}
+
+	if ($ip_hostaddress) {
+		// Ignore some IP host address strings (add manually):
+		$ignore = array('members.linode.com', 'baiduspider', '119.', 'crawl', 'spider', 'probe.onyphe', 'clients.your-server.de');
+		foreach ($ignore as $val) {
+			if (stripos($ip_hostaddress, $val) !== FALSE) {
+				$blocked = TRUE;
+			}
+		}
+	}
+
+} else { // If no user agent, stop here
+	$user_agent = 'no user agent';
+	$blocked = TRUE;
+}
+
+/* ============================================================ */
+// Process the hit
+
+if (!$blocked) {
 
 	// Try to detect device
 	if (stristr($user_agent, 'iPhone')) {
@@ -85,26 +106,6 @@ if (isset($_SERVER['HTTP_USER_AGENT'])) {
 	} else {
 		$info = 'other';
 	}
-
-	if ($ip_hostaddress) {
-		// Ignore some IP host address strings (add manually):
-		$ignore = array('members.linode.com', 'baiduspider', '119.', 'crawl', 'spider', 'probe.onyphe', 'clients.your-server.de');
-		foreach ($ignore as $val) {
-			if (stripos($ip_hostaddress, $val) !== FALSE) {
-				$blocked = TRUE;
-			}
-		}
-	}
-
-} else { // If no user agent, stop here
-	$user_agent = 'no user agent';
-	$blocked = TRUE;
-}
-
-/* ============================================================ */
-// Process the hit
-
-if (!$blocked) {
 
 	// Page the script is on
 	$page = $_SERVER['PHP_SELF'];

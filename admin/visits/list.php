@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Nov 2022 */
+/* Last updated 06 Dec 2022 */
 
 if (file_exists('./top.php')) {
 	require('./top.php');
@@ -93,7 +93,7 @@ if ($response) {
 	}
 
 	$temp = file_get_contents("tempcount.txt");
-	_print_nlb('<p>Up to 250 hits from <a href="https://supermicrocms.com/visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):</p>');
+	_print_nlb('<p>Up to 250 hits from <a href="https://web.patricktaylor.com/cms-visitor-tracking" target="_blank">temporary count</a> of <strong>' . $temp . '</strong> (emptied at 1000):</p>');
 
 	$since_reset = file_get_contents("tempcountreset.txt"); // Timestamp
 	$formatsince_reset = date('D d M Y (H:i:s)', (int)$since_reset);

@@ -2,13 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,400;0,600;1,400;1,600&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,500;1,500&display=swap');
 
-/* [last update 10 July 2021] */
+/* [last update 05 Dec 2022] */
 /* Google fonts */
 
 @media screen {
-/* normalize-unminified.css minified (all screen widths) [last update 09.10 Aug 29 2020] */
-*{margin:0;padding:0}html,body{margin:0}html{position:relative;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box;overflow-y:scroll;-webkit-overflow-scrolling:touch}body{text-align:center;line-height:1}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}small{font-size:90%}img{vertical-align:bottom}input,select,textarea{-webkit-appearance:none;outline:none}input:focus,select:focus,textarea:focus,button:focus{outline:none}a:active,a:hover{outline:0}a{background:transparent}input[type=password]{filter:none}
-}
+/* normalize-unminified.css minified (all screen widths) [last update 25 Jan 2023] */
+*{margin:0;padding:0}html,body{margin:0}html{box-sizing:content-box}body{overflow-y:scroll;text-align:center;line-height:1}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}small{font-size:90%}img{vertical-align:bottom}input,select,textarea{-webkit-appearance:none;outline:none}input:focus,select:focus,textarea:focus,button:focus{outline:none}a:active,a:hover{outline:0}a{background:transparent}input[type=password]{filter:none}
 
 @media print {
 /* print-unminified.css minified '[last update 00.20 June 25 2020] */

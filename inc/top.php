@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 27 Dec 2022 */
+/* Last updated 28 Dec 2023 */
 
 // Declare variables
 $protected = $the_page = $adminlink = $admin = "";
@@ -34,6 +34,8 @@ if ($password) { // From html.php
 
 if (defined('SITE_ID')) {
 	$adminlink = 'adminlink_' . SITE_ID;
+} else {
+	$adminlink = 'x';
 }
 
 // For one-hour admin link in menu.php - be careful: reveals admin folder

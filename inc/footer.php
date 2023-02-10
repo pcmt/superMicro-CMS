@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Dec 2020 */
+/* Last updated 10 Feb 2023 (no changes) */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php');
@@ -94,7 +94,7 @@ if (defined('TRACK_HITS')) {
 		}
 
 	} else {
-		$feedback = 'Track hits not set';
+		$feedback = 'Neither track nor track_me is set';
 	}
 
 } else {

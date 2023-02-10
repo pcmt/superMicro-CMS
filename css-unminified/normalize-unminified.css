@@ -1,4 +1,4 @@
-/* 'Normalizer' (unminified) for all screen widths [last update 08.50 Aug 29 2020] */
+/* 'Normalizer' (unminified) for all screen widths [last update 25 Jan 2023] */
 
 /* When minified, paste into /css/common.css */
 
@@ -14,11 +14,10 @@ html {
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
   box-sizing: content-box; /* Padding and borders increase box */
-  overflow-y: scroll;
-  -webkit-overflow-scrolling:touch; /* Added */
 }
 
 body {
+  overflow-y: scroll; /* MOVED Show vertical scrollbar */
   text-align: center;
   line-height: 1.0;
 }

@@ -40,7 +40,7 @@
     url('../fonts/open-sans-v18-latin-600italic.woff') format('woff');
 }
 
-/* [last update 04 Jan 2021] */
+/* [last update 28 Jan 2023] */
 
 * { margin: 0; padding: 0; }
 
@@ -51,10 +51,7 @@ body {
 
 html {
   position: relative;
-  -moz-box-sizing: content-box;
-  -webkit-box-sizing: content-box;
   box-sizing: content-box; /* Padding and borders increase box */
-  overflow-y: scroll;
 }
 
 body {
