@@ -4,33 +4,35 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Dec 2022 */
+/* Last updated 04 Feb 2023 */
 
 /* https://www.w3schools.com/howto/howto_js_slideshow.asp */
+/* error corrected in ChatGPT */
 
 let slideIndex = 1;
 showSlides(slideIndex);
 
 function plusSlides(n) {
-  showSlides(slideIndex += n);
+  slideIndex += n;
+  showSlides(slideIndex);
 }
 
 function currentSlide(n) {
-  showSlides(slideIndex = n);
+  slideIndex = n;
+  showSlides(slideIndex);
 }
 
 function showSlides(n) {
-
   let i;
   let slides = document.getElementsByClassName("mySlides");
   let dots = document.getElementsByClassName("dot");
 
   if (n > slides.length) {
-    slideIndex = 1
+    slideIndex = 1;
   }
 
   if (n < 1) {
-    slideIndex = slides.length
+    slideIndex = slides.length;
   }
 
   for (i = 0; i < slides.length; i++) {
@@ -41,7 +43,14 @@ function showSlides(n) {
     dots[i].className = dots[i].className.replace(" active", "");
   }
 
+  if (slideIndex > slides.length) {
+    slideIndex = 1;
+  }
+
+  if (slideIndex < 1) {
+    slideIndex = slides.length;
+  }
+
   slides[slideIndex-1].style.display = "block";
   dots[slideIndex-1].className += " active";
-
 }
