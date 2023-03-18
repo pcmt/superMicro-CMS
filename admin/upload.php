@@ -5,12 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 17 March 2023 */
 
 define('ACCESS', TRUE);
 
 // Declare variables etc
-$response = $problem = "";
+$response = $problem = $new_filename = "";
 $num = "0";
 $thisAdmin = 'upload'; // For nav
 $uploadfolder = '../uploads/';
@@ -87,52 +87,36 @@ if (!$login) {
 
 	if (array_key_exists('submit1', $_POST)) { // Upload
 
-		// Because it's a new folder
-		if (file_exists('../uploads') && is_dir('../uploads')) {
-			@chmod($uploadfolder, 0775);
-		} else {
-			$problem = TRUE;
-			$response = "<em>Error. The folder <b>/uploads/</b> does not exist. Please install the latest version of superMicro CMS.</em>";
-		}
-
-		$name = trim($_POST['filename']);
-
-		if (strlen($name) < 1) {
-			$problem = TRUE;
-			$response = "<em>You didn't enter a new filename. Start again, entering a new filename.</em>";
-		}
-
-		if (preg_match("/[^~A-Za-z0-9_\-]/", $name)) {
-			$problem = TRUE;
-			$response = '<em>The new filename can contain only letters, numbers, hypens, underscores, and tildes. Start again.</em>';
-		}
-
-		$filename = $_FILES["upload"]["name"];
-		$filetype = $_FILES["upload"]["type"];
+		// Sanitize user input
+		$filename = htmlspecialchars($_FILES["upload"]["name"]);
+		$filetype = htmlspecialchars($_FILES["upload"]["type"]);
 		$filesize = $_FILES["upload"]["size"];
 
-		if ($_FILES["upload"]["size"] > 2097152) { // 2 megabtytes
-			$problem = TRUE;
-			$response = "<em>File to large. Maximum file size is 2 megabtyes.</em>";
-		}
+		$random_string = randomString( 2 );
 
-		if (!$problem) {
+		// Validate uploaded file
+		$allowed_extensions = array('pdf', 'doc', 'docx', 'rtf', 'zip', 'txt');
+		$ext = pathinfo($filename, PATHINFO_EXTENSION);
 
-			$allowed = array('PDF', 'pdf', 'doc', 'docx', 'rtf', 'ZIP', 'zip', 'txt');
+		if (!in_array(strtolower($ext), $allowed_extensions)) {
+			$response = '<em>Error. Only filetypes .pdf, .doc, .docx, .rtf, .zip and .txt permitted.</em>';
+		} elseif ($filesize > 2097152) {
+			$response = "<em>File too large. Maximum file size is 2 megabytes.</em>";
+		} elseif (!file_exists($_FILES['upload']['tmp_name']) || !is_uploaded_file($_FILES['upload']['tmp_name'])) {
+			$response = "<em>Error uploading file.</em>";
+		} else {
+			// Use secure file paths
+			$uploads_dir = realpath(__DIR__ . '/../uploads');
+			$new_filename = $_FILES['upload']['name'] . $random_string . '.' . $ext;
+			$target_file = $uploads_dir . '/' . $new_filename;
 
-			// Verify file extension
-			$ext = pathinfo($filename, PATHINFO_EXTENSION);
-			// echo '<br>File extension = ' . $ext; // Testing only
-			if ((in_array($ext, $allowed)) && $filesize) {
-				if (move_uploaded_file($_FILES['upload']['tmp_name'], "../uploads/{$name}.{$ext}")) {
-					$response = '<em>The file <b>' . $name . '.' . $ext . '</b> has been uploaded.</em>';
-				} else {
-					$response = '<em>The file could not be moved.</em>';
-				}
+			if (move_uploaded_file($_FILES['upload']['tmp_name'], $target_file)) {
+				$response = '<em>The file <b>' . $new_filename . '</b> has been uploaded.</em>';
 			} else {
-				$response = '<em>Error. Only filetypes .pdf, .doc, .docx, .rtf, .zip and .txt permitted.</em>';
+				$response = '<em>Error moving file.</em>';
 			}
 		}
+
 	}
 
 	if (array_key_exists('submit2', $_POST)) { // Delete
@@ -180,20 +164,9 @@ if (!$login) {
 <h5>Choose a file on your device</h5>
 
 <form enctype="multipart/form-data" action="<?php _print($self); ?>" method="post" onSubmit="displayLoading();">
-
 <label>2 megabytes max.</label>
 <input type="file" name="upload">
-<label>Choose a name for the upload file (eg: <b>filename1</b> - omit file extension):</label>
-<input type="hidden" name="MAX_FILE_SIZE" value="2097152">
-<input type="text" size="40" name="filename" value="<?php
-
-	if (isset($_POST['submit1'])) {
-		_print($_POST['filename']);
-	}
-
-?>" maxlength="60">
 <input type="submit" name="submit1" class="images" value="Upload file">
-
 </form>
 
 <!-- display progress //-->
@@ -248,7 +221,7 @@ function displayLoading() {
 			foreach ($filesArray as $file) {
 
 				// For file just uploaded, otherwise no class
-				if (isset($_POST['submit1']) && ($file == $name . '.' . $ext)) {
+				if (isset($_POST['submit1']) && ($file == $new_filename)) {
 					$mark = ' class="mark"';
 				} else {
 					$mark = NULL;

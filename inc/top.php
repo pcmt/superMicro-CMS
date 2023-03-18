@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 28 Dec 2023 */
+/* Last updated 18 March 2023 */
 
 // Declare variables
 $protected = $the_page = $adminlink = $admin = "";
@@ -30,6 +30,7 @@ if ($password) { // From html.php
 		_print("Error in /inc/top.php: '/inc/ppp.php' could not be found.");
 		exit(); // For security (file has to exist)
 	}
+
 }
 
 if (defined('SITE_ID')) {
@@ -114,11 +115,23 @@ if ($protected) {
 	_print('
 <meta name="robots" content="noindex,nofollow">
 <style>
+
 @media print {
   #wrap {
     display: none;
   }
 }
+
+#wrap {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
 </style>
 ');
 } else {
@@ -128,4 +141,11 @@ if ($protected) {
 ?>
 
 </head>
-<body>
+<?php
+if (!$protected) {
+	_print("<body>\n");
+} else {
+	_print('<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">');
+	_print("\n");
+}
+?>

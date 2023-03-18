@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Nov 2022 */
+/* Last updated 15 March 2023 */
 
 define('ACCESS', TRUE);
 
@@ -98,10 +98,7 @@ if (!$login) {
 	// ZIP pages
 	if (isset($_POST['submit1'])) {
 
-		$destination = './backup.zip';
-		$type = 'of pages ';
-		$_pages = $_root . '/pages';
-
+		$_pages = $_root . '/pages/';
 		if ($files = opendir($_pages)) {
 
 			$filesArray = array(); // New array
@@ -134,26 +131,45 @@ if (!$login) {
 
 			closedir($files);
 
-			// print '<pre>';
-			// print_r($filesArray);
-			// print '</pre>';
+// print '<pre>';
+// print_r($filesArray);
+// print '</pre>';
 
-			/* Create backup */
-			$backup = zip($filesArray, $destination); // See functions.php
-
-			if ($backup) {
-				if (file_exists('./backup.zip')) {
-					$response = '<em>Backup ' . $type . 'successful. <a href="backup.zip">Download backup</a> then click \'Delete backup\'.</em>';
-				} else {
-					$response = '<em>Backup did not succeed.</em>';
+			$valid_files = array();
+			if (is_array($filesArray)) { // If files were passed in
+				foreach($filesArray as $file) {
+					if (file_exists($file) && is_file($file)) {
+						$valid_files[] = $file;
+					}
 				}
-			} else {
-				$response = '<em>ZIP function failed. Check status&#8212;does a backup already exist?</em>';
 			}
 
-		} else { // No files
-			$_pages = FALSE;
-			$response = '<em>Error. Could not open the pages folder.</em>';
+			// If files exist
+			if (count($valid_files)) {
+
+// print '<pre>';
+// print_r($valid_files);
+// print '</pre>';
+
+				/* Create backup */
+				$zip = new ZipArchive(); //Create an object of ZipArchive class
+				$zipname = "backup.zip"; // Give zip file a name
+
+				if ($zip->open($zipname, ZipArchive::CREATE ) === TRUE) {
+					foreach($valid_files as $file) {
+						$zip->addFile($file, $file); // Add each file
+					}
+					$zip->close();
+				}
+
+			}
+
+			if (file_exists('./backup.zip')) {
+				$response = '<em>Backup of pages successful. <a href="backup.zip">Download backup</a> then click \'Delete backup\'.</em>';
+			} else {
+				$response = '<em>Backup did not succeed.</em>';
+			}
+
 		}
 	}
 
@@ -170,17 +186,17 @@ if (!$login) {
 			// Create new zip class
 			$zip = new ZipArchive;
 
-			if ($zip -> open($backup_ZIP, ZipArchive::CREATE ) === TRUE) {
+			if ($zip->open($backup_ZIP, ZipArchive::CREATE ) === TRUE) {
 
 				// Store the path into the variable
 				$dir = opendir($source);
 				while($file = readdir($dir)) {
 					if(is_file($source . $file)) {
-						$zip -> addFile($source . $file, $file);
+						$zip->addFile($source . $file, $file);
 					}
 				}
 
-				$zip ->close();
+				$zip->close();
 
 				$response = '<em>Image backup successful. <a href="backup.zip">Download backup</a> then click \'Delete backup\'.</em>';
 

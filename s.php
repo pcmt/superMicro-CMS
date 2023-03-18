@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 09 Feb 2022 */
+/* Last looked at 15 March 2023 */
 
 define('ACCESS', TRUE);
 

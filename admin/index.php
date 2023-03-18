@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 01 Dec 2022 */
+/* Last updated 14 March 2023 */
 
 define('ACCESS', TRUE);
 
@@ -158,11 +158,15 @@ if (!$login) {
 
 	$inmenu = '../inc/inmenu.txt';
 
-	if (file_exists($inmenu)) {
+	if (file_exists($inmenu)) { // 13 March 23 edits below
 		// Get inmenu.txt as array
 		$inmenuArray = file($inmenu);
 		// Loop through the lines to check for a match
 		foreach ($inmenuArray as $line) {
+			// Skip empty lines
+			if (trim($line) === '') {
+				continue;
+			}
 			$slug = stripAnchor($line);
 			// If slug matches page
 			if ($slug == $filetitle) {
@@ -259,18 +263,16 @@ if (!$login) {
 				/* For menu when new page created */
 
 				// Check for + symbol
-				if (strpos($linesArray[0], '+') !== FALSE) {
-					$checklines = file_get_contents($inmenu);
-					if ((strlen(trim($checklines)) == 0) && !is_null($checklines)) { // Number of bytes
+				if (strpos($linesArray[0], '+') !== FALSE) { // 14 March 23 edits below
+					$checklines = trim(file_get_contents($inmenu));
+					if (empty($checklines)) {
 						$towrite = $menutext; // No new line if empty
 					} else {
 						$towrite = "\n" . $menutext; // File title on new line
 					}
 
-					// Addmenu item
-					$fp = fopen($inmenu, 'a+');
-					fwrite($fp, $towrite);
-					fclose($fp);
+					// Add menu item
+					file_put_contents($inmenu, $towrite, FILE_APPEND);
 				}
 
 				/* -------------------------------------------------- */
@@ -426,20 +428,11 @@ $obj->Template();
 						// (2) First line has + symbol:
 						// Add line if doesn't exist
 						if ($addmenu && !$line_exists) {
-							// file_put_contents($inmenu, "\n{$filetitle}", FILE_APPEND);
-							// Above replaced by same as create new page
+							$checklines = file_get_contents($inmenu); // 14 March 23 edits below
+							$towrite = empty(trim($checklines)) ? $filetitle : "\n$filetitle";
 
-							$checklines = file_get_contents($inmenu);
-							if ((strlen(trim($checklines)) == 0) && !is_null($checklines)) { // Number of bytes
-								$towrite = $filetitle; // No new line if empty
-							} else {
-								$towrite = "\n" . $filetitle; // File title on new line
-							}
-
-							// Addmenu item
-							$fp = fopen($inmenu, 'a+');
-							fwrite($fp, $towrite);
-							fclose($fp);
+							// Append $towrite to the end of the file
+							file_put_contents($inmenu, $towrite, FILE_APPEND);
 						}
 
 					} else { // inmenu.txt doesn't exist

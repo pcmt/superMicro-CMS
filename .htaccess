@@ -3,7 +3,7 @@
 <IfModule mod_rewrite.c>
   RewriteEngine on
 # Forbid direct viewing of txt files in pages folder
-  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/(pages|visits)/(.*)\.txt [NC]
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/pages/(.*)\.txt [NC]
   RewriteRule ^ "-" [F]
 # Rewrite non php URLs to php on server
 # php URLs still usable

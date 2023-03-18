@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Dec 2022 */
+/* Last updated 14 Feb 2023 */
 
 // Declare variables
 $commentfile = $leavecomment = $closecomments = $filedate = '';
@@ -26,6 +26,10 @@ if (file_exists('./js/simpleToggle.js')) { // From the website root
 
 if (file_exists('./js/read-more.js')) { // From the website root
 	_print_nlb('<script src="' . LOCATION . 'js/read-more.js"></script>');
+}
+
+if (file_exists('./js/navscroll.js')) { // From the website root
+	_print_nlb('<script src="' . LOCATION . 'js/navscroll.js"></script>');
 }
 
 /* -------------------------------------------------- */

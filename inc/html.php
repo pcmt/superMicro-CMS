@@ -147,7 +147,7 @@ class Page {
 
 			/* -------------------------------------------------- */
 			// See ppp.php (logout form normally unsets but not displayed)
-			// Deativated (sessions ends when browser closed)
+			// Deactivated (sessions ends when browser closed)
 			// if (isset($_SESSION['password'])) {
 			// 	unset($_SESSION['password']); // Need to unset session
 			// }

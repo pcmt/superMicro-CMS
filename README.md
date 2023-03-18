@@ -25,10 +25,9 @@ PROVE DEFECTIVE YOU ASSUME THE COST OF ALL SERVICING, REPAIR OR CORRECTION.
 
 ---------------------------------------------------------------------------
 
-Current version: 4.0 (build: 10th February 2023).
+Current version: 4.0 (build: 18th March 2023).
 
 (1) Designed for Linux / APACHE web server - superMicro CMS uses .htaccess.
-The server must also be php-enabled with PHP 5.2.0+ (the later the better).
 
 (2) Can also be run on WINNT/Microsoft-IIS (urls with .php file extension).
 

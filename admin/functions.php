@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Dec 2022 */
+/* Last updated 15 March 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -174,10 +174,10 @@ function stripAnchor($str) {
  * stopwords.php
  */
 
-// Edited 27 Feb 2020
+// Edited 14 March 2023
 function phpSELF() {
 	// Convert special characters to HTML entities
-	$str = htmlspecialchars($_SERVER['PHP_SELF']);
+	$str = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES);
 	if (empty($str)) { // Fix empty PHP_SELF
 		// Strip query string
 		$str = preg_replace("/(\?.*)?$/", "", $_SERVER['REQUEST_URI']);
@@ -196,16 +196,15 @@ function isWritable($path) {
 	if ('WIN' === strtoupper(substr(PHP_OS, 0, 3 ))) {
 		return win_isWritable($path);
 	} else {
-		return @is_writable($path);
+		return is_writable($path);
 	}
 }
 
 /* --------------------------------------------------
- * ??.php
+ * Used in function isWritable (above)
  */
 
 // This function is called only on Windows servers (adapted from WordPress 4.0)
-// Not used since Nov 18
 function win_isWritable($path) {
 	if ($path[strlen($path) - 1] == '/') { // If it looks like a directory...
 		return win_isWritable($path . uniqid(mt_rand()) . '.tmp');
@@ -236,15 +235,15 @@ function win_isWritable($path) {
 // HTTPS or HTTP (from 22 Nov 18)
 function get_protocol() {
 	if (isset($_SERVER['HTTPS'])) {
-		if ('on' == strtolower($_SERVER['HTTPS'])) {
+		if ('on' === strtolower($_SERVER['HTTPS'])) {
 			return TRUE;
 		}
 
-		if ('1' == $_SERVER['HTTPS']) {
+		if ('1' === $_SERVER['HTTPS']) {
 			return TRUE;
 		}
 
-	} elseif (isset($_SERVER['SERVER_PORT']) && ('443' == $_SERVER['SERVER_PORT'])) {
+	} elseif (isset($_SERVER['SERVER_PORT']) && ('443' === $_SERVER['SERVER_PORT'])) {
 		return TRUE;
 	}
 
@@ -276,54 +275,6 @@ function loggedoutFooter() {
 <p><a href="./install.php">Install here&nbsp;&raquo;</a></p>';
 	} else { // Is installed
 		echo '<p><a href="https://patricktaylor.com/hash-sha256.php" target="_blank">Lost or forgotten password&nbsp;&raquo;</a></p>';
-	}
-}
-
-/* --------------------------------------------------
- * backup.php
- */
-
-// Creates a compressed zip file from array
-// https://davidwalsh.name/create-zip-php
-function zip($files = array(), $destination = '', $overwrite = FALSE) {
-
-	// If the zip file already exists and overwrite is false, return false
-	if (file_exists($destination) && !$overwrite) {
-		return FALSE;
-	}
-
-	$valid_files = array();
-	if (is_array($files)) { // If files were passed in
-		foreach($files as $file) {
-			if (file_exists($file) && is_file($file)) {
-				$valid_files[] = $file;
-			}
-		}
-	}
-
-	// If files exist
-	if (count($valid_files)) {
-
-		// Create the archive
-		$zip = new ZipArchive();
-		if ($zip->open($destination, $overwrite ? ZIPARCHIVE::OVERWRITE : ZIPARCHIVE::CREATE) !== TRUE) {
-			return FALSE;
-		}
-
-		// Add the files
-		foreach ($valid_files as $file) {
-			$zip->addFile($file, $file);
-		}
-
-		// Close the zip (done!)
-		$zip->close();
-		unset($zip);
-
-		// Check to make sure the file exists
-		return file_exists($destination);
-
-	} else {
-		return FALSE;
 	}
 }
 
@@ -410,10 +361,10 @@ function allChars($str) {
  * install.php
  */
 
-// For cookies
+// For cookies and site ID
 function randomString( $length ) {
 	$chars = "abcdefghijklmnopqrstuvwxyz0123456789";
-
+	$str = '';
 	$size = strlen( $chars );
 	for( $i = 0; $i < $length; $i++ ) {
 		$str .= $chars[ rand( 0, $size - 1 ) ];

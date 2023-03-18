@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 10 Feb 2023 */
+/* Last updated 17 March 2023 */
 
 define('ACCESS', TRUE);
 
@@ -56,13 +56,10 @@ if (defined('TRACK_HITS')) {
 			$correct_value = FALSE;
 			// First check for a correct value
 			// otherwise do nothing ($problem = TRUE)
+			// 13 March 23 edit
+			$correct = array('YES', 'NO', '');
 			$posted = trim($_POST['track_me']);
-			$correct = array('YES','NO', '');
-			foreach ($correct as $check) {
-				if ($check == $posted) {
-					$correct_value = TRUE;
-				}
-			}
+			$correct_value = in_array($posted, $correct, TRUE);
 
 			// Cookie action (does not affect box in form)
 			if ($correct_value) { // Proceed with cookie
@@ -213,7 +210,7 @@ if (!$login) {
 			// echo 'get_protocol function works'; // For testing only
 		// }
 	} else { // If function doesn't exist
-		if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+		if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') {
 			$protocol = 'https://';
 		} else {
 			$protocol = 'http://';
@@ -312,11 +309,16 @@ if (!$login) {
 
 	if (isset($_POST['submit1']) && $do_setup) {
 
-		// Check referrer moved to top of file
-		// if (!strcmp($_SERVER['HTTP_REFERER'], (LOCATION . ADMIN . '/setup.php')) == 0) {
-		// 	// _print('$_SERVER[\'HTTP_REFERER\'] = ' . $_SERVER['HTTP_REFERER'] . ''); // For testing
-		// 	$problem = TRUE;
-		// }
+		/* -------------------------------------------------- */
+		/* VERIFY INC FILES */
+		$required = array('../inc/languages/de.php','../inc/languages/en.php','../inc/languages/es.php','../inc/languages/fr.php', '../inc/404.php', '../inc/content.php', '../inc/error-reporting.php', '../inc/extra-body.php', '../inc/extra-content.php', '../inc/extra-head.php', '../inc/filter-email.php', '../inc/footer.php', '../inc/form.php', '../inc/functions.php', '../inc/html.php', '../inc/lang.php', '../inc/login-form.php', '../inc/logout-form.php', '../inc/menu.php', '../inc/ppp.php', '../inc/prelims.php', '../inc/stylesheets.php', '../inc/top.php');
+
+		foreach ($required as $file) {
+			if (!file_exists($file)) { // Exit if a file is missing
+				echo "<h5>Error: the file '{$file}' does not exist. It must be installed.</h5></body></html>";
+				exit();
+			}
+		}
 
 		/* -------------------------------------------------- */
 		/* CHECK THE FORM */

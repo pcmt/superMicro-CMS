@@ -5,16 +5,23 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 16 March 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to login-form.php');
 }
 
-// See ppp.php for why logout form is not displayed (18 Jan 20)
+?>
+
+<h1 id="pp">Password Protected</h1>
+
+<?php
+
+if ($error) {
+	_print_nlb("{$error}");
+}
 
 _print_nlb('
-<h1 id="pp">Password Protected</h1>
 
 		<div id="pw">
 

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Dec 2020 */
+/* Last updated 15 March 2023 */
 /* This file is required for e.php and search.php */
 
 if (!defined('ACCESS')) {
@@ -44,7 +44,7 @@ if (file_exists(INC . 'lang.php')) {
 	exit();
 }
 
-// Next bit in top.php but not loaded here
+// Next bit from top.php which is not loaded here
 if ((APACHE == FALSE) || (!file_exists('./.htaccess'))) {
 	$rewrite = FALSE;
 } else {

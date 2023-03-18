@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 Dec 2022 */
+/* Last updated 14 Feb 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to menu.php');
@@ -17,7 +17,7 @@ if (defined('SITE_NAME') && (strlen(SITE_NAME) > 0)) { // &nbsp; nudges right fo
 }
 
 ?>
-	<nav>
+	<nav id="navbar">
 
 <ul>
 <?php

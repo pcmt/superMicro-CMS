@@ -12,7 +12,7 @@ if (!defined('ACCESS')) {
 }
 
 /* See ppp.php for why logout form is not displayed (18 Jan 20)
-Session unset at bottom of page.class.php
+Session unset at bottom of html.php
 
 echo '
 <form method="post" class="pw" action="" id="logout">

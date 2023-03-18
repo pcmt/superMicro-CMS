@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 02 Dec 2022 */
+/* Last updated 18 March 2023 */
 
 define('ACCESS', TRUE);
 
@@ -234,11 +234,11 @@ if (!$login) {
 # EXTERNAL REDIRECTS
 
 # Remove index php root only
-  RewriteCond %{REQUEST_URI} !(' . $admin . '|diagnostics|visits) [NC]
+  RewriteCond %{REQUEST_URI} !(' . $admin . '|diagnostics) [NC]
   RewriteRule ^index\.php$ ' . $site_location . ' [R=301,L]
 
 # Remove php extensions root only
-  RewriteCond %{REQUEST_URI} !(' . $admin . '|diagnostics|visits) [NC]
+  RewriteCond %{REQUEST_URI} !(' . $admin . '|diagnostics) [NC]
   RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)\.php [NC]
   RewriteRule ^(.+)\.php$ ' . $site_location . '$1 [R=301,L]
 
@@ -249,7 +249,7 @@ if (!$login) {
 # INTERNAL REWRITES
 
 # Forbid direct viewing txt files in pages folder
-  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/(pages|visits)/(.*)\.txt [NC]
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/(pages)/(.*)\.txt [NC]
   RewriteRule ^ "-" [F]
 
 # Rewrite non php URLs to php on server
@@ -288,7 +288,7 @@ if (!$login) {
 #     is a php file
   RewriteCond %{REQUEST_FILENAME}\.php -f
 # Internally rewrite to actual php file
-  RewriteRule ^(.*)$ $1.php
+  RewriteRule ^(.*)$ $1.php [L]
 # If not found, relative path to error 404 file
 #     is not an actual file or directory
   RewriteCond %{REQUEST_FILENAME} !-f

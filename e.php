@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Dec 2020 */
+/* Last updated 17 March 2023 */
 
 define('ACCESS', TRUE);
 
@@ -13,17 +13,13 @@ define('ACCESS', TRUE);
 $ip = $problem = NULL;
 $pageID = 'e';
 $showform = TRUE;
+$regex = "";
 
 // Define absolute path to /inc/ folder (as in html.php)
 $_inc = str_replace('\\', '/', dirname(__FILE__)) . '/inc/';
 define('INC', $_inc);
 
-if (file_exists(INC . 'prelims.php')) {
-	require(INC . 'prelims.php');
-} else {
-	echo 'Error. Please install the file /inc/prelims.php';
-	exit();
-}
+require(INC . 'prelims.php');
 
 /* -------------------------------------------------- */
 // Contact form submitted
@@ -32,107 +28,17 @@ if (isset($_POST['submit'])) {
 
 	$response = '';
 
-	// Remove tags in email message
-	$strip = array('<', '>');
-	$_POST['name'] = str_replace($strip, ':', $_POST['name']);
-	$_POST['comment'] = str_replace($strip, ':', $_POST['comment']);
-
-	if (strlen($_POST['name']) < 1) {
-		$problem = TRUE;
-		$response .= TEXT17 . '<br>';
-	}
-
-	if (str_word_count($_POST['name']) > 2) {
-		$problem = TRUE;
-		$response .= TEXT18 . '<br>';
-	}
-
-	$email = stripslashes(trim($_POST['email']));
-	if ((strlen($email) < 5) || (!filter_var($email, FILTER_VALIDATE_EMAIL))) {
-		$problem = TRUE;
-		$response .= TEXT19 . '<br>';
-	}
-
-	if (strlen($_POST['comment']) < 1) {
-		$problem = TRUE;
-		$response .= TEXT20 . '<br>';
-	}
-
-	/* -------------------------------------------------- */
-	// Various attempts to block spam (may change)
-
-	if ($_POST['url'] != '') {
-		$problem = TRUE;
-		unset($comment);
-		$response .= TEXT21 . '<br>';
-	}
-
-	$spam = array('a href=', '[url=', '[link=', 'http:');
-	$spam_found = FALSE;
-	foreach ($spam as $spamword) {
-		if ((stripos($_POST['name'], $spamword) !== false) || (stripos($_POST['comment'], $spamword) !== false)) {
-			$spam_found = TRUE;
-			break;
-		}
-	}
-	if ($spam_found) {
-		$problem = TRUE;
-		unset($comment);
-		$response .= TEXT22 . '<br>';
-	}
-
-	// Make sure the form was posted from a browser
-	if (!isset($_SERVER['HTTP_USER_AGENT'])) {
-		echo TEXT23;
-		exit;
-	}
-
-	// Make sure the form was indeed POSTed
-	if ((!$_SERVER['REQUEST_METHOD'] == "POST") || ("POST" != getenv('REQUEST_METHOD'))) {
-		echo TEXT23;
-		exit;
-	}
-
-	// Attempt to defend against header injections
-	$badStrings = array('Content-Type:', 'MIME-Version:', 'Content-Transfer-Encoding:', 'bcc:', 'cc:');
-	foreach ($_POST as $k => $v) {
-		foreach ($badStrings as $v2) {
-			if (stripos($v, $v2) !== false) {
-				header('HTTP/1.0 403 Forbidden');
-				exit;
-			}
-		}
-	}
-
-	// Block specified IP addresses
-	$badIPs = array('76.164.219.139', '76.164.219.143');
-	foreach ($badIPs as $spammer) {
-		if ($spammer == $ip) {
-			echo TEXT23;
-			exit;
-		}
-	}
-
-	// Dec 18 'stopwords' blocker
-	if (file_exists(INC . 'stopwords.txt')) {
-		$stopwordsArray = file(INC . 'stopwords.txt'); // Get stopword as array
-		$string = stripslashes($_POST['comment']);
-		foreach ($stopwordsArray as $word) {
-			if (stripos($string, trim($word)) !== FALSE) {
-				// echo 'Stopword = ' . $word . "<br>";
-				// echo "FOUND.<br>";
-				$problem = TRUE;
-				unset($string);
-				unset($content);
-				$response .= TEXT48 . '<br>';
-			}
-		}
+	if (file_exists(INC . 'filter-email.php')) {
+		include(INC . 'filter-email.php');
+	} else {
+		_print("Error in /e.php: '/inc/filter-email.php' could not be found.");
+		exit();
 	}
 
 	/* -------------------------------------------------- */
 
-	$name = stripslashes($_POST['name']);
-	$message = stripslashes($_POST['comment']);
+	$name = stripslashes($name);
+	$comment = stripslashes($comment);
 
 	// Convert special (foreign) characters to normal text
 	$text24 = html_entity_decode(TEXT24, ENT_QUOTES, "utf-8");
@@ -141,14 +47,14 @@ if (isset($_POST['submit'])) {
 	if (!$problem) {
 		$showform = FALSE;
 		$ip = $_SERVER['REMOTE_ADDR'];
-		$comment = '';
+		// $comment = '';
 		$subject = $text24 . ' ' . $email;
 		$website = LOCATION;
 		$headers = "Mime-Version: 1.0\r\n";
 		$headers .= "Content-Type: text/plain; charset=UTF-8\r\n";
 		$headers .= TEXT25 . " {$email}\r\n";
 		$headers .= "Return-Path: {$email}\r\n";
-		$body = $text26 . " {$name} [ {$email} ]\r\n\r\nWeb: {$website}\r\n\r\n{$message}\r\n\r\nIP: {$ip}";
+		$body = $text26 . " {$name} [ {$email} ]\r\n\r\nWeb: {$website}\r\n\r\n{$comment}\r\n\r\nIP: {$ip}";
 		$body = wordwrap($body, 70);
 			if (mail(EMAIL, $subject, $body, $headers)) {
 			$response .= TEXT27;
@@ -244,6 +150,7 @@ if (!$phpMail) { // Hides form and just shows email address
 <p>' . $response . '</p>
 
 		</div>
+
 		');
 	}
 

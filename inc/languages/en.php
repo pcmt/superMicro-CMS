@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 June 2021 */
+/* Last updated 17 March 2023 */
 
 /* -------------------------------------------------- */
 // File /inc/content.php
@@ -20,7 +20,7 @@ define("TEXT14", "Enter Password");
 /* -------------------------------------------------- */
 // File /e.php
 
-define("TEXT17", "You didn't enter your name.");
+define("TEXT17", "You didn't enter a valid name."); // 17/3/23 edit
 define("TEXT18", "The name you enter must be two words maximum.");
 define("TEXT19", "You didn't enter a valid email address.");
 define("TEXT20", "You didn't enter a comment.");
