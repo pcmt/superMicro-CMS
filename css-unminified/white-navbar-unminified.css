@@ -1,0 +1,31 @@
+/* White navbar [ 25 March 23 ] */
+
+@media screen and (min-width: 798px) {
+
+  nav {
+    color: #000;
+    text-transform: capitalize; /* First letter */
+    background: #fff;
+    border-bottom: 1px solid #ddd;
+    opacity: 0.9;
+  }
+
+  nav ul {
+   font-size: 0.9em;
+  }
+
+  nav li a,
+  nav strong {
+    color: #000;
+  }
+
+  nav li a:hover {
+    color: #ff0099;
+  }
+
+  p#sitename {
+    display: none;
+  }
+
+}
+

@@ -7,7 +7,7 @@ superMicro CMS (THE PROGRAM) is written by Patrick Taylor and remains his
 intellectual property.
 
 https://patricktaylor.com/
-https://web.patricktaylor.com/cms
+https://web.patricktaylor.com/
 
 The program is released under the GNU General Public License (GPL) version 3
 See http://www.gnu.org/licenses/gpl-3.0.html
@@ -23,7 +23,7 @@ PROVE DEFECTIVE YOU ASSUME THE COST OF ALL SERVICING, REPAIR OR CORRECTION.
 
 ----------------------------------------------------------------------------
 
-Current version: 4.0 (build: 15 March 2023).
+Current version: 4.1 (build: 02 April 2023).
 
 (1) Designed for Linux / APACHE web server - superMicro CMS uses .htaccess.
 

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 March 2023 */
+/* Last updated 02 April 2023 */
 
 define('ACCESS', TRUE);
 
@@ -135,13 +135,20 @@ if (!$login) {
 	// Logged in
 
 	// Declare the version
-	$version = '4.0'; // Edit footer.php and text/index.txt as well
+	$version = '4.1'; // Edit footer.php and text/index.txt as well
 
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
 /* ================================================== */
 
-	$siteID = file_get_contents('siteid.txt'); /* Unique */
+	if (file_exists('./siteid.txt')) { // Only created on install
+		$siteID = file_get_contents('./siteid.txt');
+	} else if (defined('SITE_ID')) {
+		$siteID = SITE_ID;
+	} else {
+		_print("Error. Neither /admin/siteid.txt nor a defined site ID exist. Reinstall.");
+		exit();
+	}
 
 	$do_setup = TRUE; // Falsified if check fails
 
@@ -423,6 +430,12 @@ if (!$login) {
 
 			$contact_menu = trim($_POST['contact_menu']);
 			$contact_menu = allowedChars($contact_menu);
+			if (!$contact_text) {
+				$contact_menu = 'FALSE';
+			}
+		} else {
+			$contact_text = FALSE;
+			$contact_menu = '';
 		}
 
 		$fonts = substr(trim($_POST['font_type']), 0, 6); // First 6 chars
@@ -502,9 +515,14 @@ define('VERSION', '{$version}');
 
 			$response1 = "<em>Settings {$action}.</em>";
 
-			// Now can delete install.php
+			// Now delete install.php
 			if (file_exists('./install.php')) {
 				unlink('./install.php');
+			}
+
+			// Now delete siteid.txt
+			if (file_exists('./siteid.txt')) {
+				unlink('./siteid.txt');
 			}
 
 		} // End of no problem with form
@@ -868,7 +886,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 		<div id="bottom">
 
-<label>Contact page introductory text</label>
+<label>Contact page introductory text (or delete contact page /e.php)</label>
 <textarea name="contact_text" size="60" rows="4" cols="30"><?php
 
 		if (isset($_POST['submit1'])) {
@@ -1027,7 +1045,7 @@ if (isset($_POST['submit1'])) {
 <p class=\"break_word\">Home page:<strong><br>{$site_location}</strong></p>
 <p>Server software: <strong>{$serverSoftware}</strong></p>
 <p>Operating system: <strong>{$opSystem}</strong></p>
-<p>Site ID: <strong>{$siteID}</strong> (from install.php)</p>
+<p>Site ID: <strong>{$siteID}</strong></p>
 
 ");
 

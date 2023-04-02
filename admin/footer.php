@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 06 Dec 2022 */
+/* Last updated 02 April 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php');
@@ -13,7 +13,7 @@ if (!defined('ACCESS')) {
 
 ?>
 
-<p id="footer"><a href="https://web.patricktaylor.com/" title="superMicro CMS" target="_blank">superMicro CMS</a> version <em>4.0</em> &copy;&nbsp;<a href="https://patricktaylor.com/" title="Patrick Taylor" target="_blank">Patrick Taylor</a> 2008&#8211;<?php
+<p id="footer"><a href="https://web.patricktaylor.com/" title="superMicro CMS" target="_blank">superMicro CMS</a> version <em>4.1</em> &copy;&nbsp;<a href="https://patricktaylor.com/" title="Patrick Taylor" target="_blank">Patrick Taylor</a> 2008&#8211;<?php
 
 	_print(date("Y"));
 	global $tm_start;

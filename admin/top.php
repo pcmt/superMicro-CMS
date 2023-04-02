@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2023 */
+/* Last updated 28 March 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -34,11 +34,21 @@ if (file_exists('../inc/settings.php')) {
 	include('../inc/settings.php');
 }
 
+// Nothing works with no site ID (created by install in siteid.txt)
+if (file_exists('./siteid.txt')) {
+	$theID = trim(file_get_contents('./siteid.txt'));
+	$length = mb_strlen($theID, "UTF-8");
+	if ($length != 5) {
+		$notice = "\n<h3><em>Incorrect site ID.</em></h3>\n<p>Must be five alphanumeric characters.</p>\n";
+	} else {
+		$siteID = $theID;
+	}
+}
+
 if (defined('SITE_ID')) {
 	$siteID = SITE_ID;
 } else {
-	_print("Error. Site ID not defined. Please install the latest version of superMicro CMS.");
-	exit();
+	$notice = "\n<h3><em>Site ID not defined.</em></h3>\n<p>Try submitting setup.</p>\n";
 }
 
 $adminlink = "adminlink_{$siteID}";
@@ -103,7 +113,7 @@ if (isset($_GET['status'])) {
 
 if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
 
-	if ($_POST['form'] !== SITE_ID) {
+	if ($_POST['form'] !== $siteID) { // 'form' is the name of "hidden" in login-form.php
 		$user = 'unverified';
 	}
 
@@ -256,4 +266,5 @@ echo '<pre>';
 print_r($_COOKIE);
 echo '</pre>';
 */
+
 ?>

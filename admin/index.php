@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 March 2023 */
+/* Last updated 18 March 2023 */
 
 define('ACCESS', TRUE);
 
@@ -212,7 +212,7 @@ if (!$login) {
 		$page_id = preg_replace("/[[:space:]]+/", "-", trim($_POST['page_id']));
 
 		// Prevent conflict with existing variables and folders
-		$disallowed = array('index', 'preview', 'page', 'pages', 'content', 'example', 'e', 's', 'comments', 'extras', 'fonts', 'img', 'video', 'css', 'diagnostics', 'js', 'visits');
+		$disallowed = array('index', 'preview', 'page', 'pages', 'content', 'example', 'e', 's', 'comments', 'fonts', 'img', 'video', 'css', 'diagnostics', 'js', 'visits');
 		foreach ($disallowed as $title) {
 			if ($title == $page_id) { // If a file is missing
 				$problem = TRUE;
@@ -243,7 +243,6 @@ if (!$login) {
 			$phpfilename = $filetitle . '.php';
 			$textfilename = $filetitle . '.txt';
 			$commentfilename = $filetitle . '.txt';
-			$extrafilename = $filetitle . '.txt';
 			$menutext = $filetitle; // Future development: allow foreign characters?
 
 			/* -------------------------------------------------- */
@@ -301,14 +300,6 @@ $obj->Template();
 				if (!file_exists($commentfilename)) {
 					$fp = fopen($commentfilename, 'w+');
 					fwrite($fp, 'No comments so far.');
-					fclose($fp);
-				}
-
-				$extrafilename = "../extras/{$extrafilename}";
-				// Create extras file only if it doesn't exist
-				if (!file_exists($extrafilename)) {
-					$fp = fopen($extrafilename, 'w+');
-					fwrite($fp, '<p>No extras so far.</p>');
 					fclose($fp);
 				}
 
@@ -475,7 +466,6 @@ $obj->Template();
 		$phpfilename = '../' . $delete . '.php';
 		$textfilename = '../pages/' . $delete . '.txt';
 		$commentfilename = '../comments/' . $delete . '.txt';
-		$extrafilename = '../extras/' . $delete . '.txt';
 		if ($delete == 'index') {
 			$response = "<em>You can't delete <b>index.php</b>.</em>";
 		} elseif ($delete == 'preview') {
@@ -492,9 +482,6 @@ $obj->Template();
 			}
 			if (file_exists($commentfilename)) {
 				unlink($commentfilename);
-			}
-			if (file_exists($extrafilename)) {
-				unlink($extrafilename);
 			}
 
 			// Edit menu
@@ -776,7 +763,7 @@ The default styles can be restored with <em>Get styles</em> &raquo; <em>Default 
 
 	<?php } else { ?>
 
-<strong>Line 1</strong> not displayed. Add plus symbol <em>+</em> to add page to menu <span>&#124;</span> <em>~~password~~</em> to password protect<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3 leave blank</strong></span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [&nbsp;<a href="markup.html" target="_blank">get&nbsp;HTML&nbsp;markup</a>&nbsp;]
+<strong>Line 1</strong> not displayed. Plus symbol <em>+</em> adds page to menu <span>&#124;</span> <em>~~password~~</em> for password protect, <em>&</em> symbol for comments [ <a href="https://web.patricktaylor.com/cms-comments" target="_blank">info</a>]<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3 leave blank</strong></span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [&nbsp;<a href="markup.html" target="_blank">get&nbsp;HTML&nbsp;markup</a>&nbsp;]
 
 	<?php } ?></label>
 
@@ -875,7 +862,7 @@ Content...');
 
 <?php } else { // Default to: ?>
 
-<p><strong>Line 1</strong> ampersand symbol <em>&</em> enables comments [ <a href="https://web.patricktaylor.com/cms-comments" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://web.patricktaylor.com/cms-extras" target="_blank">info</a> ]</p>
+<!-- Nothing at present //-->
 
 <?php } ?>
 
@@ -914,7 +901,6 @@ Content...');
 
 ?>" class="caution" value="Delete page">
 <input type="submit" name="submit11" value="Get comments">
-<input type="submit" name="submit12" value="Get extras">
 
 <p class="fade">Styles:</p>
 

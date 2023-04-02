@@ -5,15 +5,16 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 March 2023 */
+/* Last updated 29 March 2023 */
 
 define('ACCESS', TRUE);
 
 // Declare variables etc
-$response = $response1 = $display = $delete = $_file = $problem = "";
+$response = $response1 = $display = $delete = $_file = $dimensions = $problem = "";
 $num = "0";
 $thisAdmin = 'images'; // For nav
 $imgfolder = '../img/';
+$excludedFiles = ['bg_footer.gif', 'bg_footer_monochrome.gif', 'bg-dots1.gif', 'loader.gif', 'og.jpg'];
 
 require('./top.php');
 
@@ -87,32 +88,43 @@ if (!$login) {
 
 	if (array_key_exists('submit1', $_POST)) { // Upload
 
-		$filetype = exif_imagetype($_FILES['upload']['tmp_name']);
-		$allowed_types = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG);
-		$allowed_extensions = array('jpg', 'jpeg', 'gif', 'png');
+		$filename = trim($_POST['filename']);
 
-		if (!in_array($filetype, $allowed_types, true)) {
-			$response = '<em>Invalid file type. Only JPG, JPEG, GIF, and PNG files are allowed.</em>';
+		if (strlen($filename) < 1) {
+			$problem = TRUE;
+			$response = "<em>You didn't enter a new filename. Start again, selecting an image and entering a new filename.</em>";
 		}
 
-		if (!in_array(pathinfo($_FILES['upload']['name'], PATHINFO_EXTENSION), $allowed_extensions, true)) {
-			$response = '<em>Invalid file extension. Only JPG, JPEG, GIF, and PNG files are allowed.</em>';
+		if (preg_match("/[^~A-Za-z0-9_\-]/", $filename)) {
+			$problem = TRUE;
+			$response = '<em>The new filename can contain only letters, numbers, hypens, underscores, and tildes. Start again.</em>';
 		}
 
-		if ($_FILES['upload']['size'] > 1000000) {
-			$response = '<em>File size exceeded. The maximum file size allowed is 1MB.</em>';
+		if (!$problem) {
+
+			$filetype = exif_imagetype($_FILES['upload']['tmp_name']);
+			$allowed = array(IMAGETYPE_GIF, IMAGETYPE_JPEG, IMAGETYPE_PNG, IMAGETYPE_WEBP);
+			$size = getimagesize($_FILES['upload']['tmp_name']);
+
+			if (in_array($filetype, $allowed)) {
+				$pieces = explode('.', $_FILES['upload']['name']);
+				$extension = strtolower(array_pop($pieces));
+				$extensions = array('jpg', 'jpeg', 'gif', 'png', 'webp');
+				if ((in_array($extension, $extensions)) && $size) {
+					$filename = $filename . '.' . $extension;
+					if (move_uploaded_file($_FILES['upload']['tmp_name'], "../img/{$filename}")) {
+						$response = '<em>The file named <b>' . $filename . '</b> has been uploaded.</em>';
+						$display = '<img src="../img/' . $filename . '" class="upload" alt="">';
+					} else {
+						$response = '<em>The file could not be moved.</em>';
+					}
+				} else {
+					$response = '<em>Not uploaded. The file type must be .jpg, .jpeg, .gif, or .png.</em>';
+				}
+			} else {
+				$response = '<em>Not uploaded. The file you renamed <b>' . $filename . '</b> was not a .jpg, .jpeg, .gif, or .png.</em>';
+			}
 		}
-
-		$sanitized_filename = preg_replace('/[^a-zA-Z0-9_\-\.]/', '', $_FILES['upload']['name']);
-		$upload_path = '../img/' . $sanitized_filename;
-
-		if (move_uploaded_file($_FILES['upload']['tmp_name'], $upload_path)) {
-			$response = '<em>The file named <b>' . $sanitized_filename . '</b> has been uploaded.</em></em>';
-			$display = '<img src="' . $upload_path . '" class="upload" alt="">';
-		} else {
-			$response = '<em>File upload failed. Please try again later.</em>';
-		}
-
 	}
 
 	if (array_key_exists('submit2', $_POST)) { // Delete
@@ -130,7 +142,7 @@ if (!$login) {
 			$response = '<em>Error: no image filename was entered. Enter a filename.</em>';
 		}
 
-		if (($delete == 'og.jpg') || ($delete == 'bg_footer.gif') || ($delete == 'bg_footer_monochrome.gif') || ($delete == 'bg-dots1.gif')) {
+		if (in_array($delete, $excludedFiles)) {
 			$problem = TRUE;
 			$response = "<em>The default images can't be deleted. Maybe upload a new one (<b>og.jpg</b> must be 200 pixels square).</em>";
 		}
@@ -165,8 +177,19 @@ if (!$login) {
 <h5>Choose an image on your device [ <a href="./upload.php" title="Upload other file types">other file types</a> ]</h5>
 
 <form enctype="multipart/form-data" action="<?php echo $self; ?>" method="post" onSubmit="displayLoading();">
+
 <input type="file" name="upload">
+<label>Choose a name for the upload file (eg: <b>image1</b> - omit file extension):</label>
+<input type="hidden" name="MAX_FILE_SIZE" value="2097152">
+<input type="text" size="40" name="filename" value="<?php
+
+	if (isset($_POST['submit1'])) {
+		_print($_POST['filename']);
+	}
+
+?>" maxlength="60">
 <input type="submit" name="submit1" class="images" value="Upload image">
+
 </form>
 
 <!-- display image //-->
@@ -211,28 +234,37 @@ function displayLoading() {
 		$dirname = "../img";
 		if ($folder = @opendir($dirname)) {
 			$filesArray = array();
+			$validExtensions = array('jpg', 'jpeg', 'gif', 'png', 'webp');
 			while (FALSE !== ($file = readdir($folder))) {
-				if ((strstr($file, '.jpg')) || (strstr($file, '.jpeg')) || (strstr($file, '.gif')) || (strstr($file, '.png'))) {
+				$extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+				if (in_array($extension, $validExtensions)) {
 					$filesArray[] = $file;
 				}
 			}
 
 			natcasesort($filesArray);
 			foreach ($filesArray as $file) {
+
+				if (in_array($file, $excludedFiles)) {
+					continue;
+				}
+
 				$image = "../img/{$file}";
-				$size = getimagesize($image);
+				$dimensions = getimagesize($image);
+				$size = filesize($image) / 1000; // kilobytes
+				$kb = number_format($size, 0, '', ' '); // Whole numbers
 
 				// For image just uploaded, otherwise no class
-				if (isset($_POST['submit1']) && ($file == $sanitized_filename)) {
+				if (isset($_POST['submit1']) && ($file == $filename)) {
 					$mark = ' class="mark"';
 				} else {
 					$mark = NULL;
 				}
 
-				(int)$num = $num + 1;
+				$num = $num + 1;
 				$num_padded = sprintf("[%03d]", $num);
 
-				_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;img src="img/' . $file . '" ' . $size[3] . ' alt=""&gt;</span></li>');
+				_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;img src="img/' . $file . '" ' . $dimensions[3] . ' alt=""&gt;</span> ' . $kb . ' kB</li>');
 			}
 
 			closedir($folder);

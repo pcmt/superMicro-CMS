@@ -1,5 +1,5 @@
 /* 'Standalone' CSS: all the rules required for max-width: 797px */
-/* Unminified version [last update 17 July 2021] */
+/* Unminified version [last update 02 April 2023] */
 
 /*
 
@@ -162,10 +162,12 @@ h4, h6 {
 }
 
 h5 {
-  margin: 1.2em auto 0 auto;
+  margin: 1.0em auto 0 auto;
+  padding-right: 20px;
+  padding-left: 20px;
   text-align: center;
   font-size: 1.3em;
-  line-height: 1.4;
+  line-height: 1.3;
 }
 
 #comments h4 {
@@ -232,6 +234,10 @@ p.metadata { /* For publish dates etc */
 
 p.video { /* Class to add to caption for video */
   margin-top: -1.0em;
+}
+
+p.enlarge { /* See .relative */
+  display: none;
 }
 
 #pw p {
@@ -1023,4 +1029,17 @@ input[type=password]:focus {
   background: #9cc;
   border: 1px solid #9cc;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+}
+
+#modal,
+.modal,
+.modal-content,
+.modal-caption,
+.modal-close {
+  display: none;
+}
+
+.relative {
+  margin: 0 auto;
+  text-align: center;
 }

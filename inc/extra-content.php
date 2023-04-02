@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 Feb 2023 */
+/* Last updated 22 March 2023 */
 
 // Declare variables
 $commentfile = $leavecomment = $closecomments = $filedate = '';
@@ -24,29 +24,8 @@ if (file_exists('./js/simpleToggle.js')) { // From the website root
 	_print_nlb('<script src="' . LOCATION . 'js/simpleToggle.js"></script>');
 }
 
-if (file_exists('./js/read-more.js')) { // From the website root
-	_print_nlb('<script src="' . LOCATION . 'js/read-more.js"></script>');
-}
-
-if (file_exists('./js/navscroll.js')) { // From the website root
-	_print_nlb('<script src="' . LOCATION . 'js/navscroll.js"></script>');
-}
-
-/* -------------------------------------------------- */
-// Extras
-
-if ($extras && isset($pageID)) {
-	$extrafile = './extras/' . $pageID . '.txt';
-	if (file_exists($extrafile)) {
-		$extrafile = file_get_contents($extrafile);
-		_print("
-		<div class=\"extras\">
-
-{$extrafile}
-
-		</div>
-		");
-	}
+if (file_exists('./js/modal-img.js')) { // From the website root
+	_print_nlb('<script src="' . LOCATION . 'js/modal-img.js"></script>');
 }
 
 /* -------------------------------------------------- */

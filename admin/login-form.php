@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2023 */
+/* Last updated 01 April 2023 */
 // This file is included in all admin pages
 
 if (!defined('ACCESS')) {
@@ -23,11 +23,24 @@ if (!defined('ACCESS')) {
 		_print("\n" . $notice . "\n"); // From top.php (cookie test response)
 	}
 
+	if (!defined('SITE_ID')) {
+		if (file_exists('siteid.txt')) {
+			$siteID = file_get_contents('siteid.txt');
+		} else {
+			_print('<p>Site ID is not yet stored.</p>');
+		}
+	} else if (defined('SITE_ID')) {
+		$siteID = SITE_ID;
+	} else {
+		$siteID = FALSE;
+		_print('<p>Error. Site ID is not yet defined.</p>');
+	}
+
 ?>
 
 <form id="pw" action="<?php _print($self); ?>" method="post">
 <label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="<?php _print(SITE_ID); ?>">
+<input type="hidden" name="form" value="<?php _print($siteID); ?>">
 <input type="password" name="password" size="25" maxlength="32">
 <input type="submit" name="submit0" value="Submit Password">
 </form>
@@ -45,7 +58,7 @@ if (!defined('ACCESS')) {
 		loggedoutFooter();
 	} else {
 		_print("\n");
-		_print('<p>Missing function. Install the latest version of <strong>superMicro CMS</strong>.</p>');
+		_print('<p>Error. Missing function <strong>loggedoutFooter</strong>.<br>Install the latest version of <strong>superMicro CMS</strong>.</p>');
 
 	}
 

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 25 Aug 2020 */
+/* Last updated 24 March 2023 */
 
 ob_start();
 header('HTTP/1.1 404 Not Found');
@@ -95,6 +95,11 @@ p {
   font-size: 0.9em;
 }
 
+img {
+  margin: 0;
+  padding: 0.4em 0 0.6em 0;
+}
+
 </style>
 
 </head>
@@ -102,7 +107,10 @@ p {
 
 	<div id="wrap">
 
-<h1>Page not found.</h1>
+<h1>Sorry. Not found.</h1>
+
+<img src="<?php echo LOCATION; ?>img/og.jpg" width="200" height="200" alt="">
+
 <?php
 
 if ($protocol) { // No protocol, no output

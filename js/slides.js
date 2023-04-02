@@ -4,10 +4,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Feb 2023 */
+/* Last updated 19 March 2023 */
 
 /* https://www.w3schools.com/howto/howto_js_slideshow.asp */
-/* error corrected in ChatGPT */
 
 let slideIndex = 1;
 showSlides(slideIndex);

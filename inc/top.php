@@ -36,7 +36,7 @@ if ($password) { // From html.php
 if (defined('SITE_ID')) {
 	$adminlink = 'adminlink_' . SITE_ID;
 } else {
-	$adminlink = 'x';
+	$adminlink = FALSE;
 }
 
 // For one-hour admin link in menu.php - be careful: reveals admin folder

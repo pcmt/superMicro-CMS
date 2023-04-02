@@ -1,0 +1,27 @@
+/* Dark navbar [ 29 Nov 20 ] */
+
+@media screen and (min-width: 798px) {
+
+  nav {
+    color: #fff;
+    background: #000; /* Black but use any dark colour */
+    border-bottom: none;
+    text-transform: uppercase;
+    opacity: 0.9;
+  }
+
+  nav ul {
+   font-size: 0.85em;
+  }
+
+  nav li a,
+  nav strong {
+    color: #fff;
+  }
+
+  nav li a:hover {
+    color: #fff;
+  }
+
+}
+

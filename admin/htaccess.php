@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 March 2023 */
+/* Last updated 02 April 2023 */
 
 define('ACCESS', TRUE);
 
@@ -385,6 +385,11 @@ if (!$login) {
 ?>
 
 	</div>
+
+<h3>What is .htaccess?</h3>
+
+<p style="max-width: 640px;">An .htaccess file is a configuration file used on Apache Web Server only. <a href="" target="_blank">Read about .htaccess here</a> on Wikipedia. Alternatively, the basics <a href="https://www.danielmorell.com/guides/htaccess-seo/basics/introduction-to-the-htaccess-file" target="_blank">are covered here</a>. On this website, choose between the original simpler file or an extended file with more functions. Both work fine on Apache web server.</p>
+
 
 <h3>Settings detected</h3>
 

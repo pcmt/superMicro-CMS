@@ -117,7 +117,11 @@ if (defined('APACHE')) {
 }
 
 if (!$phpMail) { // Hides form and just shows email address
+?>
 
+<p>To get in touch, feel free to send me an email. Privacy respected.</p>
+
+<?php
 	$email = EMAIL;
 	$parts = explode('@', $email);
 	$user = $parts[0];

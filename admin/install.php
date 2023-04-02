@@ -5,8 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 04 Dec 2022
-// Rewrote password routine due to problem reported
+// Last updated 23 March 2023
 
 define('ACCESS', TRUE);
 
@@ -84,7 +83,7 @@ if ($secure_cookie) {
 /* -------------------------------------------------- */
 /* Verify all the required admin files */
 
-$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/count.txt', './text/extra-css.txt', './text/inmenu.txt', './text/index.txt', './text/listhits.txt', './text/pageid.txt', './text/password.txt', './text/since.txt', './text/stylesheet.txt', './text/tempcount.txt', './text/tempcountreset.txt');
+$required = array('./backup.php', './comments.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/count.txt', './text/extra-css.txt', './text/index.txt', './text/inmenu.txt', './text/listhits.txt', './text/pageid.txt', './text/password.txt', './text/since.txt', './text/stylesheet.txt', './text/tempcount.txt', './text/tempcountreset.txt');
 
 foreach ($required as $file) {
 	if (!file_exists($file)) { // Exit if a file is missing
@@ -119,10 +118,11 @@ if (isset($_POST['submit1'])) {
 	// Attempt to create and write the files
 	// and report failures, preventing further progress
 
-	$siteid = fopen("siteid.txt", "w") or die("Unable to write siteid.txt");
+	// Create a new site ID and store it
+	$siteidFile = fopen("siteid.txt", "w") or die("Unable to write siteid.txt");
 	$ID = randomString( 5 );
-	fwrite($siteid, $ID);
-	fclose($siteid);
+	fwrite($siteidFile, $ID);
+	fclose($siteidFile);
 
 /*
 Writing these files is because they are not in the download

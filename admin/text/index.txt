@@ -1,9 +1,9 @@
 #
 Home Page Heading
 
-Success. <strong>superMicro CMS version 4.0</strong> installed. This is the home page. Edit as required.
+Success. <strong>superMicro CMS version 4.1</strong> installed. This is the home page. Edit as required.
 
-<p class="w"><img src="img/example-image.jpg" width="740" height="400" alt=""></p>
+<p class="w"><img src="img/example-image.jpg" width="740" height="400" alt="" class="bgmaxw1"></p>
 
 <p class="caption">Example image</p>
 
