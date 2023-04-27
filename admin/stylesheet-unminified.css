@@ -40,7 +40,7 @@
     url('../fonts/open-sans-v18-latin-600italic.woff') format('woff');
 }
 
-/* [last update 28 Jan 2023] */
+/* [last update 27 April 2023] */
 
 * { margin: 0; padding: 0; }
 
@@ -503,6 +503,7 @@ ul {
   padding: 2px 0 3px 0;
   color: #666;
   border-bottom: 1px solid #f4f4f4;
+  line-height: 1.4;
 }
 
 #list li.mark {

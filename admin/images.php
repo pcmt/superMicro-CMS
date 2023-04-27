@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 March 2023 */
+/* Last updated 27 April 2023 */
 
 define('ACCESS', TRUE);
 
@@ -174,7 +174,7 @@ if (!$login) {
 
 	</div>
 
-<h5>Choose an image on your device [ <a href="./upload.php" title="Upload other file types">other file types</a> ]</h5>
+<h5>Choose an image on your device [ <a href="./video.php" title="View video files">video files</a> ] [ <a href="./upload.php" title="Upload other file types">other file types</a> ]</h5>
 
 <form enctype="multipart/form-data" action="<?php echo $self; ?>" method="post" onSubmit="displayLoading();">
 
@@ -194,7 +194,7 @@ if (!$login) {
 
 <!-- display image //-->
 
-<img src="img/img-loading.gif" width="50" height="50" id="upload-progress" style="display:none">
+<img src="img/img-loading.gif" width="50" height="50" id="upload-progress" style="display: none;">
 <script type="text/javascript">
 function displayLoading() {
 	if (document.getElementById('upload-progress')) {
@@ -252,7 +252,7 @@ function displayLoading() {
 				$image = "../img/{$file}";
 				$dimensions = getimagesize($image);
 				$size = filesize($image) / 1000; // kilobytes
-				$kb = number_format($size, 0, '', ' '); // Whole numbers
+				$kb = number_format($size); // Whole numbers
 
 				// For image just uploaded, otherwise no class
 				if (isset($_POST['submit1']) && ($file == $filename)) {

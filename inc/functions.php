@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 15 March 2023 */
+/* Last updated 03 April 2023 */
 /* .svg added */
 
 if(!defined('ACCESS')) {
@@ -245,7 +245,7 @@ function bits_and($pieces) {
  * content.php
  */
 
-// Creates absolute URL from relative link (28 Aug 20)
+// Creates absolute URL from relative link
 function absolute_it($content) {
 	$content = preg_replace('!(<a href=")(./|/)([A-Za-z0-9_-]+")!', '$1' . LOCATION . '$3', $content);
 	return $content;
@@ -257,7 +257,17 @@ function absolute_it($content) {
 
 // Creates full image path to website root
 function img_path($content) { // Path to images includes subfolders
-	$content = preg_replace('!(<img src=")(img/|/img/|./img/)([A-Za-z0-9_\-\/]+.)(jpg|jpeg|gif|png|svg)"!', '$1' . LOCATION . 'img/$3$4"', $content);
+	$content = preg_replace('!(<img src=")(img/|/img/|./img/)([A-Za-z0-9_\-\/]+.)(jpg|jpeg|gif|png|svg|webp)"!', '$1' . LOCATION . 'img/$3$4"', $content);
+	return $content;
+}
+
+/* --------------------------------------------------
+ * content.php
+ */
+
+// Creates full WebP image path to website root (03 April 23)
+function srcset_path($content) { // Path to images includes subfolders
+	$content = preg_replace('!(srcset=")(img/|/img/|./img/)([A-Za-z0-9_\-\/]+.)(jpg|jpeg|gif|png|svg|webp)"!', '$1' . LOCATION . 'img/$3$4"', $content);
 	return $content;
 }
 

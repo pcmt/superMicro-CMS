@@ -1,5 +1,5 @@
 /* Default styles unminified */
-/* [last update 01 April 2023 ] */
+/* [last update 27 April 2023 ] */
 /* min-width: 798px */
 
 /* Has light navbar, light footer */
@@ -466,10 +466,10 @@ blockquote p {
 
 .slideshow-container p,
 .slideshow-container .mySlides p {
-  margin: 1.0em auto 0 auto;
+  margin: 0.6em auto 0 auto;
   text-align: center;
   font-size: 0.95em;
-  line-height: 1.0;
+  line-height: 1.4;
 }
 
 .slideshow-container .mySlides p {
@@ -980,6 +980,10 @@ span.g { /* for simpleToggle */
   box-shadow: -640px 0 0 0 #c99, 640px 0 0 0 #c99;
 }
 
+.bgmaxw9 { /* Dark grey */
+  box-shadow: -640px 0 0 0 #333, 640px 0 0 0 #333;
+}
+
 /* FORMS */
 /* ================================================== */
 
@@ -1345,7 +1349,7 @@ pre em {
 p.enlarge {
   position: absolute;
   margin: 0;
-  padding: 0 auto;
+  padding: 0;
   text-align: center;
   right: 0;
   top: -20px;

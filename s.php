@@ -91,7 +91,7 @@ if (!isset($_POST['terms'])) { // No search submitted
 
 <!-- Spinner below form //-->
 
-<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display:none">
+<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display: none;">
 <script type="text/javascript">
 function displayLoading() {
 	if (document.getElementById('search-progress')) {
