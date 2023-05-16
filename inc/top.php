@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 March 2023 */
+/* Last updated 14 May 2023 */
 
 // Declare variables
 $protected = $the_page = $adminlink = $admin = "";
@@ -36,7 +36,7 @@ if ($password) { // From html.php
 if (defined('SITE_ID')) {
 	$adminlink = 'adminlink_' . SITE_ID;
 } else {
-	$adminlink = FALSE;
+	$adminlink = 'x';
 }
 
 // For one-hour admin link in menu.php - be careful: reveals admin folder
@@ -112,8 +112,11 @@ if (file_exists(INC . 'extra-head.php')) {
 }
 
 if ($protected) {
+	_print_nla('<meta name="robots" content="noindex,nofollow">');
+}
+
+if ($protected || $nocopy) {
 	_print('
-<meta name="robots" content="noindex,nofollow">
 <style>
 
 @media print {
@@ -142,7 +145,7 @@ if ($protected) {
 
 </head>
 <?php
-if (!$protected) {
+if (!$protected && !$nocopy) {
 	_print("<body>\n");
 } else {
 	_print('<body oncontextmenu="return false" onselectstart="return false" ondragstart="return false">');

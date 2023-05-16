@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 March 2023 */
+/* Last updated 29 April 2023 */
 
 define('ACCESS', TRUE);
 
@@ -143,7 +143,7 @@ if (!$login) {
 
 ?>
 
-<h3>Upload or delete a PDF, Word, ZIP or .txt file</h3>
+<h3>Upload or delete a PDF, Word, ZIP or .txt file [ <a href="./images.php" title="Image files">image files</a> ] [ <a href="./video.php" title="Video files">video files</a> ]</h3>
 
 	<div id="response">
 
@@ -217,20 +217,24 @@ function displayLoading() {
 				}
 			}
 
-			natcasesort($filesArray);
-			foreach ($filesArray as $file) {
+			if (count($filesArray) > 0) {
+				natcasesort($filesArray);
+				foreach ($filesArray as $file) {
 
-				// For file just uploaded, otherwise no class
-				if (isset($_POST['submit1']) && ($file == $new_filename)) {
-					$mark = ' class="mark"';
-				} else {
-					$mark = NULL;
+					// For file just uploaded, otherwise no class
+					if (isset($_POST['submit1']) && ($file == $new_filename)) {
+						$mark = ' class="mark"';
+					} else {
+						$mark = NULL;
+					}
+
+					(int)$num = $num + 1;
+					$num_padded = sprintf("[%03d]", $num);
+
+					_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;a href="./uploads/' . $file . '"&gt;' . $file . '&lt;/a&gt;</span></li>');
 				}
-
-				(int)$num = $num + 1;
-				$num_padded = sprintf("[%03d]", $num);
-
-				_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> &#124; <i>copy &raquo;</i> <span>&lt;a href="./uploads/' . $file . '"&gt;' . $file . '&lt;/a&gt;</span></li>');
+			} else {
+				_print_nlb('<li>No files.</li>');
 			}
 
 			closedir($folder);

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 March 2023 (creation date) */
+/* Last updated 30 April 2023 */
 
 	if (!defined('ACCESS')) {
 		die('Direct access not permitted to filter-email.php');
@@ -45,8 +45,6 @@
 	if ($_POST['url'] != '') {
 		$problem = TRUE;
 		if (isset($comment)) {
-			unset($comment);
-		} else {
 			$comment = '';
 		}
 		$response .= TEXT21 . '<br>';
@@ -62,7 +60,9 @@
 	}
 	if ($spam_found) {
 		$problem = TRUE;
-		unset($comment);
+		if (isset($comment)) {
+			$comment = '';
+		}
 		$response .= TEXT22 . '<br>';
 	}
 

@@ -5,14 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 28 March 2023 */
+/* Last updated 16 May 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
 }
 
 // Declare variables
-$status = $notice = $user = $dofooter = $login = $domain = $secure = $secure_cookie = $path = $siteID = $self = '';
+$status = $notice = $user = $dofooter = $login = $domain = $secure = $secure_cookie = $path = $siteID = $self = $login_cookie_name = $adminlink = '';
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -34,7 +34,8 @@ if (file_exists('../inc/settings.php')) {
 	include('../inc/settings.php');
 }
 
-// Nothing works with no site ID (created by install in siteid.txt)
+// Initial setup requires site ID (created by install in siteid.txt)
+// It defines site ID from siteid.txt then deletes it
 if (file_exists('./siteid.txt')) {
 	$theID = trim(file_get_contents('./siteid.txt'));
 	$length = mb_strlen($theID, "UTF-8");
@@ -47,12 +48,13 @@ if (file_exists('./siteid.txt')) {
 
 if (defined('SITE_ID')) {
 	$siteID = SITE_ID;
+	$adminlink = "adminlink_{$siteID}";
+	$login_cookie_name = "superMicro_{$siteID}";
 } else {
-	$notice = "\n<h3><em>Site ID not defined.</em></h3>\n<p>Try submitting setup.</p>\n";
+	$adminlink = "adminlink_{$theID}";
+	$login_cookie_name = "superMicro_{$theID}";
+	$notice = "\n<h3><em>Site ID not defined.</em></h3>\n";
 }
-
-$adminlink = "adminlink_{$siteID}";
-$login_cookie_name = "superMicro_{$siteID}";
 
 // Set cross-platform PHP_EOL constant (for 'explode') for backwards compatibility,
 // otherwise is automatically set for the operating system the script is running on
@@ -105,11 +107,14 @@ if (isset($_GET['status'])) {
 }
 
 /* ================================================== */
-/* Password submitted */
+/* If login form submitted */
 
 // Check 'user'
 // Check salted and hashed submitted password against file version
 // Set login and cookie only if checks pass
+// NOTE: after install then setup, the new cookie $login_cookie_name is
+// not found by this file, so another login is required, but only once
+// (see 'Check if a login cookie exists' below)
 
 if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
 

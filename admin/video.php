@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 27 April 2023 */
+/* Last updated 29 April 2023 */
 
 define('ACCESS', TRUE);
 
@@ -109,7 +109,7 @@ if (!$login) {
 
 ?>
 
-<h3>View video files</h3>
+<h3>Uploaded video files [ <a href="./images.php" title="Image files">image files</a> ] [ <a href="./upload.php" title="Other file types">other file types</a> ]</h3>
 
 	<div id="response">
 
@@ -127,9 +127,7 @@ if (!$login) {
 
 	</div>
 
-<hr>
-
-<h3>Delete a video file</h3>
+<h5>Delete a video file</h5>
 
 <form action="<?php _print($self); ?>" method="post">
 
@@ -162,25 +160,28 @@ if (!$login) {
 				}
 			}
 
-			natcasesort($filesArray);
-			foreach ($filesArray as $file) {
+			if (count($filesArray) > 0) {
+				natcasesort($filesArray);
+				foreach ($filesArray as $file) {
 
-				$video = "../video/{$file}";
-				$size = filesize($video) / 1000; // kilobytes
-				$kb = number_format($size); // Whole numbers
+					$video = "../video/{$file}";
+					$size = filesize($video) / 1000; // kilobytes
+					$kb = number_format($size); // Whole numbers
 
-				// For file just uploaded, otherwise no class
-				if (isset($_POST['submit1']) && ($file == $new_filename)) {
-					$mark = ' class="mark"';
-				} else {
-					$mark = NULL;
-				}
+					// For file just uploaded, otherwise no class
+					if (isset($_POST['submit1']) && ($file == $new_filename)) {
+						$mark = ' class="mark"';
+					} else {
+						$mark = NULL;
+					}
 
-				(int)$num = $num + 1;
-				$num_padded = sprintf("[%03d]", $num);
-
-				_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> ' . $kb . ' kB<br><i>copy &raquo;</i><br>
+					(int)$num = $num + 1;
+					$num_padded = sprintf("[%03d]", $num);
+					_print_nlb('<li' . $mark . '>' . $num_padded . ' Filename: <a href="' . $view . $file . '" title="View" target="_blank">' . $file . '</a> ' . $kb . ' kB<br><i>copy &raquo;</i><br>
 <span>&lt;div class=&quot;video&quot;&gt;<br>&lt;video class=&quot;classname&quot; width=&quot;740&quot; height=&quot;auto&quot; autoplay controls loop&gt;<br>&lt;source src=&quot;./video/' . $file . '&quot; type=&quot;video/mp4&quot;&gt;<br>&lt;/video&gt;<br>&lt;/div&gt;</span></li>');
+				}
+			} else {
+				_print_nlb('<li>No files.</li>');
 			}
 
 			closedir($folder);

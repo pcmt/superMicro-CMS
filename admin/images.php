@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 27 April 2023 */
+/* Last updated 29 April 2023 */
 
 define('ACCESS', TRUE);
 
@@ -156,7 +156,7 @@ if (!$login) {
 
 ?>
 
-<h3>Upload or delete an image</h3>
+<h3>Upload or delete an image [ <a href="./video.php" title="Video files">video files</a> ] [ <a href="./upload.php" title="Other file types">other file types</a> ]</h3>
 
 	<div id="response">
 
@@ -174,7 +174,7 @@ if (!$login) {
 
 	</div>
 
-<h5>Choose an image on your device [ <a href="./video.php" title="View video files">video files</a> ] [ <a href="./upload.php" title="Upload other file types">other file types</a> ]</h5>
+<h5>Choose an image on your device</h5>
 
 <form enctype="multipart/form-data" action="<?php echo $self; ?>" method="post" onSubmit="displayLoading();">
 

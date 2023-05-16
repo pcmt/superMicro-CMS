@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 18 March 2023 */
+/* Last updated 14 May 2023 */
 // Looks for $source, not $textArray
 // Comments detection
 
@@ -19,7 +19,7 @@ class Page {
 	function Template() { // Assembles and outputs the HTML
 
 		// Declare variables
-		$pageID = $password = $share = $comments = ''; // 18 March edit
+		$pageID = $password = $share = $comments = $nocopy = '';
 		// $outputpassword = NULL;
 
 		// Define absolute path to /inc/ (this folder)
@@ -67,6 +67,13 @@ class Page {
 				$comments = TRUE;
 			} else {
 				$comments = FALSE;
+			}
+
+			// Detect 'nocopy' status
+			if (strpos($lineone, 'X') !== FALSE) {
+				$nocopy = TRUE;
+			} else {
+				$nocopy = FALSE;
 			}
 
 			// Detect extras status

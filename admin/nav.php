@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Nov 2022 */
+/* Last updated 29 April 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to nav.php');
@@ -29,9 +29,9 @@ if ($thisAdmin == 'index') {
 }
 
 if ($thisAdmin == 'images') {
-	_print('<span>Images</span> ');
+	_print('<span>Uploads</span> ');
 } else {
-	_print('<a href="./images.php" title="Upload or delete images">Images</a> ');
+	_print('<a href="./images.php" title="Upload or delete images">Uploads</a> ');
 }
 
 if ($thisAdmin == 'htaccess') {

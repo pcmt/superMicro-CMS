@@ -40,7 +40,8 @@
     url('../fonts/open-sans-v18-latin-600italic.woff') format('woff');
 }
 
-/* [last update 27 April 2023] */
+/* START MAIN */
+/* [last update 30 April 2023] */
 
 * { margin: 0; padding: 0; }
 
@@ -274,17 +275,18 @@ h3, h5 {
   display: block;
   font-weight: 600;
   font-size: 1.4em;
-  line-height: 1.1;
   color: #333;
   text-shadow: 1px 1px 2px #ddd;
 }
 
 h3 {
   margin: 16px 0 6px 0;
+  line-height: 1.1;
 }
 
 h5 { /* Images */
   margin: 16px 0 10px 0;
+  line-height: 1.2;
 }
 
 h3 em {
@@ -500,10 +502,10 @@ ul {
 }
 
 #list li {
-  padding: 2px 0 3px 0;
+  padding: 1px 0 1px 0;
   color: #666;
   border-bottom: 1px solid #f4f4f4;
-  line-height: 1.4;
+  line-height: 1.6;
 }
 
 #list li.mark {
@@ -518,7 +520,7 @@ ul {
 
 #list span:hover {
   color: #000;
-  background: #fff;
+  background: #b4ecd6;
 }
 
 /* Page on */
@@ -719,16 +721,16 @@ textarea { overflow: auto;
 
 input[type=submit] { /* All buttons */
   margin: 6px 0 7px 0;
-  padding: 7px 5px 8px 5px;
-  background-color: #3366cc;
-  border: 1px solid #3366cc;
-  -webkit-border-radius: 5px;
-  -moz-border-radius: 5px;
-  border-radius: 5px;
+  padding: 7px 6px 8px 5px;
   color: #fff;
+  background-color: #222;
+  border: 1px solid #666;
+  border-radius: 0px;
   text-decoration: none;
+  text-align: center;
   font-size: 1.05em;
   font-family: 'Open Sans', Sans-Serif;
+  transition: all 0.3s ease;
 }
 
 input[type=submit]:hover {
@@ -741,17 +743,14 @@ input[type=submit]:hover {
 form#pw input[type=submit] { /* Password */
   display: block;
   margin: 6px auto 6px auto;
-  padding: 14px 20px 13px 20px;
+  padding: 13px 20px 14px 18px;
   font-size: 1.05em;
-  text-align: center;
 }
 
 #buttons input[type=submit], /* Pages */
 #buttons2 input[type=submit] { /* Setup */
   display: block;
   width: 170px;
-  /* margin: 6px 0 7px 0; */
-  /* padding: 7px 5px 8px 5px; */
 }
 
 input[type=submit].images { /* Images (beneath box) */
@@ -764,17 +763,17 @@ input[type=submit].images { /* Images (beneath box) */
   padding: 7px 20px 8px 20px;
 }
 
-input[type=submit].em { /* Setup boxes */
+input[type=submit].em { /* Setup boxes??? */
   color: #fff;
 }
 
-input[type=submit].em:hover { /* Setup boxes */
+input[type=submit].em:hover { /* Setup boxes??? */
   color: #03f;
 }
 
 input[type=submit].caution {
-  color: #600;
-  background-color: #fff;
+  color: #000;
+  background-color: #fafafa;
   border: 1px solid #bbb;
 }
 
@@ -889,8 +888,8 @@ input.fade:hover {
     margin-bottom: 10px;
   }
 
-  #buttons,
-  #buttons2 { /* Buttons etc underneath */
+  #buttons, /* (pages) buttons etc underneath */
+  #buttons2 { /* (setup) buttons etc underneath */
     display: block;
     float: none;
     width: 100%;
@@ -903,22 +902,21 @@ input.fade:hover {
   #buttons input[type=submit],
   #buttons2 input[type=submit] {
     display: inline;
-    width: 150px;
     margin: 3px 3px 3px 0;
   }
 
   #buttons input.big,
     #buttons2 input.big { /* Regularise */
-    padding: 7px 5px 6px 5px;
+    padding: 7px 6px 8px 5px;
   }
 
   #boxes3 input[type=submit] { /* Backup */
     margin: 3px 3px 3px 0;
-    padding: 7px 20px 6px 20px;
+    padding: 7px 20px 8px 18px;
   }
 
   #buttons #dropdown {
-    width: 150px;
+    width: 170px;
     margin: 0 3px 0 0;
   }
 
@@ -947,8 +945,8 @@ input.fade:hover {
     width: 96%;
   }
 
-  #boxes3 input[type=submit] { /* Backup */
-    width: 140px;
+  #boxes3 input[type=submit] { /* Backup (same width) */
+    width: 170px;
   }
 
   #boxes textarea,
