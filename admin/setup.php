@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 02 April 2023 */
+/* Last updated 17 May 2023 */
 
 define('ACCESS', TRUE);
 
@@ -141,14 +141,16 @@ if (!$login) {
 /* SECTION 1: PREPARATORY */
 /* ================================================== */
 
-	if (file_exists('./siteid.txt')) { // Only created on install
-		$siteID = file_get_contents('./siteid.txt');
-	} else if (defined('SITE_ID')) {
-		$siteID = SITE_ID;
-	} else {
-		_print("Error. Neither /admin/siteid.txt nor a defined site ID exist. Reinstall.");
-		exit();
-	}
+# Is the next bit required? It seems not (see top.php)
+#	if (file_exists('./siteid.txt')) { // Only created on install
+#		$siteID = file_get_contents('./siteid.txt');
+#	} else if (defined('SITE_ID')) {
+#		$siteID = SITE_ID;
+#	} else {
+#		_print("Error. Neither /admin/siteid.txt nor a defined site ID exist. Reinstall.");
+#		exit();
+#	}
+# End "is the next bit required?"
 
 	$do_setup = TRUE; // Falsified if check fails
 
