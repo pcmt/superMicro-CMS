@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 01 April 2023 */
+/* Last updated 28 May 2023 */
 // This file is included in all admin pages
 
 if (!defined('ACCESS')) {
@@ -23,24 +23,10 @@ if (!defined('ACCESS')) {
 		_print("\n" . $notice . "\n"); // From top.php (cookie test response)
 	}
 
-	if (!defined('SITE_ID')) {
-		if (file_exists('siteid.txt')) {
-			$siteID = file_get_contents('siteid.txt');
-		} else {
-			_print('<p>Site ID is not yet stored.</p>');
-		}
-	} else if (defined('SITE_ID')) {
-		$siteID = SITE_ID;
-	} else {
-		$siteID = FALSE;
-		_print('<p>Error. Site ID is not yet defined.</p>');
-	}
-
 ?>
 
 <form id="pw" action="<?php _print($self); ?>" method="post">
 <label><b>Enter password:</b></label>
-<input type="hidden" name="form" value="<?php _print($siteID); ?>">
 <input type="password" name="password" size="25" maxlength="32">
 <input type="submit" name="submit0" value="Submit Password">
 </form>

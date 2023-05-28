@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 23 March 2023
+// Last updated 28 May 2023
 
 define('ACCESS', TRUE);
 
@@ -68,16 +68,15 @@ if ($domain && $secure) {
 	$secure_cookie = FALSE;
 }
 
-if ($secure_cookie) {
-	if (isset($_COOKIE["supermicro_test_cookie"])) {
-		setcookie("supermicro_test_cookie", "", time() - 3600, "/", "{$domain}", 1, 1); // Delete any existing cookie
+// Delete any existing test cookies and set new ones
+if (isset($_COOKIE["supermicro_test_cookie"])) {
+	if ($secure_cookie) {
+		setcookie("supermicro_test_cookie", "installed_sec", time() - 3600, "/", $domain, 1, 1);
+		setcookie("supermicro_test_cookie", "installed_sec", time() + 3600, "/", $domain, 1, 1); // One hour
+	} else {
+		setcookie("supermicro_test_cookie", "installed_ins", time() - 3600, "/"); // Delete any existing cookie
+		setcookie("supermicro_test_cookie", "installed_ins", time() + 3600, "/"); // One hour. Root - is that right?
 	}
-	setcookie("supermicro_test_cookie", "installation", time() + 3600, "/", "{$domain}", 1, 1); // One hour
-} else {
-	if (isset($_COOKIE["supermicro_test_cookie"])) {
-		setcookie("supermicro_test_cookie", "", time() - 3600, "/"); // Delete any existing cookie
-	}
-	setcookie("supermicro_test_cookie", "installation", time() + 3600, "/"); // One hour. Root - is that right?
 }
 
 /* -------------------------------------------------- */

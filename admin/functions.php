@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 15 March 2023 */
+/* Last updated 27 May 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -363,7 +363,7 @@ function allChars($str) {
 
 // For cookies and site ID
 function randomString( $length ) {
-	$chars = "abcdefghijklmnopqrstuvwxyz0123456789";
+	$chars = "abcdefghijklmnopqrstuvwxyz";
 	$str = '';
 	$size = strlen( $chars );
 	for( $i = 0; $i < $length; $i++ ) {
