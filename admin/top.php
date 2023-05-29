@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 28 May 2023 */
+/* Last updated 29 May 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -38,7 +38,7 @@ if (file_exists('./password.php')) {
 /* TO START WITH, GET THE INFO */
 
 // (1) Get admin directory for cookie path
-$path = basename(dirname(__FILE__)); // One level up
+$path = '/' . basename(dirname(__FILE__)) . '/'; // One level up
 
 // (2) Try to get the domain
 if (!empty($_SERVER['HTTP_HOST'])) {
@@ -75,6 +75,7 @@ if (defined('SITE_ID')) {
 }
 
 // (6) Cookie name
+$loggedin = "loggedin_{$siteID}";
 $adminlink = "adminlink_{$siteID}";
 
 // (7)
@@ -132,7 +133,7 @@ if (isset($_COOKIE["supermicro_test_cookie"])) {
 /* LOGIN STATUS (required for admin pages) */
 
 // Check if a login cookie exists
-if (isset($_COOKIE[$adminlink])) {
+if (isset($_COOKIE[$loggedin]) && ($_COOKIE[$loggedin] === $siteID)) {
 	$login = TRUE;
 } else {
 	$login = FALSE;
@@ -167,11 +168,13 @@ if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
 		$login = TRUE; // $login is picked up in all the admin pages
 
 		if (isset($_COOKIE["supermicro_test_cookie"])) { // Cookies are working
-			// Update the login cookie
-			if ($secure_cookie) {
-				setcookie($adminlink, "loggedin_sec", time() + 3600, "/", $domain, 1, 1); // One hour. Root.
+			// Update the cookies
+			if ($secure_cookie) { // Ideally would be in admin folder
+				setcookie($loggedin, $siteID, time() + 86400, "/", $domain, 1, 1); // One day
+				setcookie($adminlink, $siteID, time() + 3600, "/", $domain, 1, 1); // One hour
 			} else {
-				setcookie($adminlink, "loggedin_ins", time() + 3600, "/"); // One hour. Root.
+				setcookie($loggedin, $siteID, time() + 86400, "/"); // One day
+				setcookie($adminlink, $siteID, time() + 3600, "/"); // One hour
 			}
 		} else { // Cookies aren't working
 			$notice = "\n<h3><em>Test cookie not found.</em></h3>\n<p>Are cookies enabled?</p>\n";
@@ -198,11 +201,19 @@ if ($status == 'logout') {
 	// Delete cookies
 	if ($secure_cookie) {
 		// Delete admin link cookie
+		if (isset($_COOKIE[$loggedin])) {
+			setcookie($loggedin, FALSE, time() - 3600, "/", $domain, 1, 1);
+			unset($_COOKIE[$loggedin]);
+		}
 		if (isset($_COOKIE[$adminlink])) {
 			setcookie($adminlink, FALSE, time() - 3600, "/", $domain, 1, 1);
 			unset($_COOKIE[$adminlink]);
 		}
 	} else {
+		if (isset($_COOKIE[$loggedin])) {
+			setcookie($loggedin, FALSE, time() - 3600, "/");
+			unset($_COOKIE[$loggedin]);
+		}
 		if (isset($_COOKIE[$adminlink])) {
 			setcookie($adminlink, FALSE, time() - 3600, "/");
 			unset($_COOKIE[$adminlink]);

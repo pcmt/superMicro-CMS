@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 Feb 2023 */
+/* Last updated 29 May 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to menu.php');
@@ -113,7 +113,7 @@ if (file_exists('e.php')) { // Nothing if there isn't a file
 	}
 }
 
-if ($admin) {
+if ($admin) { // From top.php
 	if ($pageID == 'preview') {
 		$page = ""; /* 03 Aug 20 edit ($page) to avoid undefined var error */
 		if (isset($_GET['page']) && isset($page)) { /* 03 Aug 20 edit (page) */
