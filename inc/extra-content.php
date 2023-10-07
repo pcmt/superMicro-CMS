@@ -29,6 +29,23 @@ if (file_exists('./js/modal-img.js')) { // From the website root
 }
 
 /* -------------------------------------------------- */
+// Extras
+
+if ($extras && isset($pageID)) {
+	$extrafile = './extras/' . $pageID . '.txt';
+	if (file_exists($extrafile)) {
+		$extrafile = file_get_contents($extrafile);
+		_print("
+		<div class=\"extras\">
+
+{$extrafile}
+
+		</div>
+		");
+	}
+}
+
+/* -------------------------------------------------- */
 // Comments
 
 if ($comments && isset($pageID)) { // See html.php ($comments)

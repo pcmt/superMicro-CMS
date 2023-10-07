@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 10 Feb 2023 (no changes) */
+/* Last updated 04 Oct 2023 (tracking removed) */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php');
@@ -53,56 +53,8 @@ if ($admin) {
 }
 
 /* Visitor tracking ============================== */
-if (defined('TRACK_HITS')) {
 
-	if (TRACK_HITS && ($pageID != 'preview')) { // Previews disappear
-
-		// (1) All hits are tracked
-		$tracking = TRUE;
-
-		// None of the following conditions can apply to outside visits
-		// They apply only to the administrator and her/his visits because
-		// Only the administrator can be $admin and set the cookie
-
-		// (2) Logged in hits not tracked
-		// 'Track my hits' = empty
-		if ( (isset($admin) && $admin) && !isset($_COOKIE["track"]) ) {
-			$tracking = FALSE;
-		}
-
-		// (3) Don't track any of my hits
-		// 'Track my hits' = NO
-		if (isset($_COOKIE["track"]) && ($_COOKIE["track"] == 'no')) {
-			$tracking = FALSE;
-		}
-
-		// (4) Track all my hits
-		// 'Track my hits' = YES
-		if (isset($_COOKIE["track"]) && ($_COOKIE["track"] == 'yes')) {
-			$tracking = TRUE;
-		}
-
-		// Start tracking hits
-		if ($tracking) {
-			if (file_exists(INC . 'tracking.php')) {
-				include(INC . 'tracking.php');
-			} else {
-				$feedback = "Error in /inc/footer.php: '/inc/tracking.php' does not exist";
-			}
-		} else {
-			$feedback = 'Not tracking';
-		}
-
-	} else {
-		$feedback = 'Neither track nor track_me is set';
-	}
-
-} else {
-	$feedback = 'Error in /inc/footer.php: track hits not defined';
-}
-
-_print_nla('<!-- ' . $logged . ' //-->');
-_print_nla('<!-- ' . $feedback . ' //-->');
+/* Removed */
 
 /* End visitor tracking ========================== */
 

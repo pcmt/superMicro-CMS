@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Dec 2020 */
+/* Last updated 04 Oct 2023 */
 /* $canonical from top.php */
 
 if (!defined('ACCESS')) {
@@ -28,12 +28,14 @@ if (defined('SITE_NAME')) {
 	_print_nla('<meta property="og:site_name" content="' . SITE_NAME . '">');
 }
 _print('
+<meta property="og:url" content="' . $canonical . '">
 <meta property="og:title" content="' . $titletag . '">
 <meta property="og:type" content="' . $type . '">
 <meta property="og:image" content="' . LOCATION . 'img/og.jpg">
+<meta property="og:image:secure_url" content="' . LOCATION . 'img/og.jpg">
 <meta property="og:image:width" content="200">
 <meta property="og:image:height" content="200">
-<meta property="og:url" content="' . $canonical . '">'
+<!-- end extra-head //-->'
 );
 
 ?>

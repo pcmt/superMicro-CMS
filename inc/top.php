@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 May 2023 */
+/* Last updated 04 Oct 2023 */
 
 // Declare variables
 $protected = $the_page = $adminlink = $siteID = $admin = "";
@@ -86,13 +86,7 @@ $canonical = LOCATION . $the_page;
 
 ?>
 <!DOCTYPE html>
-<html<?php
-
-if (defined('LANG_ATTR')) {
-	_print(' lang="' . LANG_ATTR . '"');
-}
-
-?>>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">

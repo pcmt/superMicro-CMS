@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 March 2023 */
+/* Last updated 03 July 2023 */
 
 /* -------------------------------------------------- */
 // File /inc/content.php
@@ -37,7 +37,7 @@ define("TEXT29", "Try again.");
 define("TEXT30", "Contact");
 define("TEXT31", "Contact form");
 define("TEXT32", "Your name (two words maximum)");
-define("TEXT33", "Your email");
+define("TEXT33", "Your email (will not be published)");
 define("TEXT34", "Submit");
 
 /* -------------------------------------------------- */

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 April 2023 */
+/* Last updated 04 Oct 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to nav.php');
@@ -52,4 +52,4 @@ if ($thisAdmin == 'setup') {
 	_print('<a href="./setup.php" title="Setup">Setup</a> ');
 }
 
-?><a href="./visits/" title="Visits" target="_blank">Visits</a> <a href="?status=logout" title="Logout">Logout</a> <a href="https://web.patricktaylor.com/" title="Help" class="ext" target="_blank">Help<span class="zap">&nbsp;&#187;</span></a></p>
+?><a href="?status=logout" title="Logout">Logout</a> <a href="https://web.patricktaylor.com/" title="Help" class="ext" target="_blank">Help<span class="zap">&nbsp;&#187;</span></a></p>

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 April 2023 */
+/* Last updated 05 Dec 2022 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to content.php');
@@ -29,7 +29,6 @@ if (PHP_EXT == TRUE) {
 	}
 }
 $content = img_path($content);
-$content = srcset_path($content);
 $content = video_path($content);
 
 /* -------------------------------------------------- */

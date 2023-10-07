@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 27 May 2023 */
+/* Last updated 31 May 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -172,6 +172,8 @@ function stripAnchor($str) {
  * backup.php
  * setup.php
  * stopwords.php
+ * upload.php
+ * video.php
  */
 
 // Edited 14 March 2023
@@ -260,6 +262,8 @@ function get_protocol() {
  * backup.php
  * setup.php
  * stopwords.php
+ * upload.php
+ * video.php
  */
 
 // Displays footer on logout
@@ -362,15 +366,26 @@ function allChars($str) {
  */
 
 // For cookies and site ID
-function randomString( $length ) {
+function randomString($length) {
 	$chars = "abcdefghijklmnopqrstuvwxyz";
 	$str = '';
-	$size = strlen( $chars );
-	for( $i = 0; $i < $length; $i++ ) {
-		$str .= $chars[ rand( 0, $size - 1 ) ];
+	$size = strlen($chars);
+	for ($i = 0; $i < $length; $i++) {
+		$str .= $chars[rand(0, $size - 1)];
 	}
 
 	return $str;
+}
+
+/* --------------------------------------------------
+ * top.php
+ */
+
+function sanitizeIt($var) {
+	$var = trim($var);
+	$var = str_replace(["<", ">", "\"", "'", "\\", "/"], '', $var);
+	$var = stripslashes($var);
+	return $var;
 }
 
 ?>

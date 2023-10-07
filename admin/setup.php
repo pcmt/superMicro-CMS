@@ -5,26 +5,16 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 May 2023 */
+/* Last updated 04 Oct 2023 */
 
 define('ACCESS', TRUE);
 
 // Declare variables ($feedback and $value used only when testing)
-$setupstatus = $response = $response1 = $response2 = $response3 = $update = $problem = $invalid_email = $submitted_language = $correct_value = $track_me = $posted = "";
+$setupstatus = $response = $response1 = $response2 = $response3 = $update = $problem = $invalid_email = $posted = "";
 
 $thisAdmin = 'setup'; // For nav
 
 require('./top.php'); // Loads functions.php
-require('./language.php');
-
-/*
-(1) TRACK_HITS is defined on setup as TRUE or FALSE
-(2) If TRUE, check correct value then set cookie to
-	either "yes", "no", or delete the cookie
-(3) If FALSE, 'track_me' cookie should never be set
-	so if cookie is set, page load deletes it
-(4) IF TRACK_HITS is not yet defined, do nothing
-*/
 
 // Temporary $_values for get 'Current setup' after updating
 
@@ -42,52 +32,9 @@ if (isset($_POST['contact_menu'])) {
 // YES / NO constants
 if (isset($_POST['menu'])) { $_menu = trim($_POST['menu']); }
 if (isset($_POST['debug'])) { $_debug = trim($_POST['debug']); }
-if (isset($_POST['track'])) { $_track = trim($_POST['track']); }
 if (isset($_POST['suffix_it'])) { $_suffix_it = trim($_POST['suffix_it']); }
 
-// For 'Track my hits' track cookie
-if (defined('TRACK_HITS')) {
-
-	if (TRACK_HITS) {
-
-		// Set or delete cookie
-		if (isset($_POST['submit1'])) {
-
-			$correct_value = FALSE;
-			// First check for a correct value
-			// otherwise do nothing ($problem = TRUE)
-			// 13 March 23 edit
-			$correct = array('YES', 'NO', '');
-			$posted = trim($_POST['track_me']);
-			$correct_value = in_array($posted, $correct, TRUE);
-
-			// Cookie action (does not affect box in form)
-			if ($correct_value) { // Proceed with cookie
-				if ($posted == 'YES') { // Track
-					setcookie("track", "yes", time() + 31556926, "/"); // One year
-				} elseif ($posted == 'NO') { // Don't track, so set track cookie
-					setcookie("track", "no", time() + 31556926, "/"); // One year
-				} elseif ($posted == '') { // Don't track, so unset track cookie
-					if (isset($_COOKIE["track"])) {
-						setcookie("track", "", time() - 3600, "/");
-					}
-				}
-			} else {
-				$problem = TRUE;
-			}
-
-		} // End of 'if submit'
-
-	} else { // Do this on page load for if TRACK_HITS is FALSE
-
-		// If TRACK_HITS is FALSE, delete cookie if set
-		if (isset($_COOKIE["track"])) { /* Changed 10 Feb 23 */
-			setcookie("track", "", time() - 3600, "/");
-		}
-
-	} // End of 'if TRACK HITS'
-
-} // End of 'if defined'
+// 'Track my hits' removed
 
 ?>
 <!DOCTYPE html>
@@ -135,7 +82,7 @@ if (!$login) {
 	// Logged in
 
 	// Declare the version
-	$version = '4.1'; // Edit footer.php and text/index.txt as well
+	$version = '5.0'; // Edit footer.php and text/index.txt as well
 
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
@@ -320,7 +267,7 @@ if (!$login) {
 
 		/* -------------------------------------------------- */
 		/* VERIFY INC FILES */
-		$required = array('../inc/languages/de.php','../inc/languages/en.php','../inc/languages/es.php','../inc/languages/fr.php', '../inc/404.php', '../inc/content.php', '../inc/error-reporting.php', '../inc/extra-body.php', '../inc/extra-content.php', '../inc/extra-head.php', '../inc/filter-email.php', '../inc/footer.php', '../inc/form.php', '../inc/functions.php', '../inc/html.php', '../inc/lang.php', '../inc/login-form.php', '../inc/logout-form.php', '../inc/menu.php', '../inc/ppp.php', '../inc/prelims.php', '../inc/stylesheets.php', '../inc/top.php');
+		$required = array('../inc/languages/en.php', '../inc/404.php', '../inc/content.php', '../inc/error-reporting.php', '../inc/extra-body.php', '../inc/extra-content.php', '../inc/extra-head.php', '../inc/filter-email.php', '../inc/footer.php', '../inc/form.php', '../inc/functions.php', '../inc/html.php', '../inc/lang.php', '../inc/login-form.php', '../inc/logout-form.php', '../inc/menu.php', '../inc/ppp.php', '../inc/prelims.php', '../inc/stylesheets.php', '../inc/top.php');
 
 		foreach ($required as $file) {
 			if (!file_exists($file)) { // Exit if a file is missing
@@ -370,20 +317,6 @@ if (!$login) {
 		} elseif ($debug == 'NO') {
 			$show_errors = 'FALSE';
 		}
-
-		// Different vars so YES/NO is printed
-		$track_hits = $track = '';
-		$track = trim($_POST['track']);
-		if (($track != 'YES') && ($track != 'NO')) {
-			$problem = TRUE;
-			$track = FALSE;
-		} elseif ($track == 'YES') {
-			$track_hits = 'TRUE';
-		} elseif ($track == 'NO') {
-			$track_hits = 'FALSE';
-		}
-
-		// See top of file for 'Track my hits' cookie
 
 		// Different vars so YES/NO is printed
 		$php_ext = $suffix_it = '';
@@ -448,22 +381,6 @@ if (!$login) {
 			$font_type = $fonts;
 		}
 
-		$lang_attr = substr(trim($_POST['lang_attr']), 0, 2); // First 2 chars
-		if ($lang_attr) {
-			if ($lang_attr == 'en') {
-				$submitted_language = 'English';
-			} elseif ($lang_attr == 'fr') {
-				$submitted_language = 'French';
-			} elseif ($lang_attr == 'de') {
-				$submitted_language = 'German';
-			} elseif ($lang_attr == 'es') {
-				$submitted_language = 'Spanish';
-			} else { // Belt and braces
-				$problem = TRUE;
-				$lang_attr = FALSE;
-			}
-		}
-
 		if ($problem) {
 			$response1 = '<em>There was a problem with the settings you entered.</em>';
 		} else {
@@ -492,7 +409,6 @@ define('HOME_LINK', '{$home_link}');
 define('NAME', '{$name}');
 define('ALPHABETICAL', {$alphabetical});
 define('SHOW_ERRORS', {$show_errors});
-define('TRACK_HITS', {$track_hits});
 define('PHP_EXT', {$php_ext});
 define('EMAIL', '{$email}');
 define('SITE_NAME', '{$site_name}');
@@ -501,7 +417,6 @@ define('OWN_NAME', '{$own_name}');
 define('CONTACT_TEXT', '{$contact_text}');
 define('CONTACT_MENU', '{$contact_menu}');
 define('FONT_TYPE', '{$font_type}');
-define('LANG_ATTR', '{$lang_attr}');
 define('VERSION', '{$version}');
 
 ?>";
@@ -712,33 +627,8 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Track hits (YES/NO) [ <a href="https://web.patricktaylor.com/cms-visitor-tracking" target="_blank">info</a> ]</label>
-<input type="text" name="track" size="60" value="<?php
-
-	if (isset($_POST['submit2'])) {
-		if (isset($_track)) {
-			_print($_track);
-		} else {
-			_print(TRACK_HITS);
-		}
-	} elseif (isset($_POST['submit1'])) {
-		if (!$track && $problem) {
-			_print('Enter YES or NO');
-		} else {
-			_print($track);
-		}
-	} elseif (file_exists('../inc/settings.php') && defined('TRACK_HITS')) {
-		if (TRACK_HITS) {
-			_print('YES');
-		} else {
-			_print('NO');
-		}
-	} else {
-		_print('NO');
-	}
-
-?>
-" maxlength="3">
+<label>Empty</label>
+<input type="text" name="empty" size="60" value=" " maxlength="3">
 
 		</div><!-- End group one //-->
 
@@ -831,51 +721,8 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Track my hits (YES/NO) [ <a href="https://web.patricktaylor.com/cms-visitor-tracking#myhits" target="_blank">info</a> ]</label>
-<input type="text" name="track_me" size="60" value="<?php
-
-	if (defined('TRACK_HITS')) {
-		if (isset($_POST['submit1']) && TRACK_HITS) { // If not TRACK_HITS, do nothing
-
-			if (!$correct_value) {
-				_print('Enter YES or NO or leave empty');
-			} else {
-				if ($track == 'NO') { // Only for when actually posted
-					_print('');
-				} elseif ($track == 'YES') {
-					if ($_POST['track_me'] == 'YES') {
-						_print('YES');
-					}
-					if ($_POST['track_me'] == 'NO') {
-						_print('NO');
-					}
-					if ($_POST['track_me'] == '') {
-						_print('');
-					}
-				} else {
-					_print('');
-				}
-			}
-
-		} elseif (isset($_POST['submit2']) && (TRACK_HITS == FALSE)) {
-			_print(''); // Make sure nothing appears in the box
-		} else { // Nothing posted
-
-			if (isset($_COOKIE["track"]) && ($_COOKIE["track"] == 'yes')) {
-				_print('YES');
-			}
-			if (isset($_COOKIE["track"]) && ($_COOKIE["track"] == 'no')) {
-				_print('NO');
-			}
-			if (!isset($_COOKIE["track"])) {
-				_print('');
-			}
-
-		}
-	} // Not defined so nothing in this box
-
-?>
-" maxlength="3">
+<label>Empty</label>
+<input type="text" name="empty" size="60" value=" " maxlength="3">
 
 		</div><!-- End group two //-->
 
@@ -995,41 +842,6 @@ if (isset($_POST['submit1'])) {
 ?>
 </select> <label>Font type [ <a href="https://web.patricktaylor.com/cms-font-styles" target="_blank">info</a> ]</label>
 </div>
-
-<select id="dropdown" name="lang_attr"><?php
-
-	if (defined('LANG_ATTR')) {
-		if (LANG_ATTR == 'en') {
-			$language = 'English';
-		}
-		if (LANG_ATTR == 'fr') {
-			$language = 'French';
-		}
-		if (LANG_ATTR == 'de') {
-			$language = 'German';
-		}
-		if (LANG_ATTR == 'es') {
-			$language = 'Spanish';
-		}
-	}
-
-	/* -------------------------------------------------- */
-	/* SELECT LANG */
-	// For <html lang="??">
-
-	// Selected option
-	if (isset($_POST['submit1'])) {
-		_print_nlab('<option value="' . $_POST['lang_attr'] . '">' . $submitted_language . '</option>');
-	} elseif (defined('LANG_ATTR')) {
-		_print_nlab('<option value="' . LANG_ATTR . '">' . $language . '</option>');
-	}
-
-?>
-<option value="en">English</option>
-<option value="fr">French</option>
-<option value="de">German</option>
-<option value="es">Spanish</option>
-</select> <label>Language [ <a href="https://web.patricktaylor.com/cms-language" target="_blank">info</a> ]</label>
 
 <hr>
 

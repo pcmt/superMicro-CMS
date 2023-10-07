@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 28 May 2023
+// Last updated 05 Oct 2023
 
 define('ACCESS', TRUE);
 
@@ -68,21 +68,22 @@ if ($domain && $secure) {
 	$secure_cookie = FALSE;
 }
 
-// Delete any existing test cookies and set new ones
-if (isset($_COOKIE["supermicro_test_cookie"])) {
-	if ($secure_cookie) {
-		setcookie("supermicro_test_cookie", "installed_sec", time() - 3600, "/", $domain, 1, 1);
-		setcookie("supermicro_test_cookie", "installed_sec", time() + 3600, "/", $domain, 1, 1); // One hour
-	} else {
-		setcookie("supermicro_test_cookie", "installed_ins", time() - 3600, "/"); // Delete any existing cookie
-		setcookie("supermicro_test_cookie", "installed_ins", time() + 3600, "/"); // One hour. Root - is that right?
+if ($secure_cookie) {
+	if (isset($_COOKIE["supermicro_test_cookie"])) {
+		setcookie("supermicro_test_cookie", "", time() - 3600, "/", "{$domain}", 1, 1); // Delete any existing cookie
 	}
+	setcookie("supermicro_test_cookie", "installation", time() + 3600, "/", "{$domain}", 1, 1); // One hour
+} else {
+	if (isset($_COOKIE["supermicro_test_cookie"])) {
+		setcookie("supermicro_test_cookie", "", time() - 3600, "/"); // Delete any existing cookie
+	}
+	setcookie("supermicro_test_cookie", "installation", time() + 3600, "/"); // One hour. Root - is that right?
 }
 
 /* -------------------------------------------------- */
 /* Verify all the required admin files */
 
-$required = array('./backup.php', './comments.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/count.txt', './text/extra-css.txt', './text/index.txt', './text/inmenu.txt', './text/listhits.txt', './text/pageid.txt', './text/password.txt', './text/since.txt', './text/stylesheet.txt', './text/tempcount.txt', './text/tempcountreset.txt');
+$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/extra-css.txt', './text/index.txt', './text/inmenu.txt','./text/pageid.txt', './text/password.txt', './text/stylesheet.txt');
 
 foreach ($required as $file) {
 	if (!file_exists($file)) { // Exit if a file is missing
@@ -192,66 +193,6 @@ so that when an update is uploaded they are not overwritten
 			if (!copy($text, $extra)) {
 				$file_write_problem = TRUE;
 				$error = "Install can't proceed. Could not create <b>{$extra}.</b>";
-			}
-		}
-
-		// /admin/visits/count.txt
-		$count = './visits/count.txt';
-		if (!file_exists($count)) {
-			$text = './text/count.txt';
-			if (!copy($text, $count)) {
-				$file_write_problem = TRUE;
-				$error = "Install can't proceed. Could not create <b>{$count}.</b>";
-			}
-		}
-
-		// /admin/visits/listhits.txt
-		$listhits = './visits/listhits.txt';
-		if (!file_exists($listhits)) {
-			$text = './text/listhits.txt';
-			if (!copy($text, $listhits)) {
-				$file_write_problem = TRUE;
-				$error = "Install can't proceed. Could not create <b>{$listhits}.</b>";
-			}
-		}
-
-		// /admin/visits/pageid.txt
-		$pageid = './visits/pageid.txt';
-		if (!file_exists($pageid)) {
-			$text = './text/pageid.txt';
-			if (!copy($text, $pageid)) {
-				$file_write_problem = TRUE;
-				$error = "Install can't proceed. Could not create <b>{$pageid}.</b>";
-			}
-		}
-
-		// /admin/visits/since.txt
-		$since = './visits/since.txt';
-		if (!file_exists($since)) {
-			$text = './text/since.txt';
-			if (!copy($text, $since)) {
-				$file_write_problem = TRUE;
-				$error = "Install can't proceed. Could not create <b>{$since}.</b>";
-			}
-		}
-
-		// /admin/visits/tempcount.txt
-		$tempcount = './visits/tempcount.txt';
-		if (!file_exists($tempcount)) {
-			$text = './text/tempcount.txt';
-			if (!copy($text, $tempcount)) {
-				$file_write_problem = TRUE;
-				$error = "Install can't proceed. Could not create <b>{$tempcount}.</b>";
-			}
-		}
-
-		// /admin/visits/tempcount.txt
-		$tempcount_reset = './visits/tempcountreset.txt';
-		if (!file_exists($tempcount_reset)) {
-			$text = './text/tempcountreset.txt';
-			if (!copy($text, $tempcount_reset)) {
-				$file_write_problem = TRUE;
-				$error = "Install can't proceed. Could not create <b>{$tempcount_reset}.</b>";
 			}
 		}
 

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 May 2023 */
+/* Last updated 08 June 2023 */
 // Looks for $source, not $textArray
 // Comments detection
 
@@ -27,12 +27,7 @@ class Page {
 		define('INC', $_inc);
 
 		// error-reporting.php loads settings.php and functions.php
-		if (file_exists(INC . 'error-reporting.php')) {
-			require(INC . 'error-reporting.php');
-		} else {
-			echo "Error in html.php - file '/inc/error-reporting.php' not found";
-			exit();
-		}
+		require(INC . 'error-reporting.php');
 
 		$_textfile = $this->Textfilename;
 		$source = './pages/' . $_textfile;
@@ -77,7 +72,11 @@ class Page {
 			}
 
 			// Detect extras status
-			// 18 March edit
+			if (strpos($lineone, '$') !== FALSE) {
+				$extras = TRUE;
+			} else {
+				$extras = FALSE;
+			}
 
 			// Get the new first line as title
 			$title = trim(array_shift($textArray));
@@ -110,9 +109,7 @@ class Page {
 			// Output some HTML (nav & main)
 			require(INC . 'top.php');
 			_print("\n<div id=\"wrap\">\n\n");
-			if (file_exists(INC . 'extra-body.php')) { // Optional
-				require(INC . 'extra-body.php');
-			}
+			require(INC . 'extra-body.php');
 			require(INC . 'menu.php');
 			_print("\n	<main id=\"content\">\n\n");
 

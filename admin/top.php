@@ -5,14 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 May 2023 */
+/* Last updated 31 May 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
 }
 
 // Declare variables
-$notice = $user = $dofooter = $login = $domain = $secure = $secure_cookie = $path = $siteID = $self = $status = "";
+$notice = $user = $dofooter = $login = $domain = $secure = $secure_cookie = $path = $siteID = $self = $status = $form = "";
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -22,7 +22,7 @@ $tm_start = 0;
 $tm_start = array_sum(explode(' ', microtime()));
 
 /* -------------------------------------------------- */
-// Files
+// Files etc
 
 include('./functions.php');
 
@@ -32,6 +32,11 @@ if (file_exists('../inc/settings.php')) {
 
 if (file_exists('./password.php')) {
 	include('./password.php');
+}
+
+if (!function_exists('sanitizeIt')) { // Function added 31 May 23
+	echo "Error: the function 'sanitizeIt' does not exist. Update /admin/functions.php";
+	exit();
 }
 
 /* ================================================== */
@@ -146,24 +151,21 @@ if (isset($_COOKIE[$loggedin]) && ($_COOKIE[$loggedin] === $siteID)) {
 
 if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
 
+	// To check hidden field
+	$form = sanitizeIt($_POST['form']);
+
 	// Do the same process as hashing the original password and salt.
 	// The [salted and hashed] password is contained $sh_password and
 	// the salt is contained in $salt (both in password.php)
 
-	$string1 = trim($_POST['password']);
-	$string1 = str_replace(["<", ">", "\"", "'", "\\"], '', $string1);
-	$string1 = stripslashes($string1);
-
-	$string2 = $salt;
-	$string2 = str_replace(["<", ">", "\"", "'", "\\"], '', $string2);
-	$string2 = stripslashes($string2);
-
+	$string1 = sanitizeIt($_POST['password']);
+	$string2 = sanitizeIt($salt);
 	$fullstring = $string1 . $string2;
 	$sh_submitted = hash('sha256', $fullstring);
 
 	// If form ok, login
 	// Submitted password is hashed and must match $sh_password in password.php
-	if ($sh_submitted == $sh_password) {
+	if (($sh_submitted == $sh_password) && ($form == 'login')) {
 
 		$login = TRUE; // $login is picked up in all the admin pages
 
@@ -171,10 +173,10 @@ if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
 			// Update the cookies
 			if ($secure_cookie) { // Ideally would be in admin folder
 				setcookie($loggedin, $siteID, time() + 86400, "/", $domain, 1, 1); // One day
-				setcookie($adminlink, $siteID, time() + 3600, "/", $domain, 1, 1); // One hour
+				setcookie($adminlink, $siteID, time() + 86400, "/", $domain, 1, 1); // One day
 			} else {
 				setcookie($loggedin, $siteID, time() + 86400, "/"); // One day
-				setcookie($adminlink, $siteID, time() + 3600, "/"); // One hour
+				setcookie($adminlink, $siteID, time() + 86400, "/"); // One day
 			}
 		} else { // Cookies aren't working
 			$notice = "\n<h3><em>Test cookie not found.</em></h3>\n<p>Are cookies enabled?</p>\n";

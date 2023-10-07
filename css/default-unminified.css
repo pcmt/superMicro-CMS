@@ -1,8 +1,9 @@
 /* Default styles unminified */
-/* [last update 27 April 2023 ] */
+/* [last update 04 Oct 2023 ] */
+/* .tv removed */
 /* min-width: 798px */
 
-/* Has light navbar, light footer */
+/* Has dark navbar, light footer */
 
 /*
 
@@ -19,6 +20,8 @@ Misc
 Forms
 Pre
 Wider blocks (all)
+Box list
+Modal images
 
 Some block combinations don't work. For example .w1200 inside
 section, slideshows and videos inside blockquote etc. Things
@@ -30,31 +33,33 @@ etc will be disrupted and throw things sideways unpredictably.
 */
 
 body {
-  background: #fff;
+  background-color: var(--white);
 }
 
 /* FONT FAMILY */
 /* ================================================== */
 
 body {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font);
 }
 
 h1 {
   font-family: "Ubuntu", sans-serif;
+  font-kerning: normal;
 }
 
 h2, h3, h4, h5, h6 {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font);
+  font-kerning: normal;
 }
 
 #contactform .submit {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font);
 }
 
 input,
 textarea {
-  font-family: "Open Sans", sans-serif;
+  font-family: var(--font);
 }
 
 pre {
@@ -113,7 +118,7 @@ textarea { font-size: 1.0em; }
   width: 100%;
   margin: 0;
   text-align: center;
-  background: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 /* ----------------------------------*/
@@ -125,7 +130,7 @@ textarea { font-size: 1.0em; }
     padding: 0;
     top: 14px;
     left: 12px;
-    color: #000;
+    color: var(--black);
     font-size: 0.9em;
     font-style: italic;
     z-index: 2;
@@ -149,7 +154,7 @@ textarea { font-size: 1.0em; }
   padding-bottom: 1.0em;
   text-align: center;
   width: 360px;
-  background: #fff;
+  background-color: var(--white);
   border: 1px solid #ddd;
   border-radius: 10px;
 }
@@ -167,10 +172,10 @@ nav {
   left: 0;
   width: 100%;
   height: 44px; /* See also nav ul */
-  color: #000;
-  background: #fff;
-  border-bottom: 1px solid #ddd;
-  opacity: 0.9;
+  color: var(--white);
+  background-color: var(--black);
+  border-bottom: none;
+  opacity: 0.85;
   z-index: 1;
   text-transform: uppercase;
 }
@@ -191,9 +196,9 @@ footer {
   padding: 1.6em 0 2.4em 0;
   text-align: center;
   border-top: 1px solid #ddd;
-  border-bottom: 2.4em solid #fff; /* Works consistently */
-  color: #000;
-  background: #fff url('../img/bg_footer.gif') no-repeat;
+  border-bottom: 2.4em solid var(--white); /* Works consistently */
+  color: var(--black);
+  background: var(--white) url('../img/bg_footer.gif') no-repeat;
   background-position: center bottom;
 }
 
@@ -233,15 +238,15 @@ div.bg1,
 section div.bg1 {
   padding: 1.2em 69px;
   color: #f1fdd7;
-  background: #6b3960;
+  background-color: #6b3960;
   border: 1px solid #6b3960;
   border-radius: 10px;
 }
 
 div.bg2 {
   padding: 1.2em 69px;
-  color: #000;
-  background: #eee;
+  color: var(--black);
+  background-color: #eee;
   border: 1px solid #eee;
   border-radius: 10px;
 }
@@ -249,7 +254,7 @@ div.bg2 {
 div.bg3 {
   padding: 1.2em 69px;
   color: #6b701f;
-  background: #fdfeeb;
+  background-color: #fdfeeb;
   border: 1px solid #dee47e;
   border-radius: 10px;
 }
@@ -257,7 +262,7 @@ div.bg3 {
 div.bg4 {
   padding: 1.2em 60px;
   color: #444;
-  background: #fff;
+  background-color: var(--white);
   border: 10px solid #ddd;
 }
 
@@ -268,7 +273,7 @@ section div.bg4 {
 .group { /* For 'tabley' things */
   margin: 1.6em 0;
   padding: 1.0em 50px;
-  background: #fff;
+  background-color: var(--white);
   border-top: 6px solid #9cc;
   border-bottom: 6px solid #9cc;
 }
@@ -285,22 +290,11 @@ section div.bg4 {
   padding: 49px;
   width: auto;
   text-align: center;
-  background: #ebebeb;
+  background-color: #ebebeb;
   border: 1px solid #ebebeb; /* Concealed */
   border-radius: 0px;
   /* x-value y-value blur spread color */
   box-shadow: 0px 15px 15px 0px rgba(187,187,187,1);
-}
-
-.tv { /* Video lozenge */
-  margin: 1.6em auto;
-  padding: 50px;
-  width: auto;
-  text-align: center;
-  background: #ebebeb;
-  border-radius: 60px;
-  /* x-value y-value blur spread color */
-  box-shadow: 0px 25px 25px 0px rgba(187,187,187,1);
 }
 
 .slideshow-container {
@@ -318,22 +312,16 @@ section div.bg4 {
   margin: 0 auto;
 }
 
-.bullets {
+.bullets { /* For slides (see links) */
   display: inline-block;
   text-align: center;
   width: auto;
   margin: 0 auto 1.0em auto;
-  padding: 0 10px;
-  line-height: 1;
-}
-
-.bullets { /* For slides (see links) */
-  text-align: center;
-  margin: 0 auto 1.0em auto;
   padding: 0 50px;
   line-height: 1;
-  background-image: url('../img/bg-dots1.gif');
+  background: url('../img/bg-dots1.gif');
   background-repeat: repeat-x;
+  background-position: center center;
 }
 
 /* HEADINGS */
@@ -437,7 +425,7 @@ p.caption {
   width: 460px;
   border-bottom: 1px solid #999;
   text-align: center;
-  color: #000;
+  color: var(--black);
   line-height: 1.4;
 }
 
@@ -536,7 +524,7 @@ blockquote { display: block;
   width: 694px;
   border-left: 6px solid #9cc;
   color: #444;
-  background: #fff;
+  background-color: var(--white);
   text-indent: 0;
 }
 
@@ -570,7 +558,7 @@ p object { /* Default */
 img.border,
 object.border { /* Max 680 wide image for 740 column */
   padding: 29px;
-  background: #fff;
+  background: var(--white);
   border: 1px solid #ccc;
   /* x-value y-value blur spread color */
   box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.3);
@@ -594,6 +582,16 @@ object.rc { /* Rounded corners */
 
 /* 4 conditions for slides wider than 740px, up to 1200px */
 /* Note! Must be consistent with .w1200 */
+
+/* (example picture)
+
+<picture>
+  <source media="(min-width:650px)" srcset="img_pink_flowers.jpg">
+  <source media="(min-width:465px)" srcset="img_white_flower.jpg">
+  <img src="img_orange_flowers.jpg" alt="Flowers" style="width:auto;">
+</picture>
+
+*/
 
 @media screen and (min-width: 1257px) { /* 1 */
 
@@ -660,18 +658,6 @@ div.video {
   margin: 1.6em auto 1.6em auto;
 }
 
-.tv .video { /* Video lozenge */
-  margin: 0;
-  padding: 0;
-}
-
-.tv .video video {
-  margin: 0 auto;
-  padding: 0;
-  width: 100%;
-  border-radius: 30px;
-}
-
 .iframe-wrapper {
   margin: 1.6em auto 1.6em auto;
   clear: both;
@@ -704,7 +690,7 @@ div.video {
 
 video {
   padding: 0;
-  background: #ddd;
+  background-color: #ddd;
 }
 
 /* LINKS */
@@ -736,8 +722,8 @@ p#sitename a {
   height: 34px;
   width: auto;
   text-align: center;
-  color: #000;
-  background: #e4ff00;
+  color: var(--black);
+  background-color: #e4ff00;
 }
 
 p#sitename a:hover {
@@ -752,7 +738,7 @@ nav strong {
   display: inline-block;
   height: 26px;
   padding: 18px 16px 0 16px;
-  color: #000;
+  color: var(--white);
 }
 
 nav strong {
@@ -761,39 +747,39 @@ nav strong {
 }
 
 nav li a:hover {
-  color: #ff0099;
-  border-bottom: 6px solid #ff0099;
+  color: #ebebeb;
+  border-bottom: 6px solid var(--link);
 }
 
 /* #content */
 
 a {
-  color: #ff0099;
+  color: var(--link);
   text-decoration: none;
 }
 
 a:hover {
-  color: #000;
+  color: var(--black);
 }
 
 h6#comment a { display: block; /* Important */
   margin: 1.0em auto 1.0em auto;
   padding: 11px 11px 12px 12px;
   width: 9.0em;
-  color: #000;
-  background-color: #fff;
+  color: var(--black);
+  background-color: var(--white);
   border: 1px solid #bbb;
   border-radius: 5px;
 }
 
 h6#comment a:hover {
-  color: #ff0099;
+  color: var(--link);
 }
 
 div.bg1 a,
 #content section div.bg1 a {
-  color: #fff;
-  border-bottom: 1px dotted #fff;
+  color: var(--white);
+  border-bottom: 1px dotted var(--white);
 }
 
 div.bg1 a:hover,
@@ -816,8 +802,8 @@ div.bg1 a:hover,
   -o-transform: translateY(-50%);
   transform: translateY(-50%);
   width: 10px;
-  color: #000;
-  background: #999;
+  color: var(--black);
+  background-color: #999;
   font-weight: 600;
   /* font-size: 1.2em; */
   transition: 0.6s ease;
@@ -829,7 +815,7 @@ div.bg1 a:hover,
   left: 0;
   padding: 13px 14px 13px 13px;
   border-width: 1px 1px 1px 0;
-  border-color: #fff;
+  border-color: var(--white);
   border-style: solid;
   border-radius: 0 6px 6px 0;
 }
@@ -839,7 +825,7 @@ div.bg1 a:hover,
   right: 0;
   padding: 13px 13px 13px 14px;
   border-width: 1px 0 1px 1px;
-  border-color: #fff;
+  border-color: var(--white);
   border-style: solid;
   border-radius: 6px 0 0 6px;
 }
@@ -847,8 +833,8 @@ div.bg1 a:hover,
 /* On hover add a black background with a little bit of see-through */
 .slideshow-container a.prev:hover,
 .slideshow-container a.next:hover {
-  color: #ff0099;
-  background: rgba(0,0,0,0.8);
+  color: var(--link);
+  background-color: rgba(0,0,0,0.8);
   opacity: 0.8;
 }
 
@@ -871,13 +857,13 @@ div.bg1 a:hover,
 /* footer */
 
 footer a {
-  color: #000;
+  color: var(--black);
   padding-bottom: 1px;
   border-bottom: 1px solid #ddd;
 }
 
 footer a:hover {
-  color: #ff0099;
+  color: var(--link);
 }
 
 /* MISC */
@@ -888,8 +874,8 @@ span {
 }
 
 span.u {
-  border-bottom: 1px solid #000;
-  color: #000;
+  border-bottom: 1px solid var(--black);
+  color: var(--black);
 }
 
 hr {
@@ -899,7 +885,7 @@ hr {
   padding-bottom: 1px;
   height: 0;
   width: 100%;
-  background: #fff;
+  background: var(--white);
   border: none;
   border-top: 1px solid #ddd;
 }
@@ -909,7 +895,7 @@ hr.section {
   width: 40%;
   border: none;
   border-top: medium double #999;
-  background: #f9f9f9;
+  background-color: #f9f9f9;
 }
 
 del {
@@ -920,11 +906,11 @@ input#bt { /* for simpleToggle */
   border: none;
   background: none;
   padding: 0;
-  color: #000;
+  color: var(--black);
   border-radius: 0;
   border-bottom: 4px solid #555;
   cursor: pointer;
-  font-family: "Open Sans", Sans-Serif;
+  font-family: var(--font);
   font-size: inherit;
 }
 
@@ -934,7 +920,7 @@ input#bt:hover {
 }
 
 input#bt:active {
-  border-bottom: 4px solid #f09;
+  border-bottom: 4px solid var(--link);
 }
 
 span.g { /* for simpleToggle */
@@ -1029,7 +1015,7 @@ textarea {
   border-right: 0;
   border-bottom: 6px solid #ddd;
   border-left: 0;
-  background: #fff;
+  background-color: var(--white);
   margin-top: 4px;
   padding: 0.5em 4px 0.5em 4px;
   overflow: auto; /* Remove default vertical scrollbar in IE 8/9/10/11 */
@@ -1039,14 +1025,14 @@ textarea {
   display: block;
   margin: 8px 0 0 0;
   padding: 5px 17px 7px 16px;
-  color: #ff0099;
-  background-color: #fff;
+  color: var(--link);
+  background-color: var(--white);
   border: 1px solid #bbb;
   border-radius: 5px;
 }
 
 .submit:hover {
-  color: #000;
+  color: var(--black);
   cursor: pointer;
 }
 
@@ -1060,7 +1046,7 @@ textarea {
 }
 
 div#s a span {
-  color: #ff0099;
+  color: var(--link);
   font-style: normal;
 }
 
@@ -1072,7 +1058,7 @@ div#s span.faded {
   margin: 4px 6px 4px 0;
   padding: 5px 5px;
   width: 290px;
-  background: #fdffe4;
+  background-color: #fdffe4;
   border: 1px solid #dee47e;
   border-radius: 3px;
   font-size: inherit;
@@ -1080,7 +1066,7 @@ div#s span.faded {
 
 .search input[type=search]:hover,
 input[type=search]:focus {
-  background: #fff;
+  background-color: var(--white);
   border: 1px solid #ddd;
 }
 
@@ -1231,9 +1217,9 @@ pre em {
   display: block;
   margin: 1.0em 0;
   padding: 0.8em 18px 0.8em 18px;
-  color: #000;
-  background-color: #fff;
-  border: 1px solid #fff;
+  color: var(--black);
+  background-color: var(--white);
+  border: 1px solid var(--white);
   border-radius: 0;
   text-align: left;
   -webkit-box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.3);
@@ -1242,8 +1228,8 @@ pre em {
 }
 
 .boxlist li a:hover {
-  color: #000;
-  background: #9cc;
+  color: var(--black);
+  background-color: #9cc;
   border: 1px solid #9cc;
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
@@ -1293,7 +1279,7 @@ pre em {
   /* width: 80%;
   max-width: 1200px; */
   text-align: center;
-  color: #000;
+  color: var(--black);
   font-size: 1.05em;
   font-weight: 600;
   line-height: 1.5;
@@ -1323,8 +1309,8 @@ pre em {
   top: 15px;
   right: 35px;
   padding: 0 12px;
-  color: #ff0099;
-  background: #fff;
+  color: var(--link);
+  background-color: var(--white);
   font-size: 3.0em;;
   font-weight: bold;
   line-height: 1.0;

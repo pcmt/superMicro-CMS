@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 March 2023 */
+/* Last updated 15 March 2023 */
 
 define('ACCESS', TRUE);
 
@@ -119,6 +119,7 @@ if (!$login) {
 						$filesArray[] = $_root . '/' . $phpfile;
 						$filesArray[] = $_root . '/pages/' . $txtfile;
 						$filesArray[] = $_root . '/comments/' . $txtfile;
+						$filesArray[] = $_root . '/extras/' . $txtfile;
 					}
 				}
 			}

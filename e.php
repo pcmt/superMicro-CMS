@@ -69,11 +69,8 @@ if (isset($_POST['submit'])) {
 
 ?>
 <!DOCTYPE html>
-<html<?php
-
-if (defined('LANG_ATTR')) {
-	_print(' lang="' . LANG_ATTR . '"');
-}
+<html lang="en">
+<?php
 
 if (defined('CONTACT_MENU') && (strlen(CONTACT_MENU) > 0)) {
 	$contact_heading = CONTACT_MENU;
@@ -81,7 +78,7 @@ if (defined('CONTACT_MENU') && (strlen(CONTACT_MENU) > 0)) {
 	$contact_heading = TEXT30;
 }
 
-?>>
+?>
 <head>
 
 <meta charset="utf-8">

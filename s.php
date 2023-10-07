@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last looked at 15 March 2023 */
+/* Last edited 04 Oct 2023 */
 
 define('ACCESS', TRUE);
 
@@ -37,13 +37,7 @@ if (isset($_POST['terms'])) { // Searches are only from this page
 
 ?>
 <!DOCTYPE html>
-<html<?php
-
-if (defined('LANG_ATTR')) {
-	_print(' lang="' . LANG_ATTR . '"');
-}
-
-?>>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
