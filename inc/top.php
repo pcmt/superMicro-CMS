@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Oct 2023 */
+/* Last updated 13 Nov 2023 */
 
 // Declare variables
-$protected = $the_page = $adminlink = $siteID = $admin = "";
+$protected = $the_page = $adminlink = $siteID = $admin = $history = $historyArray = $to_omit = $skip = $found = $num = $a = $b = $c = $update = "";
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -18,6 +18,77 @@ if (!defined('ACCESS')) {
 $time = microtime();
 $time = explode(' ', $time);
 $starttime = $time[1] + $time[0];
+
+/* ================================================== */
+/* Pages last viewed */
+
+// Omit pages
+$to_omit = array('index', 'preview');
+$skip = FALSE;
+foreach ($to_omit as $found) {
+	if ($found == $pageID) {
+		$skip = TRUE;
+	}
+}
+
+// Get the history
+if (isset($_COOKIE["supermicro_history"])) {
+
+	$history = $_COOKIE["supermicro_history"];
+	$historyArray = explode(" ", $history); // Make array
+
+	if (!$skip) {
+		// If the current page is already in the cookie, do nothing
+		// otherwise add it to the cookie for next page view.
+		// If it is not in the cookie and the page is refreshed,
+		// it will be added. The history will then show the current page.
+		// When a next page is viewed, the cookie contains its page ID
+		// but it has not yet been read. The point is, it is there and
+		// would need to be removed before it is read. But this leaves
+		// the history one short. Don't know the answer.
+		if (strpos($history, $pageID) === FALSE) {
+
+			// Number of values
+			$num = count($historyArray);
+
+			// The values
+			if (isset($historyArray[0])) {
+				$a = $historyArray[0];
+			} else {
+				$a = "";
+			}
+			if (isset($historyArray[1])) {
+				$b = $historyArray[1];
+			} else {
+				$b = "";
+			}
+			if (isset($historyArray[2])) {
+				$c = $historyArray[2];
+			} else {
+				$c = "";
+			}
+
+			if ($pageID != 'index') { // Exclude home page
+				$update = $pageID . ' ' . $a . ' ' . $b; // Add this page
+			} else { // Is home page
+				$update = $a . ' ' . $b . ' ' . $c; // Home page (do nothing)
+			}
+
+			// Update cookie with this page ID, $a and $b being moved along and $c dropped
+			setcookie("supermicro_history", trim($update), time() + 31556926, "/"); // One year
+		}
+	}
+
+} else {
+
+	if (!$skip) {
+		setcookie("supermicro_history", $pageID, time() + 31556926, "/"); // One year
+	}
+
+}
+
+/* End pages last viewed */
+/* ================================================== */
 
 if ($password) { // From html.php
 

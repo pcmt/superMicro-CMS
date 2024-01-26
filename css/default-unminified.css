@@ -1,12 +1,8 @@
 /* Default styles unminified */
-/* [last update 04 Oct 2023 ] */
-/* .tv removed */
+/* [last update 26 Jan 2024 ] */
 /* min-width: 798px */
 
-/* Has dark navbar, light footer */
-
 /*
-
 RULE ORDER:
 Font family
 Font size
@@ -22,14 +18,13 @@ Pre
 Wider blocks (all)
 Box list
 Modal images
-
+----------
 Some block combinations don't work. For example .w1200 inside
 section, slideshows and videos inside blockquote etc. Things
 like blockquote and .bg1 etc are intended to be standalone.
 DON'T TRY MIXING THINGS UP TOO MUCH or some of the carefully
 calculated horizontal dimensions for borders, margins, padding
 etc will be disrupted and throw things sideways unpredictably.
-
 */
 
 body {
@@ -45,12 +40,10 @@ body {
 
 h1 {
   font-family: "Ubuntu", sans-serif;
-  font-kerning: normal;
 }
 
 h2, h3, h4, h5, h6 {
-  font-family: var(--font);
-  font-kerning: normal;
+  font-family: "Open Sans", sans-serif;
 }
 
 #contactform .submit {
@@ -71,43 +64,45 @@ pre {
 
 body { font-size: 62.5%; /* Set 1.0em to 10px */ }
 
-#wrap { font-size: 1.7em; }
+#wrap { font-size: 1.0rem; } /* Adjusts everything in #wrap */
 
-h1 { font-size: 2.1em; }
+h1 { font-size: 2.4em; }
 
 h2 { font-size: 1.8em; }
 
-h3 { font-size: 1.6em; }
+h3 { font-size: 1.5em; }
 
-h4 { font-size: 1.45em; }
+h4 { font-size: 1.4em; }
 
-h5 { font-size: 1.45em; }
+h5 { font-size: 1.7em; }
 
-h6 { font-size: 1.4em; }
+h6 { font-size: 1.3em; }
 
-p { font-size: 1.05em; }
+#content p { font-size: 1.1em; }
 
-p.caption { font-size: 0.95em; }
+#content p.caption { font-size: 1.0em; }
 
-p.meta { font-size: 0.9em; }
+#content p.meta { font-size: 0.9em; }
 
 #content ul,
-#content ol { font-size: 1.05em; }
+#content ol { font-size: 1.1em; }
 
-nav ul { font-size: 0.85em; }
+#wrap p#sitename { font-size: 0.9em; }
 
-footer { font-size: 0.85em; }
+#wrap nav ul { font-size: 0.9em; }
 
-pre { font-size: 16px; }
+#wrap footer { font-size: 0.9em; }
 
-label { font-size: 1.05em; }
+#wrap pre { font-size: 16px; }
 
-input[type=text],
-input[type=password] { font-size: 1.0em; }
+#wrap label { font-size: 1.05em; }
 
-textarea { font-size: 1.0em; }
+#wrap input[type=text],
+#wrap input[type=password] { font-size: 1.0em; }
 
-.submit { font-size: 1.05em; }
+#wrap textarea { font-size: 1.0em; }
+
+#wrap .submit { font-size: 1.05em; }
 
 /* BOX LAYOUT */
 /* ================================================== */
@@ -131,7 +126,6 @@ textarea { font-size: 1.0em; }
     top: 14px;
     left: 12px;
     color: var(--black);
-    font-size: 0.9em;
     font-style: italic;
     z-index: 2;
   }
@@ -175,7 +169,7 @@ nav {
   color: var(--white);
   background-color: var(--black);
   border-bottom: none;
-  opacity: 0.85;
+  opacity: 0.9;
   z-index: 1;
   text-transform: uppercase;
 }
@@ -184,7 +178,7 @@ nav {
   width: 740px;
   margin: 0 auto;
   padding-top: 5.2em;
-  padding-bottom: 1.8em;
+  padding-bottom: 2.4em;
   min-height: 480px;
   text-align: left;
 }
@@ -202,11 +196,9 @@ footer {
   background-position: center bottom;
 }
 
-/* No styles
 .comments {
   margin: 0;
 }
-*/
 
 .extras { /* Only in 'extras' version */
   margin: 1.6em 0 0 0;
@@ -224,6 +216,154 @@ section { /* Don't enclose .w1200 */
 section p {
   text-align: justify;
 }
+
+/* FLEX */
+/* ================================================== */
+/* Wide screen image next to text over 1081 */
+/*
+Flex goes in w1200 - when the width is 1239 plus scrollbar
+flexitem2 reduces to a smaller fixed width
+Applies to everything before collapse except squeeze up
+*/
+
+@media screen and (min-width: 1082px) {
+
+  .flexcontainer {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* Does nothing? */
+    margin: 1.6em 0 1.6em 0;
+    padding: 1.6em 0 0 0;
+  }
+
+  .row {
+    flex-direction: row;
+  }
+
+  .rowreverse {
+    flex-direction: row-reverse;
+  }
+
+  .flexitem1 {
+    flex-basis: 600px; /*absolute value*/
+    margin: 0 auto 0 auto;
+    padding: 0;
+  }
+
+  #content .flexitem1 img {
+    max-width: 600px;
+    margin: 0 auto 0 auto;
+    padding: 0;
+    height: auto;
+  }
+
+  .flexitem1 .slideshow-container {
+    margin-top: 0; /* As image */
+    margin-bottom: 0;
+  }
+
+  .flexitem2 {
+    flex-basis: fit-content;
+    flex-grow: 1;
+    text-align: left;
+  }
+
+  #content .flexitem2 p {
+    text-align: left;
+    font-size: 1.05em;
+    line-height: 1.6;
+  }
+
+  #content .row p {
+    margin-right: 10px;
+    margin-left: 70px;
+  }
+
+  #content .rowreverse p {
+    margin-right: 60px;
+    margin-left: 0;
+  }
+
+  #content .row h2,
+  #content .row h3,
+  #content .row h4,
+  #content .row h6 {
+    margin-left: 70px;
+  }
+
+}
+
+/* Squeeze up a bit at less than w1200 */
+@media only screen and (min-width: 1082px) and (max-width: 1257px) {
+
+  .flexitem2 {
+    flex-basis: fit-content;
+    text-align: left;
+  }
+
+  #content .row p {
+    margin-right: 10px;
+    margin-left: 50px;
+  }
+
+  #content .rowreverse p {
+    margin-right: 40px;
+    margin-left: 0;
+  }
+
+  #content .row h2,
+  #content .row h3,
+  #content .row h4,
+  #content .row h6 {
+    margin-left: 50px;
+  }
+
+}
+
+/* Collapse to one column */
+/* 1024 + 20 + 20 + 18 */
+@media screen and (max-width: 1081px) {
+
+  .flexitem1 img {
+    max-width: 740px;
+    margin: 0 auto 1.6em auto;
+    height: auto;
+  }
+
+  .flexitem2 {
+    max-width: 600px;
+    margin: 0 auto 1.6em auto;
+  }
+
+  #content .row h2,
+  #content .row h3,
+  #content .row h4,
+  #content .row h6 {
+    text-align: left;
+  }
+
+}
+
+#content .flexitem1 p.caption,
+#content .flexitem1 .slideshow-container p.caption {
+  font-size: 1.0em;
+  margin: -0.6em auto 1.0em auto;
+}
+
+.flexcontainer .dotcontainer {
+  margin-top: 1.0em;
+}
+
+/*
+.flexcontainer {
+  background-color: #ebebeb;
+}
+
+.flexitem2 {
+  background-color: #fff;
+}
+*/
+/* ================================================== */
 
 div.bg1,
 div.bg2,
@@ -268,6 +408,17 @@ div.bg4 {
 
 section div.bg4 {
   padding: 1.2em 40px;
+}
+
+div.bg5 {
+  margin: 1.6em auto 2.0em auto;
+  padding: 1.2em 1.8em;
+  max-width: 740px;
+  color: #000;
+  background-color: #fff;
+  -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
 }
 
 .group { /* For 'tabley' things */
@@ -350,25 +501,21 @@ h1 span {
 }
 
 h2, h3, h4, h5, h6 {
-  line-height: 1.2;
-}
-
-h2, h3, h4 {
-  text-shadow: 1px 1px 2px #ccc;
+  line-height: 1.3;
+  font-weight: 600;
+  color: #555;
 }
 
 h2, h3 {
-  margin: 0.75em 0 0.15em 0;
-  font-weight: 400;
+  margin: 1.2em 0 0.25em 0;
   letter-spacing: -1px;
-  color: #333;
+  text-align: left;
 }
 
 h4 {
-  margin: 1.2em 0 0 0;
-  font-weight: 600;
+  margin: 1.2em 0 0.25em 0;
   letter-spacing: 0;
-  color: #333;
+  text-align: left;
 }
 
 #comments h4 {
@@ -377,23 +524,19 @@ h4 {
   border-bottom: 1px solid #ddd;
 }
 
-h5, h6 {
-  font-weight: 600;
-  color: #333;
-}
-
 h5 {
-  margin: 1.2em auto 0 auto;
+  margin: 1.2em auto 0.9em auto;
   text-align: center;
+  letter-spacing: 0;
 }
 
 h6 {
-  margin: 0.6em 0 0 0;
+  margin: 0.8em 0 0 0;
 }
 
 #comments h6 {
   font-size: 1.3em;
-  font-weight: 600;
+  font-weight: 500;
   margin: 1.2em 0 0.4em 0;
 }
 
@@ -506,16 +649,26 @@ li {
   padding: 0.25em 0;
 }
 
-#content .listing {
+#content ul.listing {
   margin: 1.6em 0;
   padding: 0;
   list-style-type: none;
   border-top: 1px solid #ddd;
 }
 
-.listing li {
+#content ul.listing li {
   padding: 0.6em 0;
   border-bottom: 1px solid #ddd;
+}
+
+#content ul.inline {
+  list-style-type: none;
+  margin: 0 0 0 0;
+}
+
+#content ul.inline li {
+  display: inline;
+  margin: 0;
 }
 
 blockquote { display: block;
@@ -1332,14 +1485,14 @@ pre em {
   text-align: center;
 }
 
-p.enlarge {
+#content p.enlarge {
   position: absolute;
   margin: 0;
   padding: 0;
   text-align: center;
   right: 0;
   top: -20px;
-  font-size: 0.75em;
+  font-size: 0.8em;
   color: #666;
 }
 

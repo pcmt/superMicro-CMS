@@ -60,7 +60,47 @@
        url('../fonts/ubuntu-v15-latin-500italic.woff') format('woff')
 }
 
-/* [last update 10 June 2023] */
+/* poppins-regular - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 400;
+  src: url('../fonts/poppins-v20-latin-regular.woff2') format('woff2');
+}
+
+/* poppins-500 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 500;
+  src: url('../fonts/poppins-v20-latin-500.woff2') format('woff2');
+}
+
+/* poppins-500italic - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 500;
+  src: url('../fonts/poppins-v20-latin-500italic.woff2') format('woff2');
+}
+
+/* poppins-600 - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: normal;
+  font-weight: 600;
+  src: url('../fonts/poppins-v20-latin-600.woff2') format('woff2');
+}
+
+/* poppins-600italic - latin */
+@font-face {
+  font-family: 'Poppins';
+  font-style: italic;
+  font-weight: 600;
+  src: url('../fonts/poppins-v20-latin-600italic.woff2') format('woff2');
+}
+
+/* [last update 23 Jan 2024] */
 /* Self-hosted fonts */
 
 @media screen {

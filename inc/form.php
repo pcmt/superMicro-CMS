@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 March 2023 */
+/* Last updated 24 Jan 2024 */
 /* Not quite the same as e.php */
 
 /*
@@ -89,7 +89,7 @@ if (isset($_POST['submit'])) {
 }
 
 ?>
-<h6><?php _print(TEXT52); ?></h6>
+<h4><?php _print(TEXT52); ?></h4>
 
 <form method="post" class="contactform" action="#response" accept-charset="UTF-8">
 <input type="text" name="name" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['name'])); ?>" maxlength="60" tabindex="1"><label for="name"><?php _print(TEXT32); ?></label><br>

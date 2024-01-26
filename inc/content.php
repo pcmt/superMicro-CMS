@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Dec 2022 */
+/* Last updated 07 Nov 2023 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to content.php');
@@ -35,9 +35,15 @@ $content = video_path($content);
 // If content is set and actually exists
 if ($content && (strlen($content) > 0)) {
 	_print($content);
+
 	if (file_exists(INC . 'extra-content.php')) {
 		include(INC . 'extra-content.php');
 	}
+
+	if (file_exists(INC . 'history.php')) {
+		include(INC . 'history.php');
+	}
+
 } else {
 	_print("\n<p>No content. Something needs fixing.</p>\n");
 }

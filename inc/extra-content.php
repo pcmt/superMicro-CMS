@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 22 March 2023 */
+/* Last updated 25 Dec 2023 */
 
 // Declare variables
 $commentfile = $leavecomment = $closecomments = $filedate = '';
@@ -72,10 +72,10 @@ if ($comments && isset($pageID)) { // See html.php ($comments)
 			} else { // A string exists
 
 				// If further commenting closed
-				if (strstr($commentfile, '~~&~~')) {
+				if (strstr($commentfile, '^&^')) {
 					$closecomments = '<hr>
 <p class="comments_closed">' . TEXT53 . '</p>'; // "Comments are closed."
-					$commentfile = str_replace("~~&~~", "", $commentfile);
+					$commentfile = str_replace("^&^", "", $commentfile);
 				} else {
 					// Comments not closed
 					$leavecomment = TRUE;

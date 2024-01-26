@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 July 2023 */
+/* Last updated 14 Jan 2024 */
 
 /* -------------------------------------------------- */
 // File /inc/content.php
@@ -34,7 +34,7 @@ define("TEXT27", "Your comment has been submitted, thank you.");
 define("TEXT28", "Error. Your comment was not sent.");
 define("TEXT48", "Stopwords found.");
 define("TEXT29", "Try again.");
-define("TEXT30", "Contact");
+define("TEXT30", "Email");
 define("TEXT31", "Contact form");
 define("TEXT32", "Your name (two words maximum)");
 define("TEXT33", "Your email (will not be published)");

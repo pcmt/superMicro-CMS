@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Oct 2023 */
+/* Last updated 24 Jan 2024 */
 
 define('ACCESS', TRUE);
 
@@ -82,7 +82,7 @@ if (!$login) {
 	// Logged in
 
 	// Declare the version
-	$version = '5.0'; // Edit footer.php and text/index.txt as well
+	$version = '5.2'; // Edit footer.php and text/index.txt as well
 
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
