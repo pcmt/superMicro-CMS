@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 Jan 2024 */
+/* Last updated 29 Jan 2024 */
 
 define('ACCESS', TRUE);
 
@@ -31,6 +31,7 @@ if (isset($_POST['contact_menu'])) {
 
 // YES / NO constants
 if (isset($_POST['menu'])) { $_menu = trim($_POST['menu']); }
+if (isset($_POST['history'])) { $_history = trim($_POST['history']); }
 if (isset($_POST['debug'])) { $_debug = trim($_POST['debug']); }
 if (isset($_POST['suffix_it'])) { $_suffix_it = trim($_POST['suffix_it']); }
 
@@ -82,7 +83,7 @@ if (!$login) {
 	// Logged in
 
 	// Declare the version
-	$version = '5.2'; // Edit footer.php and text/index.txt as well
+	$version = '5.3'; // Edit footer.php and text/index.txt as well
 
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
@@ -267,7 +268,7 @@ if (!$login) {
 
 		/* -------------------------------------------------- */
 		/* VERIFY INC FILES */
-		$required = array('../inc/languages/en.php', '../inc/404.php', '../inc/content.php', '../inc/error-reporting.php', '../inc/extra-body.php', '../inc/extra-content.php', '../inc/extra-head.php', '../inc/filter-email.php', '../inc/footer.php', '../inc/form.php', '../inc/functions.php', '../inc/html.php', '../inc/lang.php', '../inc/login-form.php', '../inc/logout-form.php', '../inc/menu.php', '../inc/ppp.php', '../inc/prelims.php', '../inc/stylesheets.php', '../inc/top.php');
+		$required = array('../inc/languages/en.php', '../inc/404.php', '../inc/content.php', '../inc/error-reporting.php', '../inc/extra-body.php', '../inc/extra-content.php', '../inc/extra-head.php', '../inc/filter-email.php', '../inc/footer.php', '../inc/form.php', '../inc/functions.php', '../inc/history.php', '../inc/html.php', '../inc/lang.php', '../inc/login-form.php', '../inc/logout-form.php', '../inc/menu.php', '../inc/ppp.php', '../inc/prelims.php', '../inc/stylesheets.php', '../inc/top.php');
 
 		foreach ($required as $file) {
 			if (!file_exists($file)) { // Exit if a file is missing
@@ -294,6 +295,19 @@ if (!$login) {
 			$name = FALSE;
 		}
 
+/*
+How YES/NO works (eg alphabetical menu). It is quite complex.
+The 'Alphabetical menu (YES/NO)' input box name is "menu".
+'Get current setup' is 'submit 2' and first checks if $_menu is set.
+$_menu is a temporary variable along with $menu ($_POST['menu']).
+Default is YES but if anything is entered, do nothing but show it,
+otherwise show the CONSTANT (ALPHABETICAL) which any submit creates.
+'submit 1' submits $menu and makes ALPHABETICAL TRUE or FALSE using
+the variable $alphabetical which feeds the CONSTANT to update it.
+Finally, if nothing is submitted, if the CONSTANT exists it shows
+YES or NO, otherwise default YES is shown as something to enter.
+*/
+
 		// Different vars so YES/NO is printed
 		$alphabetical = $menu = '';
 		$menu = trim($_POST['menu']);
@@ -304,6 +318,18 @@ if (!$login) {
 			$alphabetical = 'TRUE';
 		} elseif ($menu == 'NO') {
 			$alphabetical = 'FALSE';
+		}
+
+		// Different vars so YES/NO is printed
+		$show_history = $history = '';
+		$history = trim($_POST['history']);
+		if (($history != 'YES') && ($history != 'NO')) {
+			$problem = TRUE;
+			$history = FALSE;
+		} elseif ($history == 'YES') {
+			$show_history = 'TRUE';
+		} elseif ($history == 'NO') {
+			$show_history = 'FALSE';
 		}
 
 		// Different vars so YES/NO is printed
@@ -410,6 +436,7 @@ define('NAME', '{$name}');
 define('ALPHABETICAL', {$alphabetical});
 define('SHOW_ERRORS', {$show_errors});
 define('PHP_EXT', {$php_ext});
+define('SHOW_HISTORY', {$show_history});
 define('EMAIL', '{$email}');
 define('SITE_NAME', '{$site_name}');
 define('SITE_ID', '{$siteID}');
@@ -627,8 +654,33 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Empty</label>
-<input type="text" name="empty" size="60" value=" " maxlength="3">
+<label>Show recent visits (YES/NO)</label>
+<input type="text" name="history" size="60" value="<?php
+
+	if (isset($_POST['submit2'])) {
+		if (isset($_history)) {
+			_print($_history);
+		} else {
+			_print(SHOW_HISTORY);
+		}
+	} elseif (isset($_POST['submit1'])) {
+		if (!$history && $problem) {
+			_print('Enter YES or NO');
+		} else {
+			_print($history);
+		}
+	} elseif (file_exists('../inc/settings.php') && defined('SHOW_HISTORY')) {
+		if (SHOW_HISTORY) {
+			_print('YES');
+		} else {
+			_print('NO');
+		}
+	} else {
+		_print('NO');
+	}
+
+?>
+" maxlength="3">
 
 		</div><!-- End group one //-->
 

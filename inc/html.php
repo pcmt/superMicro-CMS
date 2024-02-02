@@ -5,12 +5,12 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 08 June 2023 */
+/* Last updated 31 Jan 2024 */
 // Looks for $source, not $textArray
 // Comments detection
 
 // Most 'if (file_exists)' were removed on 24 Jan 2020
-// (all required files checked in error-reporting.php)
+// (all required files checked in /admin/setup.php)
 
 define('ACCESS', TRUE); // Allow includes here
 
@@ -106,12 +106,12 @@ class Page {
 			}
 
 			/* -------------------------------------------------- */
-			// Output some HTML (nav & main)
+			// Output some HTML (nav & main & col)
 			require(INC . 'top.php');
 			_print("\n<div id=\"wrap\">\n\n");
 			require(INC . 'extra-body.php');
 			require(INC . 'menu.php');
-			_print("\n	<main id=\"content\">\n\n");
+			_print("\n	<main id=\"content\">\n\n		<div class=\"col\">\n\n");
 
 			/* -------------------------------------------------- */
 			// If password protected
@@ -134,8 +134,8 @@ class Page {
 			}
 
 			/* -------------------------------------------------- */
-			// Output some HTML (end main)
-			_print("\n	</main>\n");
+			// Output some HTML (end col and main)
+			_print("\n		</div><!-- end .col //-->\n\n	</main>\n");
 
 			/* -------------------------------------------------- */
 			// Output footer (tracking moved to footer 07 Dec 20)

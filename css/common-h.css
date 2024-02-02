@@ -100,12 +100,13 @@
   src: url('../fonts/poppins-v20-latin-600italic.woff2') format('woff2');
 }
 
-/* [last update 23 Jan 2024] */
+/* [last update 02 Feb 2024] */
 /* Self-hosted fonts */
 
 @media screen {
 /* normalize-unminified.css minified (all screen widths) [last update 25 Jan 2023] */
 *{margin:0;padding:0}html,body{margin:0}html{box-sizing:content-box}body{overflow-y:scroll;text-align:center;line-height:1}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}small{font-size:90%}img{vertical-align:bottom}input,select,textarea{-webkit-appearance:none;outline:none}input:focus,select:focus,textarea:focus,button:focus{outline:none}a:active,a:hover{outline:0}a{background:transparent}input[type=password]{filter:none}
+html{-webkit-text-size-adjust:100%;} /* Prevent font scaling in landscape while allowing user zoom */
 }
 
 @media print {

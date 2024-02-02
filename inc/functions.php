@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 03 April 2023 */
+/* Last updated 31 Jan 2024 */
 /* .svg added */
 
 if(!defined('ACCESS')) {
@@ -237,6 +237,10 @@ function bits_and($pieces) {
 	// Preserve guillemets
 	$pieces = str_replace(array("»", "&raquo;"), "&#187;", $pieces);
 	$pieces = str_replace(array("«", "&laquo;"), "&#171;", $pieces);
+
+	// Preserve HTML comments with no <p> tags around
+	$pieces = str_replace('<p><!--', '<!--', $pieces);
+	$pieces = str_replace('--></p>', '-->', $pieces);
 
 	return $pieces;
 }

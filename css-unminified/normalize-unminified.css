@@ -1,4 +1,4 @@
-/* 'Normalizer' (unminified) for all screen widths [last update 25 Jan 2023] */
+/* 'Normalizer' (unminified) for all screen widths [last update 02 Feb 2024] */
 
 /* When minified, paste into /css/common.css */
 
@@ -76,3 +76,5 @@ a {
 input[type=password] {
   filter: none; /* Gets rid of yellow bg */
 }
+
+html{-webkit-text-size-adjust:100%;} /* Prevent font scaling in landscape while allowing user zoom */

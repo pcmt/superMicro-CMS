@@ -100,7 +100,7 @@ _print("\n");
 
 <?php include(INC . 'menu.php'); ?>
 
-	<main id="content">
+	<main id="content"><div class="col">
 
 <h1><?php _print($contact_heading); ?></h1>
 
@@ -178,7 +178,7 @@ if (!$phpMail) { // Hides form and just shows email address
 
 <p><i>&#8212;<?php _print(OWN_NAME); ?>&#8212;</i></p>
 
-	</main>
+	</div></main>
 
 <?php
 

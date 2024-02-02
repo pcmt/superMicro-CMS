@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 13 Nov 2023 */
+/* Last updated 30 Jan 2024 */
 
 // Declare variables
-$protected = $the_page = $adminlink = $siteID = $admin = $history = $historyArray = $to_omit = $skip = $found = $num = $a = $b = $c = $update = "";
+$protected = $the_page = $adminlink = $siteID = $admin = $history = $historyArray = $to_omit = $skip = $found = $num = $a = $b = $c = $update = $path = $pos = $folder_above = "";
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -18,77 +18,6 @@ if (!defined('ACCESS')) {
 $time = microtime();
 $time = explode(' ', $time);
 $starttime = $time[1] + $time[0];
-
-/* ================================================== */
-/* Pages last viewed */
-
-// Omit pages
-$to_omit = array('index', 'preview');
-$skip = FALSE;
-foreach ($to_omit as $found) {
-	if ($found == $pageID) {
-		$skip = TRUE;
-	}
-}
-
-// Get the history
-if (isset($_COOKIE["supermicro_history"])) {
-
-	$history = $_COOKIE["supermicro_history"];
-	$historyArray = explode(" ", $history); // Make array
-
-	if (!$skip) {
-		// If the current page is already in the cookie, do nothing
-		// otherwise add it to the cookie for next page view.
-		// If it is not in the cookie and the page is refreshed,
-		// it will be added. The history will then show the current page.
-		// When a next page is viewed, the cookie contains its page ID
-		// but it has not yet been read. The point is, it is there and
-		// would need to be removed before it is read. But this leaves
-		// the history one short. Don't know the answer.
-		if (strpos($history, $pageID) === FALSE) {
-
-			// Number of values
-			$num = count($historyArray);
-
-			// The values
-			if (isset($historyArray[0])) {
-				$a = $historyArray[0];
-			} else {
-				$a = "";
-			}
-			if (isset($historyArray[1])) {
-				$b = $historyArray[1];
-			} else {
-				$b = "";
-			}
-			if (isset($historyArray[2])) {
-				$c = $historyArray[2];
-			} else {
-				$c = "";
-			}
-
-			if ($pageID != 'index') { // Exclude home page
-				$update = $pageID . ' ' . $a . ' ' . $b; // Add this page
-			} else { // Is home page
-				$update = $a . ' ' . $b . ' ' . $c; // Home page (do nothing)
-			}
-
-			// Update cookie with this page ID, $a and $b being moved along and $c dropped
-			setcookie("supermicro_history", trim($update), time() + 31556926, "/"); // One year
-		}
-	}
-
-} else {
-
-	if (!$skip) {
-		setcookie("supermicro_history", $pageID, time() + 31556926, "/"); // One year
-	}
-
-}
-
-/* End pages last viewed */
-/* ================================================== */
 
 if ($password) { // From html.php
 
@@ -138,12 +67,31 @@ if (isset($_COOKIE[$adminlink]) && (($_COOKIE[$adminlink] == $siteID) || (stripo
 // Assemble the canonical URL
 global $rewrite; // Make available throughout
 
-if (APACHE == FALSE) { // Not Apache
+if (APACHE === FALSE) { // Not Apache
+
 	$rewrite = FALSE; // Has .php file extensions
 	$the_page = $pageID . '.php'; // Add extension
-} else {
+
+	// Also get folder above (not Apache)
+	// $path = dirname(__DIR__);
+	// $pos = strrpos($path, '\\');
+	// $folder_above = $pos === false ? $path : substr($path, $pos + 1);
+
+} elseif (APACHE === TRUE)  { // Is Apache
+
 	$rewrite = TRUE; // No .php file extensions
 	$the_page = $pageID; // Both the same
+
+	// Also get folder above for history cookie (seems to work)
+	$path = dirname(__DIR__);
+	$pos = strrpos($path, '/');
+	$folder_above = ($pos === false ? $path : substr($path, $pos + 1));
+	if ($folder_above == 'public_html') { // Standard for shared hosting
+		$folder_above = '/';
+	} else {
+		$folder_above = $folder_above . '/';
+	}
+
 }
 
 if ($pageID == 'index') { // Home page
@@ -154,6 +102,81 @@ if ($pageID == 'index') { // Home page
 
 $canonical = "";
 $canonical = LOCATION . $the_page;
+
+/* ================================================== */
+/* Pages last viewed */
+
+if (defined('SHOW_HISTORY') && (SHOW_HISTORY === TRUE)) {
+
+	// Omit pages
+	$to_omit = array('index', 'preview');
+	$skip = FALSE;
+	foreach ($to_omit as $found) {
+		if ($found == $pageID) {
+			$skip = TRUE;
+		}
+	}
+
+	// Get the history
+	if (isset($_COOKIE["supermicro_history"])) {
+
+		$history = $_COOKIE["supermicro_history"];
+		$historyArray = explode(" ", $history); // Make array
+
+		if (!$skip) {
+			// If the current page is already in the cookie, do nothing
+			// otherwise add it to the cookie for next page view.
+			// If it is not in the cookie and the page is refreshed,
+			// it will be added. The history will then show the current page.
+			// When a next page is viewed, the cookie contains its page ID
+			// but it has not yet been read. The point is, it is there and
+			// would need to be removed before it is read. But this leaves
+			// the history one short. Don't know the answer.
+			if (strpos($history, $pageID) === FALSE) {
+
+				// Number of values
+				$num = count($historyArray);
+
+				// The values
+				if (isset($historyArray[0])) {
+					$a = $historyArray[0];
+				} else {
+					$a = "";
+				}
+				if (isset($historyArray[1])) {
+					$b = $historyArray[1];
+				} else {
+					$b = "";
+				}
+				if (isset($historyArray[2])) {
+					$c = $historyArray[2];
+				} else {
+					$c = "";
+				}
+
+				if ($pageID != 'index') { // Exclude home page
+					$update = $pageID . ' ' . $a . ' ' . $b; // Add this page
+				} else { // Is home page
+					$update = $a . ' ' . $b . ' ' . $c; // Home page (do nothing)
+				}
+
+				// Update cookie with this page ID, $a and $b being moved along and $c dropped
+				setcookie("supermicro_history", trim($update), time() + 31556926, $folder_above); // One year
+			}
+		}
+
+	} else {
+
+		if (!$skip) {
+			setcookie("supermicro_history", $pageID, time() + 31556926, $folder_above); // One year
+		}
+
+	}
+}
+
+
+/* End pages last viewed */
+/* ================================================== */
 
 ?>
 <!DOCTYPE html>
@@ -181,7 +204,7 @@ if ($protected) {
 	_print_nla('<meta name="robots" content="noindex,nofollow">');
 }
 
-if ($protected || $nocopy) {
+if ($protected || $nocopy) { // See html.php
 	_print('
 <style>
 

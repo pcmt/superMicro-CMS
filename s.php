@@ -59,7 +59,7 @@ _print("\n");
 
 <?php include(INC . 'menu.php'); ?>
 
-	<main id="content">
+	<main id="content"><div class="col">
 
 		<div id="s">
 
@@ -303,7 +303,7 @@ function displayLoading() {
 
 ?>
 
-		</div>
+		</div></main>
 
 	</main>
 

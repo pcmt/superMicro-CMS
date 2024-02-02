@@ -23,7 +23,7 @@ PROVE DEFECTIVE YOU ASSUME THE COST OF ALL SERVICING, REPAIR OR CORRECTION.
 
 ----------------------------------------------------------------------------
 
-Current version: 5.2 (build: Jan 2024).
+Current version: 5.3 (build: 2nd February 2024).
 
 (1) Designed for Linux / APACHE web server - superMicro CMS uses .htaccess.
 

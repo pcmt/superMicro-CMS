@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 14 Jan 2024 */
+/* Last updated 29 Jan 2024 */
 
 // Declare variables
 $suffix = "";
@@ -16,33 +16,41 @@ The variables may not exist or there may only be one or two
 
 */
 
-if (isset($_COOKIE["supermicro_history"])) {
+if (defined('SHOW_HISTORY')) {
+	if (SHOW_HISTORY == TRUE) {
 
-	_print("\n		<div id=\"history\">\n");
-	// _print('Number of values in $historyArray = ' . $num . '<br>');
+		if (isset($_COOKIE["supermicro_history"])) {
 
-	if ($rewrite == FALSE) {
-		$suffix = '.php';
+			_print("\n			<div id=\"history\">\n");
+			// _print('Number of values in $historyArray = ' . $num . '<br>');
+
+			if ($rewrite == FALSE) {
+				$suffix = '.php';
+			} else {
+				$suffix = FALSE;
+			}
+
+			$pageArray = explode(" ", $_COOKIE["supermicro_history"]); // Make array
+
+			_print("\n<ul class=\"inline\">");
+			_print("<li>You last viewed: &nbsp;</li>");
+			if (isset($pageArray[0])) {
+				_print("<li><a href=\"" . LOCATION . $pageArray[0] . $suffix . "\">" . $pageArray[0] . "</a></li>");
+			}
+			if (isset($pageArray[1])) {
+				_print("<li> <span>|</span> <a href=\"" . LOCATION . $pageArray[1] . $suffix . "\">" . $pageArray[1] . "</a></li>");
+			}
+			if (isset($pageArray[2])) {
+				_print("<li> <span>|</span> <a href=\"" . LOCATION . $pageArray[2] . $suffix . "\">" . $pageArray[2] . "</a></li>\n");
+			}
+			_print("</ul>\n");
+			_print("\n			</div>\n");
+
+		}
+
 	} else {
-		$suffix = FALSE;
+		_print("\n		<!-- Location of history //-->\n");
 	}
-
-	$pageArray = explode(" ", $_COOKIE["supermicro_history"]); // Make array
-
-	_print("\n<ul class=\"inline\"</li>");
-	_print("<li>You last viewed: &nbsp;</li>");
-	if (isset($pageArray[0])) {
-		_print("<li><a href=\"" . LOCATION . $pageArray[0] . $suffix . "\">" . $pageArray[0] . "</a></li>");
-	}
-	if (isset($pageArray[1])) {
-		_print("<li> <span>|</span> <a href=\"" . LOCATION . $pageArray[1] . $suffix . "\">" . $pageArray[1] . "</a></li>");
-	}
-	if (isset($pageArray[2])) {
-		_print("<li> <span>|</span> <a href=\"" . LOCATION . $pageArray[2] . $suffix . "\">" . $pageArray[2] . "</a></li>\n");
-	}
-	_print("</ul>\n");
-	_print("\n		</div>\n");
-echo '<br>Server Name = ' . ($_SERVER['SERVER_NAME']) . '';
 }
 
 ?>

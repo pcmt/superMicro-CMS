@@ -1,5 +1,5 @@
 /* Default styles unminified */
-/* [last update 26 Jan 2024 ] */
+/* [last update 31 Jan 2024 ] */
 /* min-width: 798px */
 
 /*
@@ -7,6 +7,7 @@ RULE ORDER:
 Font family
 Font size
 Box layout 1, main boxes
+Flexbox
 Box layout 2, optional boxes
 General text: p, lists, blockquote etc
 Images
@@ -25,6 +26,8 @@ like blockquote and .bg1 etc are intended to be standalone.
 DON'T TRY MIXING THINGS UP TOO MUCH or some of the carefully
 calculated horizontal dimensions for borders, margins, padding
 etc will be disrupted and throw things sideways unpredictably.
+
+.col is new (within main) and just needs breaking for FLEX
 */
 
 body {
@@ -64,7 +67,7 @@ pre {
 
 body { font-size: 62.5%; /* Set 1.0em to 10px */ }
 
-#wrap { font-size: 1.0rem; } /* Adjusts everything in #wrap */
+#wrap { font-size: 1.0rem; } /* Make #wrap relative to body */
 
 h1 { font-size: 2.4em; }
 
@@ -174,12 +177,19 @@ nav {
   text-transform: uppercase;
 }
 
-#content {
-  width: 740px;
+#content { /* <main> */
+  max-width: 1240px;
   margin: 0 auto;
+  padding: 0 0 20px 0;
+  text-align: center;
   padding-top: 5.2em;
   padding-bottom: 2.4em;
   min-height: 480px;
+}
+
+.col { /* Content column */
+  max-width: 740px;
+  margin: 0 auto;
   text-align: left;
 }
 
@@ -200,9 +210,154 @@ footer {
   margin: 0;
 }
 
-.extras { /* Only in 'extras' version */
+.extras {
   margin: 1.6em 0 0 0;
 }
+
+/* FLEX */
+/* ================================================== */
+
+/* Image and text box side-by-side */
+.flexcontainer1 {
+  display: flex;
+  width: auto;
+  margin: 2.4em 20px 0.6em 20px;
+  align-items: start;
+  justify-content: center;
+  flex-wrap: wrap;
+  column-gap: 50px;
+  text-align: left;
+}
+
+.row {
+  flex-direction: row;
+}
+
+.rowreverse {
+  flex-direction: row-reverse;
+}
+
+.box1 {
+  flex-basis: 600px;
+  /* min-width: 600px; */
+  text-align: center;
+}
+
+#content .box1 img {
+  max-width: 600px;
+  margin: 0 auto 1.6em auto;
+  height: auto;
+  vertical-align: top;
+}
+
+#content .box1 p.caption {
+  font-size: 0.95em;
+  margin-bottom: 1.6em;
+}
+
+.box2 {
+  flex-basis: min-content;
+  flex-grow: 1;
+  flex-shrink: 1;
+  min-width: 300px;
+  max-width: 490px;
+  margin: 0 auto 1.6em auto;
+  padding: 30px 30px 2.0em 30px;
+  background-color: var(--white);
+  -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+}
+
+#content .row .box2 h5 {
+  font-size: 1.3em;
+  text-align: left;
+  margin: 0.6em 0 1.2em 0;
+}
+
+#content .rowreverse .box2 h5 {
+  font-size: 1.5em;
+  text-align: left;
+  margin: 0.6em 36px 1.2em 0;
+}
+
+#content .row .box2 p {
+  margin-top: 0;
+  margin-left: 0;
+  font-size: 0.95em;
+  line-height: 1.6em;
+  text-align: left;
+}
+
+#content .rowreverse .box2 p {
+  margin-top: 0;
+  font-size: 0.95em;
+  line-height: 1.6em;
+  text-align: left;
+}
+
+@media screen and (max-width: 1064px) { /* Trial and error */
+
+  .box2 {
+    max-width: 540px;
+    margin-top: 1.6em;
+  }
+
+
+  #content .box2 h5 {
+    text-align: left;
+    margin: 0 0 1.2em 0;
+  }
+
+}
+
+/* -------------------------------------------------- */
+/* Expandable series of small boxes */
+
+.flexcontainer2 {
+  display: flex;
+  max-width: 1200px;
+  margin: 2.4em auto 2.4em auto;
+  /* background-color: #fff; */
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 30px;
+  column-gap: 30px;
+}
+
+.flexitem {
+  flex-basis: 320px;
+  height: 310px;
+  padding: 0 0 10px 0;
+  background-color: var(--white);
+  -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
+  line-height: 1;
+}
+
+#content .flexitem img {
+  max-width: 320px;
+  margin: 20px auto 0 auto;
+  text-align: center;
+  vertical-align: top;
+}
+
+#content .flexitem p {
+  text-align: left;
+  margin: 6px 20px;
+  font-size: 1.0em;
+}
+
+#content .flexitem h5 {
+  margin: 10px 20px 1.0em 20px;
+  color: #666;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+/* End FLEX */
 
 /* BOX LAYOUT */
 /* ================================================== */
@@ -216,154 +371,6 @@ section { /* Don't enclose .w1200 */
 section p {
   text-align: justify;
 }
-
-/* FLEX */
-/* ================================================== */
-/* Wide screen image next to text over 1081 */
-/*
-Flex goes in w1200 - when the width is 1239 plus scrollbar
-flexitem2 reduces to a smaller fixed width
-Applies to everything before collapse except squeeze up
-*/
-
-@media screen and (min-width: 1082px) {
-
-  .flexcontainer {
-    display: flex;
-    justify-content: center;
-    align-items: flex-start; /* Does nothing? */
-    margin: 1.6em 0 1.6em 0;
-    padding: 1.6em 0 0 0;
-  }
-
-  .row {
-    flex-direction: row;
-  }
-
-  .rowreverse {
-    flex-direction: row-reverse;
-  }
-
-  .flexitem1 {
-    flex-basis: 600px; /*absolute value*/
-    margin: 0 auto 0 auto;
-    padding: 0;
-  }
-
-  #content .flexitem1 img {
-    max-width: 600px;
-    margin: 0 auto 0 auto;
-    padding: 0;
-    height: auto;
-  }
-
-  .flexitem1 .slideshow-container {
-    margin-top: 0; /* As image */
-    margin-bottom: 0;
-  }
-
-  .flexitem2 {
-    flex-basis: fit-content;
-    flex-grow: 1;
-    text-align: left;
-  }
-
-  #content .flexitem2 p {
-    text-align: left;
-    font-size: 1.05em;
-    line-height: 1.6;
-  }
-
-  #content .row p {
-    margin-right: 10px;
-    margin-left: 70px;
-  }
-
-  #content .rowreverse p {
-    margin-right: 60px;
-    margin-left: 0;
-  }
-
-  #content .row h2,
-  #content .row h3,
-  #content .row h4,
-  #content .row h6 {
-    margin-left: 70px;
-  }
-
-}
-
-/* Squeeze up a bit at less than w1200 */
-@media only screen and (min-width: 1082px) and (max-width: 1257px) {
-
-  .flexitem2 {
-    flex-basis: fit-content;
-    text-align: left;
-  }
-
-  #content .row p {
-    margin-right: 10px;
-    margin-left: 50px;
-  }
-
-  #content .rowreverse p {
-    margin-right: 40px;
-    margin-left: 0;
-  }
-
-  #content .row h2,
-  #content .row h3,
-  #content .row h4,
-  #content .row h6 {
-    margin-left: 50px;
-  }
-
-}
-
-/* Collapse to one column */
-/* 1024 + 20 + 20 + 18 */
-@media screen and (max-width: 1081px) {
-
-  .flexitem1 img {
-    max-width: 740px;
-    margin: 0 auto 1.6em auto;
-    height: auto;
-  }
-
-  .flexitem2 {
-    max-width: 600px;
-    margin: 0 auto 1.6em auto;
-  }
-
-  #content .row h2,
-  #content .row h3,
-  #content .row h4,
-  #content .row h6 {
-    text-align: left;
-  }
-
-}
-
-#content .flexitem1 p.caption,
-#content .flexitem1 .slideshow-container p.caption {
-  font-size: 1.0em;
-  margin: -0.6em auto 1.0em auto;
-}
-
-.flexcontainer .dotcontainer {
-  margin-top: 1.0em;
-}
-
-/*
-.flexcontainer {
-  background-color: #ebebeb;
-}
-
-.flexitem2 {
-  background-color: #fff;
-}
-*/
-/* ================================================== */
 
 div.bg1,
 div.bg2,
@@ -415,7 +422,7 @@ div.bg5 {
   padding: 1.2em 1.8em;
   max-width: 740px;
   color: #000;
-  background-color: #fff;
+  background-color: var(--white);
   -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
   box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
