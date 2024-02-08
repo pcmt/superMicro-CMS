@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 31 Jan 2024 */
+/* Last updated 07 Feb 2024 */
 /* .svg added */
 
 if(!defined('ACCESS')) {
@@ -241,6 +241,9 @@ function bits_and($pieces) {
 	// Preserve HTML comments with no <p> tags around
 	$pieces = str_replace('<p><!--', '<!--', $pieces);
 	$pieces = str_replace('--></p>', '-->', $pieces);
+
+	// Keep HTML comments on same line as </div>
+	$pieces = str_replace("</div>\n<!--", "</div><!--", $pieces);
 
 	return $pieces;
 }

@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Oct 2023 */
+/* Last updated 05 Feb 2024 */
 
 define('ACCESS', TRUE);
 
@@ -36,7 +36,7 @@ if (defined('APACHE') && APACHE) { // May not yet be installed
 if (isset($_POST['submit2'])) {
 
 	// Block preview of stylesheet.css, extra.css and inmenu.txt
-	if (($_POST['page_id'] != 'stylesheet.css') && ($_POST['page_id'] != 'extra.css') && ($_POST['page_id'] != 'inmenu.txt')) {
+	if (($_POST['page_id'] != 'stylesheet.css') && ($_POST['page_id'] != 'mobile.css') && ($_POST['page_id'] != 'extra.css') && ($_POST['page_id'] != 'inmenu.txt')) {
 
 		$filetitle = trim($_POST['page_id']);
 		if (strlen($filetitle) < 1) {
@@ -212,7 +212,7 @@ if (!$login) {
 		$page_id = preg_replace("/[[:space:]]+/", "-", trim($_POST['page_id']));
 
 		// Prevent conflict with existing variables and folders
-		$disallowed = array('index', 'preview', 'page', 'pages', 'content', 'example', 'e', 's', 'comments', 'extras', 'fonts', 'img', 'video', 'css', 'diagnostics', 'js', 'visits');
+		$disallowed = array('admin', 'index', 'preview', 'page', 'pages', 'content', 'example', 'e', 's', 'comments', 'extras', 'fonts', 'img', 'video', 'css', 'css-unminified', 'diagnostics', 'js', 'uploads');
 		foreach ($disallowed as $title) {
 			if ($title == $page_id) { // If a file is missing
 				$problem = TRUE;
@@ -523,29 +523,28 @@ $obj->Template();
 
 		if ($_POST['select_style'] == 'current') {
 			$cssfilename = '../css/stylesheet.css';
+		} elseif ($_POST['select_style'] == 'current_mobile') {
+			$cssfilename = '../css/mobile.css';
 		} elseif ($_POST['select_style'] == 'default') {
 			$cssfilename = '../css/default.css';
 		} elseif ($_POST['select_style'] == 'default_unminified') {
 			$cssfilename = '../css/default-unminified.css';
+		} elseif ($_POST['select_style'] == 'mobile_default') {
+			$cssfilename = '../css/mobile-default.css';
+		} elseif ($_POST['select_style'] == 'mobile_default_unminified') {
+			$cssfilename = '../css/mobile-default-unminified.css';
 		} elseif ($_POST['select_style'] == 'extra') {
 			$cssfilename = '../css/extra.css';
-
-			if (!file_exists($cssfilename)) {
-				$text = './text/extra-css.txt';
-				if (!copy($text, $cssfilename)) {
-					$response = "<em>Error: could not write <b>{$cssfilename}</b></em>";
-				}
-			}
-
 		} elseif ($_POST['select_style'] == 'none') {
 			$response = "<em>No stylesheet selected. Select a stylesheet in 'Styles:'</em>";
 			$cssfilename = FALSE;
 		}
 
+		// Verify the selected .css file exists
 		if ($cssfilename) {
-			if (!file_exists($cssfilename)) {
+			if (!file_exists($cssfilename)) { // If not
 				$response = "<em>Sorry, the selected stylesheet doesn't exist.</em>";
-			} else {
+			} else { // otherwise
 				$file_contents = file_get_contents($cssfilename);
 			}
 		}
@@ -557,7 +556,9 @@ $obj->Template();
 	if (isset($_POST['pre-submit6'])) {
 
 		if (trim($_POST['page_id']) == 'extra.css') {
-			$stylesheet_name = 'extra stylesheet';
+			$stylesheet_name = 'extra';
+		} elseif (trim($_POST['page_id']) == 'mobile.css') {
+			$stylesheet_name = 'mobile';
 		} else {
 			$stylesheet_name = 'stylesheet';
 		}
@@ -578,6 +579,8 @@ $obj->Template();
 
 		if (trim($_POST['page_id']) == 'extra.css') {
 			$stylesheet_name = 'extra.css';
+		} elseif (trim($_POST['page_id']) == 'mobile.css') {
+			$stylesheet_name = 'mobile.css';
 		} else {
 			$stylesheet_name = 'stylesheet.css';
 		}
@@ -724,10 +727,18 @@ $obj->Template();
 		}
 
 	/* -------------------------------------------------- */
-	// Styles
+	// CSS files to update: extra.css, mobile.css or stylesheet.css
 	} elseif ($do_stylesheet && $cssfilename) {
 		if ($cssfilename == '../css/extra.css') {
 			_print('extra.css');
+		} elseif ($cssfilename == '../css/mobile.css') {
+			_print('mobile.css');
+		} elseif ($cssfilename == '../css/mobile-unminified.css') {
+			_print('mobile.css');
+		} elseif ($cssfilename == '../css/mobile-default.css') {
+			_print('mobile.css');
+		} elseif ($cssfilename == '../css/mobile-default-unminified.css') {
+			_print('mobile.css');
 		} else {
 			_print('stylesheet.css');
 		}
@@ -753,7 +764,7 @@ $obj->Template();
 
 ?>" maxlength="60"> <label style="display: inline;"><?php
 	if ($do_stylesheet) {
-		?>[ the stylesheet file ]<?php
+		?>[ a stylesheet file ]<?php
 	} elseif ($do_menu) {
 		?>[ the menu file ]<?php
 	} else {
@@ -922,17 +933,26 @@ Content...');
 <?php
 
 	$current = 'Current styles';
+	$current_mobile = 'Current mobile styles';
 	$default = 'Default styles';
 	$default_unminified = 'Default unminified';
-	$extra = 'Extra styles only';
+	$mobile_default = 'Mob default styles';
+	$mobile_default_unminified = 'Mob default unminified';
+	$extra = 'Optional extra styles';
 
 	if (isset($_POST['submit5']) || isset($_POST['pre-submit6'])) {
 		if ($_POST['select_style'] == 'current') {
 			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $current . '</option>');
+		} elseif ($_POST['select_style'] == 'current_mobile') {
+			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $current_mobile . '</option>');
 		} elseif ($_POST['select_style'] == 'default') {
 			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $default . '</option>');
 		} elseif ($_POST['select_style'] == 'default_unminified') {
 			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $default_unminified . '</option>');
+		} elseif ($_POST['select_style'] == 'mobile_default') {
+			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $mobile_default . '</option>');
+		} elseif ($_POST['select_style'] == 'mobile_default_unminified') {
+			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $mobile_default_unminified . '</option>');
 		} elseif ($_POST['select_style'] == 'extra') {
 			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $extra . '</option>');
 		}
@@ -941,8 +961,11 @@ Content...');
 ?>
 <option value="none">Select a stylesheet:</option>
 <option value="current"><?php echo $current; ?></option>
+<option value="current_mobile"><?php echo $current_mobile; ?></option>
 <option value="default"><?php echo $default; ?></option>
 <option value="default_unminified"><?php echo $default_unminified; ?></option>
+<option value="mobile_default"><?php echo $mobile_default; ?></option>
+<option value="mobile_default_unminified"><?php echo $mobile_default_unminified; ?></option>
 <option value="extra"><?php echo $extra; ?></option>
 </select>
 

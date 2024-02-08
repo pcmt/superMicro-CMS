@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 05 Oct 2023
+// Last updated 05 Feb 2024
 
 define('ACCESS', TRUE);
 
@@ -83,7 +83,7 @@ if ($secure_cookie) {
 /* -------------------------------------------------- */
 /* Verify all the required admin files */
 
-$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './list.php', './login-form.php', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/extra-css.txt', './text/index.txt', './text/inmenu.txt','./text/pageid.txt', './text/password.txt', './text/stylesheet.txt');
+$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './list.php', './login-form.php', './text/mobile.txt', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/extra-css.txt', './text/index.txt', './text/inmenu.txt','./text/pageid.txt', './text/password.txt', './text/stylesheet.txt');
 
 foreach ($required as $file) {
 	if (!file_exists($file)) { // Exit if a file is missing
@@ -125,6 +125,7 @@ if (isset($_POST['submit1'])) {
 	fclose($siteidFile);
 
 /*
+IMPORTANT! THIS FILE SHOULD BE RUN WITH ALL VERSION UPDATES
 Writing these files is because they are not in the download
 so that when an update is uploaded they are not overwritten
 */
@@ -157,7 +158,7 @@ so that when an update is uploaded they are not overwritten
 		// But don't overwrite existing files
 
 		// /pages/index.txt
-		$index = '../pages/index.txt'; // Destination
+		$index = '../pages/index.txt'; // Actual working file
 		if (!file_exists($index)) { // If it exists, leave it alone
 			$text = './text/index.txt'; // Source
 			if (!copy($text, $index)) { // If it wasn't written
@@ -183,6 +184,16 @@ so that when an update is uploaded they are not overwritten
 			if (!copy($text, $stylesheet)) {
 				$file_write_problem = TRUE;
 				$error = "Install can't proceed. Could not create <b>{$stylesheet}.</b>";
+			}
+		}
+
+		// /css/mobile.css
+		$mobile = '../css/mobile.css';
+		if (!file_exists($mobile)) {
+			$text = './text/mobile.txt';
+			if (!copy($text, $mobile)) {
+				$file_write_problem = TRUE;
+				$error = "Install can't proceed. Could not create <b>{$mobile}.</b>";
 			}
 		}
 
