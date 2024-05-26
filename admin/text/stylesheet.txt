@@ -1,5 +1,5 @@
 /* Default styles unminified */
-/* [last update 08 Feb 2024 ] */
+/* [last update 26 May 2024 ] */
 /* min-width: 798px */
 
 /*
@@ -65,11 +65,13 @@ pre {
 /* FONT SIZE */
 /* ================================================== */
 
+html { font-size: 16px; }
+
 body { font-size: 62.5%; /* Set 1.0em to 10px */ }
 
 #wrap { font-size: 1.0rem; } /* Make #wrap relative to body */
 
-h1 { font-size: 2.4em; }
+h1 { font-size: 2.25em; }
 
 h2 { font-size: 1.8em; }
 
@@ -178,7 +180,7 @@ nav {
 }
 
 #content { /* <main> */
-  max-width: 1240px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 0 0 20px 0;
   text-align: center;
@@ -218,15 +220,16 @@ footer {
 /* ================================================== */
 
 /* Image and text box side-by-side */
-.flexcontainer1 {
+/* Everything in a flexcontainer is a flexitem */
+.flexcontainer1 { /* background: #ebebeb; */
   display: flex;
-  width: auto;
-  margin: 2.4em 20px 0.6em 20px;
   align-items: flex-start; /* vertical */
   justify-content: center; /* horizontal */
   flex-wrap: wrap;
   column-gap: 50px;
-  text-align: left;
+  width: auto;
+  max-width: 1240px;
+  margin: 2.4em 20px 2.4em 20px;
 }
 
 .row {
@@ -237,21 +240,28 @@ footer {
   flex-direction: row-reverse;
 }
 
-.box1 {
-  flex-basis: 600px;
-  /* min-width: 600px; */
+/*
+The maximum combined width of box1 and box2 is
+600px + 50px + 30px + 490px + 30px = 1200px
+.flexcontainer1 is justify-content: center;
+*/
+
+.box1 { /* background-color: #ebebeb; */
+  max-width: 640px;
+  flex-basis: fit-content;
   text-align: center;
 }
 
 #content .box1 img {
-  max-width: 600px;
-  margin: 0 auto 1.6em auto;
+  max-width: 640px;
+  margin: 0 auto 0 auto;
   height: auto;
   vertical-align: top;
 }
 
 #content .box1 p.caption {
-  font-size: 0.95em;
+  font-size: 1.0em;
+  margin-top: 1.2em;
   margin-bottom: 1.6em;
 }
 
@@ -259,9 +269,10 @@ footer {
   flex-basis: min-content;
   flex-grow: 1;
   flex-shrink: 1;
+  text-align: left;
   min-width: 300px;
-  max-width: 490px;
-  margin: 0 auto 1.6em auto;
+  /* max-width: 590px; */
+  margin: 0 auto 0 auto;
   padding: 30px 30px 2.0em 30px;
   background-color: var(--white);
   -webkit-box-shadow: 0 3px 10px 0 rgba(0, 0, 0, 0.2);
@@ -270,7 +281,7 @@ footer {
 }
 
 #content .row .box2 h5 {
-  font-size: 1.5em;
+  font-size: 1.35em;
   text-align: left;
   margin: 0.6em 0 0.6em 0;
 }
@@ -284,25 +295,23 @@ footer {
 #content .row .box2 p {
   margin-top: 0;
   margin-left: 0;
-  font-size: 0.95em;
+  font-size: 1.05em;
   line-height: 1.6em;
   text-align: left;
 }
 
 #content .rowreverse .box2 p {
   margin-top: 0;
-  font-size: 0.95em;
+  font-size: 1.0em;
   line-height: 1.6em;
   text-align: left;
 }
 
-@media screen and (max-width: 1064px) { /* Trial and error */
+@media screen and (max-width: 1297px) { /* Trial and error */
 
-  .box2 {
-    max-width: 540px;
-    margin-top: 1.6em;
-  }
+.flexcontainer1 { column-gap: 30px; }
 
+  .box1 {margin-bottom: 2.4em; }
 
   #content .box2 h5 {
     text-align: left;
@@ -311,19 +320,27 @@ footer {
 
 }
 
+@media screen and (max-width: 1044px) { /* Trial and error */
+
+  .box2 {
+    max-width: 540px;
+    /* margin-top: 1.6em; */
+  }
+
+}
+
 /* -------------------------------------------------- */
-/* Expandable series of small boxes */
+/* Collapsible series of small boxes */
 
 .flexcontainer2 {
   display: flex;
-  max-width: 1200px;
-  margin: 2.4em 20px 2.4em 20px;
-  /* background-color: #fff; */
-  align-items: flex-start; /* vertical */
   justify-content: center; /* horizontal */
+  align-items: flex-start; /* vertical */
   flex-wrap: wrap;
   row-gap: 30px;
   column-gap: 30px;
+  max-width: 1200px;
+  margin: 2.4em 20px 2.4em 20px;
 }
 
 .flexitem {
@@ -353,7 +370,7 @@ footer {
 #content .flexitem h5 {
   margin: 10px 20px 1.0em 20px;
   color: #666;
-  font-size: 1.2em;
+  font-size: 1.1em;
   font-weight: 600;
 }
 
@@ -419,7 +436,7 @@ section div.bg4 {
 
 div.bg5 {
   margin: 1.6em auto 2.0em auto;
-  padding: 1.2em 1.8em 1.4em 1.8em;
+  padding: 1.2em 1.9em 1.4em 1.8em;
   max-width: 740px;
   color: #000;
   background-color: var(--white);
@@ -583,7 +600,7 @@ p.caption {
   border-bottom: 1px solid #999;
   text-align: center;
   color: var(--black);
-  line-height: 1.4;
+  line-height: 1.5;
 }
 
 p.meta { /* For 'page modified on' date */

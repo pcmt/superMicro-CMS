@@ -5,8 +5,8 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 15 March 2023 */
-/* This file is required for e.php and search.php */
+/* Last updated 09 Feb 2024 */
+/* This file is required for e.php and s.php */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to prelims.php');

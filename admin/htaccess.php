@@ -5,12 +5,13 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 02 April 2023 */
+/* Last updated 20 May 2024 */
 
 define('ACCESS', TRUE);
 
 // Declare variables (see also top.php)
-$root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = $filestatus = "";
+$root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = $filestatus = $g_zip_enabled = $GZIP_status = $htaccess_text = $to_replace1 = $to_replace2 = $has_GZIP = $not_active = "";
+$add_GZIP = 0;
 
 $thisAdmin = 'htaccess'; // For nav
 
@@ -19,36 +20,37 @@ require('./top.php');
 // Detect current .htaccess file
 $filename = ('../.htaccess');
 if (file_exists($filename)) {
-	if (strpos(file_get_contents($filename), 'Facebook') !== false) {
-		$filestatus = 'extended file';
+	$htaccess_text = file_get_contents($filename);
+	if ($htaccess_text !== false) {
+		if (strpos($htaccess_text, 'Facebook') !== FALSE) {
+			$filestatus = 'extended file';
+		} else {
+			$filestatus = 'original file';
+		}
 	} else {
-		$filestatus = 'original file';
+		$filestatus = 'Error reading .htaccess file';
 	}
 } else {
-	$filestatus = '.htaccess file does not exist.';
+	$filestatus = '.htaccess file does not exist';
+}
+
+if (defined('G_ZIP') && G_ZIP) {
+	$g_zip_enabled = TRUE;
 }
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php
-
-if (function_exists('p_title')) {
-	p_title('.htaccess file generator');
-} else {
-	_print('Install the latest version of functions.php');
-}
-
-?></title>
+<title><?php p_title('.htaccess file generator'); ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
 <link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
@@ -61,12 +63,7 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-	if (!file_exists('./login-form.php')) {
-		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
-		exit();
-	} else {
-		require('./login-form.php');
-	}
+	includeFileIfExists('./login-form.php');
 
 } elseif ($login) {
 
@@ -92,9 +89,7 @@ if (!$login) {
 	/* -------------------------------------------------- */
 	// Get server vars
 
-	$httpHost = $_SERVER['HTTP_HOST']; // Domain
-	$serverName = $_SERVER['SERVER_NAME']; // Domain
-	$serverSoftware = $_SERVER['SERVER_SOFTWARE']; // Apache etc
+	$serverSoftware = $_SERVER['SERVER_SOFTWARE']; // Apache etc (for display only)
 	$serverScriptName = $_SERVER['SCRIPT_NAME']; // URL path to current script
 	// Fallback
 	if (!isset($serverScriptName) || empty($serverScriptName)) {
@@ -102,13 +97,9 @@ if (!$login) {
 	}
 
 	/* -------------------------------------------------- */
-	// Get the domain as $domain otherwise don't write file
+	// top.php gets $domain or don't write file
 
-	if (!empty($httpHost)) {
-		$domain = $httpHost;
-	} elseif (!empty($serverName)) {
-		$domain = $serverName;
-	} else {
+	if (!$domain) { // From top.php
 		$do_htaccess = FALSE;
 		$response = '<em>Problem: site domain not detected.</em>';
 	}
@@ -125,30 +116,13 @@ if (!$login) {
 	$path = preg_replace('#/{2,}#', '/', $path);
 
 	/* -------------------------------------------------- */
-	// Get protocol (https or http) otherwise don't write file
+	// Get protocol (https or http) or don't write file (see top.php)
 
-	if (function_exists('get_protocol')) {
-		$protocol = get_protocol() ? 'https://' : 'http://'; // See functions.php
-		// Check it's returned one or the other
-		// if (($protocol == 'https://') || ($protocol == 'http://')) {
-			// echo 'get_protocol function works'; // For testing only
-		// }
-		if ($protocol == 'https://') {
-			$show_protocol = 'https: (secure)'; // Displayed in admin
-		} else {
-			$show_protocol = 'http: (not secure)'; // Displayed in admin
-		}
-	} else { // Function doesn't exist
-		if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
-			$protocol = 'https://';
-			$show_protocol = 'https: (secure)'; // Displayed in admin
-		} else {
-			$protocol = 'http://';
-			$show_protocol = 'http: (not secure)'; // Displayed in admin
-		}
-	}
-
-	if ($protocol == " ") {
+	if ($protocol == 'https://') {
+		$show_protocol = 'https: <span>(secure)</span>'; // Displayed in admin
+	} elseif ($protocol == 'http://') {
+		$show_protocol = 'http: <span>(not secure)</span>'; // Displayed in admin
+	} else {
 		$do_htaccess = FALSE;
 		$response = '<em>Problem: https or http not detected.</em>';
 		$show_protocol = 'not detected.'; // Displayed in admin
@@ -211,6 +185,21 @@ if (!$login) {
 	}
 
 	/* -------------------------------------------------- */
+	/* GZIP text */
+	$g_zip_text = '
+<IfModule mod_deflate.c>
+AddOutputFilterByType DEFLATE text/plain
+AddOutputFilterByType DEFLATE text/html
+AddOutputFilterByType DEFLATE text/css
+AddOutputFilterByType DEFLATE application/javascript
+</IfModule>
+';
+
+	$empty_g_zip_text = '
+#
+';
+
+	/* -------------------------------------------------- */
 	// Write the .htaccess file
 	// Assume there are now no error responses on initial page load checks
 
@@ -253,7 +242,7 @@ if (!$login) {
   RewriteRule ^ "-" [F]
 
 # Rewrite non php URLs to php on server
-  #RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}\.php -f
   RewriteRule ^(.*)$ $1.php [L]
 
@@ -308,27 +297,47 @@ if (!$login) {
 	if ( ( isset($_POST['submit1']) || isset($_POST['submit2']) ) && ($do_htaccess == TRUE) ) {
 
 		/* -------------------------------------------------- */
-		// Test for markers / replace core lines
-		if (file_exists('../.htaccess')) {
+		// (1) Deal with GZIP first (add or remove without affecting original or extended)
+		if(isset($_POST['gzip_status']) && $_POST['gzip_status'] == 'use') {
+			$add_GZIP = TRUE;
+			if ((strpos($htaccess_text, '# BEGIN GZIP') !== FALSE) || (strpos($htaccess_text, '# END GZIP') !== FALSE)) { // If the markers exist
 
-			// Get entire .htaccess as string
-			$htaccess_text = file_get_contents('../.htaccess');
+				// Get required lines into variable "$to_replace1"
+				$to_replace1 = getBetween($htaccess_text, '# BEGIN GZIP', '# END GZIP');
+				// Remove it
+				$htaccess_text = str_replace($to_replace1, $g_zip_text, $htaccess_text);
 
-			if ((strpos($htaccess_text, '# BEGIN superMicro CMS') != FALSE) || (strpos($htaccess_text, '# END superMicro CMS') != FALSE)) {
-				// Get required lines into variable "$to_replace"
-				$to_replace = getBetween($htaccess_text, '# BEGIN superMicro CMS', '# END superMicro CMS');
-				// Replace core lines
-				$str = str_replace($to_replace, $htaccess_core, $htaccess_text);
-				// Write to file
-				file_put_contents('../.htaccess', $str);
-				// _print($str); /* For testing */
-				$response = '<em>.htaccess file created</em>';
-			} else {
-				$response = '<em>.htaccess file not touched (markers not found)</em>';
 			}
+		} else {
+			if ((strpos($htaccess_text, '# BEGIN GZIP') !== FALSE) || (strpos($htaccess_text, '# END GZIP') !== FALSE)) { // If the markers exist
+
+				// Get required lines into variable "$to_replace1"
+				$to_replace1 = getBetween($htaccess_text, '# BEGIN GZIP', '# END GZIP');
+				// Remove it
+				$htaccess_text = str_replace($to_replace1, $empty_g_zip_text, $htaccess_text);
+
+			}
+		}
+
+		// Check whether $g_zip text already exists
+		if ($add_GZIP && strpos($htaccess_text, '<IfModule mod_deflate.c>') !== FALSE) {
+			$g_zip_text = ''; // Don't add it again
+		}
+
+		/* -------------------------------------------------- */
+		// (2) Now deal with original or extended (having dealt with GZIP)
+		if ((strpos($htaccess_text, '# BEGIN superMicro CMS') !== FALSE) || (strpos($htaccess_text, '# END superMicro CMS') !== FALSE)) { // If the markers exist
+
+			// Get required lines into variable "$to_replace2"
+			$to_replace2 = getBetween($htaccess_text, '# BEGIN superMicro CMS', '# END superMicro CMS');
+			// Replace core lines
+			$str = str_replace($to_replace2, $htaccess_core, $htaccess_text);
+			// Write to file
+			file_put_contents('../.htaccess', $str);
+			$response = '<em>.htaccess file created</em>';
 
 		} else {
-			$response = '<em>.htaccess file does not exist</em>';
+			$response = '<em>.htaccess file not touched (markers not found)</em>';
 		}
 
 		$cms_dir = NULL;
@@ -341,30 +350,17 @@ if (!$login) {
 
 ?>
 
-<div id="wrap">
+<div id="o"><div id="wrap">
 
-<h1><?php
-
-	if (function_exists('h1')) {
-		h1('.htaccess file');
-	} else {
-		_print('Install the latest version of functions.php');
-	}
-
-?></h1>
+<h1><?php h1('.htaccess file'); ?></h1>
 
 <?php
 
-	if (file_exists('./nav.php')) {
-		require('./nav.php');
-	} else {
-		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
-		exit();
-	}
+	includeFileIfExists('./nav.php');
 
 ?>
 
-<h3>.htaccess generator for superMicro CMS (Apache Web Server only)</h3>
+<h3>.htaccess generator for Qwwwik (Apache Web Server only)</h3>
 
 	<div id="response">
 
@@ -388,7 +384,11 @@ if (!$login) {
 
 <h3>What is .htaccess?</h3>
 
-<p style="max-width: 640px;">An .htaccess file is a configuration file used on Apache Web Server only. <a href="" target="_blank">Read about .htaccess here</a> on Wikipedia. Alternatively, the basics <a href="https://www.danielmorell.com/guides/htaccess-seo/basics/introduction-to-the-htaccess-file" target="_blank">are covered here</a>. On this website, choose between the original simpler file or an extended file with more functions. Both work fine on Apache web server.</p>
+<p style="margin-top: 0; max-width: 640px;">An .htaccess file is a configuration file used on Apache Web Server only. <a href="" target="_blank">Read about .htaccess here</a> on Wikipedia. Alternatively, the basics <a href="https://www.danielmorell.com/guides/htaccess-seo/basics/introduction-to-the-htaccess-file" target="_blank">are covered here</a>. On this website, choose between the original simpler file or an extended file with more functions. <em>Needs mod_rewrite module enabled.</em></p>
+
+<h3>FAILSAFE</h3>
+
+<p style="margin-top: 0; max-width: 640px;"><strong>NOTE!</strong> The .htaccess file is in the website root folder so affects everything, including the admin pages. On Apache Web Server an error could disable the entire website. Qwwwik is throughly tested but if this occurs for some reason, the root folder contains a pristine file: 'htaccess.txt' to use to restore the website by renaming it <b><em>.htaccess</em></b> after first deleting the existing .htaccess file.</p>
 
 
 <h3>Settings detected</h3>
@@ -407,33 +407,54 @@ if (!$login) {
 
 <?php
 
+$GZIP_status = $g_zip_enabled ? 'offers' : "doesn't offer";
+
+if (strpos($htaccess_text, '<IfModule mod_deflate.c>') !== FALSE) {
+	$has_GZIP = '<span>(&#43; GZIP compression)</span>';
+} else {
+	$has_GZIP = '<span>(no GZIP compression)</span>';
+}
+
+if (!APACHE) {
+	$not_active = '<br>(not Apache, not active, GZIP compression not active)';
+}
+
 _print("
 <p>Server software = {$serverSoftware}</p>
 <p>Domain = {$domain}</p>
 <p>Site location = {$site_location}</p>
 <p>Protocol = {$show_protocol}</p>
 <p>Admin folder = {$admin}</p>
-<p>Current .htaccess = {$filestatus}</p>
-<p><a href=\"https://web.patricktaylor.com/cms-htaccess\" target=\"_blank\">Info here</a>&nbsp;&raquo;</p>
+<p>Server {$GZIP_status} GZIP compression</p>
+<p>Current .htaccess = {$filestatus} {$has_GZIP} {$not_active}</p>
+<p><a href=\"https://qwwwik.com/htaccess\" target=\"_blank\">Info here</a>&nbsp;&raquo;</p>
 ");
 
 /* For testing
-echo '<p>Canonical redirect 1 = <br>' . $canonical_1 . '</p>';
-echo "\n";
-echo '<p>Canonical redirect 2 = <br>' . $canonical_2 . '</p>';
-echo "\n";
+_print_nlb('<hr>$do_htaccess = ' . $do_htaccess . '');
+_print_nlb('<hr>$add_GZIP = ' . $add_GZIP . '');
+_print_nlb('<hr>$htaccess_text = ' . $htaccess_text . '<br><hr>');
+_print_nlb('$to_replace1 = ' . $to_replace1 . '<br><hr>');
+_print_nlb('Canonical redirect 1 = <br>' . $canonical_1 . '<br><hr>');
+_print_nlb('Canonical redirect 2 = <br>' . $canonical_2 . '');
 */
 ?>
 
 	</div>
+<?php if ($g_zip_enabled) { ?>
 
-<input type="submit" name="submit1" class="images" value="Create extended"> <input type="submit" name="submit2" class="images" value="Create original">
+<label for="GZIP" class="checkbox-container"><input type="checkbox" name="gzip_status" id="GZIP" value="use"> Include GZIP compression</label>
+
+<?php } ?>
+<input type="submit" name="submit1" class="stacked" value="Create extended">
+<input type="submit" name="submit2" class="stacked" value="Create original">
+<input type="submit" name="" class="stacked fade" value="Reset page">
 
 </form>
 
 <?php
 
-	include('./footer.php');
+	includeFileIfExists('./footer.php');
 
 } else {
 
@@ -444,6 +465,7 @@ echo "\n";
 }
 
 ?>
+</div></div>
 
 </body>
 </html>

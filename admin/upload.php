@@ -5,39 +5,31 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 April 2023 */
+/* Last updated 20 May 2024 */
 
 define('ACCESS', TRUE);
 
 // Declare variables etc
-$response = $problem = $new_filename = "";
+$response = $problem = $new_filename = $file_to_upload = "";
 $num = "0";
 $thisAdmin = 'upload'; // For nav
 $uploadfolder = '../uploads/';
 
-require('./top.php');
+include('./top.php');
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php
-
-if (function_exists('p_title')) {
-	p_title('uploads');
-} else {
-	_print('Install the latest version of functions.php');
-}
-
-?></title>
+<title><?php p_title('uploads'); ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
 <link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
@@ -50,12 +42,8 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-	if (!file_exists('./login-form.php')) {
-		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
-		exit();
-	} else {
-		require('./login-form.php');
-	}
+	includeFileIfExists('./login-form.php');
+
 
 } elseif ($login) {
 
@@ -64,62 +52,55 @@ if (!$login) {
 
 ?>
 
-<div id="wrap">
+<div id="o"><div id="wrap">
 
-<h1><?php
-
-	if (function_exists('h1')) {
-		h1('uploads');
-	} else {
-		_print('Install the latest version of functions.php');
-	}
-
-?></h1>
+<h1><?php h1('other file types'); ?></h1>
 
 <?php
 
-	if (file_exists('./nav.php')) {
-		require('./nav.php');
-	} else {
-		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
-		exit();
-	}
+	includeFileIfExists('./nav.php');
 
-	if (array_key_exists('submit1', $_POST)) { // Upload
+	// Original amended by ChatGPT
+	if (isset($_POST['submit1'])) { // Upload
 
-		// Sanitize user input
-		$filename = htmlspecialchars($_FILES["upload"]["name"]);
-		$filetype = htmlspecialchars($_FILES["upload"]["type"]);
-		$filesize = $_FILES["upload"]["size"];
-
-		$random_string = randomString( 2 );
-
-		// Validate uploaded file
-		$allowed_extensions = array('pdf', 'doc', 'docx', 'rtf', 'zip', 'txt');
-		$ext = pathinfo($filename, PATHINFO_EXTENSION);
-
-		if (!in_array(strtolower($ext), $allowed_extensions)) {
-			$response = '<em>Error. Only filetypes .pdf, .doc, .docx, .rtf, .zip and .txt permitted.</em>';
-		} elseif ($filesize > 2097152) {
-			$response = "<em>File too large. Maximum file size is 2 megabytes.</em>";
-		} elseif (!file_exists($_FILES['upload']['tmp_name']) || !is_uploaded_file($_FILES['upload']['tmp_name'])) {
-			$response = "<em>Error uploading file.</em>";
+		if (empty($_FILES['upload']['name'])) {
+			$response = '<em>Nothing happened. You didn\'t choose a file.</em>';
 		} else {
-			// Use secure file paths
-			$uploads_dir = realpath(__DIR__ . '/../uploads');
-			$new_filename = $_FILES['upload']['name'] . $random_string . '.' . $ext;
-			$target_file = $uploads_dir . '/' . $new_filename;
+			$filename = $_FILES["upload"]["name"];
+			$filesize = $_FILES["upload"]["size"];
+			$filetype = $_FILES["upload"]["type"];
 
-			if (move_uploaded_file($_FILES['upload']['tmp_name'], $target_file)) {
-				$response = '<em>The file <b>' . $new_filename . '</b> has been uploaded.</em>';
+			// Check if file was uploaded
+			if (!is_uploaded_file($_FILES['upload']['tmp_name'])) {
+				$response = "<em>Error uploading file.</em>";
 			} else {
-				$response = '<em>Error moving file.</em>';
+				// Validate file extension and size
+				$allowed_extensions = array('pdf', 'doc', 'docx', 'rtf', 'zip', 'txt');
+				$ext = pathinfo($filename, PATHINFO_EXTENSION);
+
+				if (!in_array(strtolower($ext), $allowed_extensions)) {
+					$response = '<em>Error. Only filetypes .pdf, .doc, .docx, .rtf, .zip and .txt permitted.</em>';
+				} elseif ($filesize > 2097152) {
+					$response = "<em>File too large. Maximum file size is 2 megabytes.</em>";
+				} else {
+					// Use secure file paths
+					$uploads_dir = realpath(__DIR__ . '/../uploads');
+					$random_string = randomString( 2 );
+					$new_filename = $random_string . '_' . $filename;
+					$target_file = $uploads_dir . '/' . $new_filename;
+
+					$file_to_upload = $_FILES['upload']['tmp_name'];
+					if (move_uploaded_file($file_to_upload, $target_file)) {
+						$response = '<em>The file <b>' . $new_filename . '</b> has been uploaded.</em>';
+					} else {
+						$response = '<em>Error moving file.</em>';
+					}
+				}
 			}
 		}
-
 	}
 
-	if (array_key_exists('submit2', $_POST)) { // Delete
+	if (isset($_POST['submit2'])) { // Delete
 
 		$delete = str_replace('/', '', trim($_POST['delete'])); // No folders
 		$_file = $uploadfolder . $delete;
@@ -164,9 +145,9 @@ if (!$login) {
 <h5>Choose a file on your device</h5>
 
 <form enctype="multipart/form-data" action="<?php _print($self); ?>" method="post" onSubmit="displayLoading();">
-<label>2 megabytes max.</label>
+<label>2 megabytes max.<br>2 letters are added to your filename for security</label>
 <input type="file" name="upload">
-<input type="submit" name="submit1" class="images" value="Upload file">
+<input type="submit" name="submit1" class="stacked" value="Upload file">
 </form>
 
 <!-- display progress //-->
@@ -190,7 +171,9 @@ function displayLoading() {
 
 <label>Enter filename (eg: <b>myfile.pdf</b> - include file extension):</label>
 <input type="text" name="delete" size="40" value="<?php if (isset($_POST['submit2'])) _print($_POST['delete']); ?>" maxlength="60">
-<input type="submit" name="submit2" class="images" value="Delete file">
+<input type="submit" name="submit2" class="stacked" value="Delete file">
+
+<input type="submit" name="" class="stacked fade" value="Reset form">
 
 </form>
 
@@ -249,7 +232,8 @@ function displayLoading() {
 
 <?php
 
-	include('./footer.php');
+	includeFileIfExists('./footer.php');
+
 
 } else {
 
@@ -260,6 +244,7 @@ function displayLoading() {
 }
 
 ?>
+</div></div>
 
 </body>
 </html>

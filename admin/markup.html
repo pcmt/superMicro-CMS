@@ -9,8 +9,8 @@
 * { margin: 0; padding: 0; }
 
 body {
-  background: #fff;
-  color: #000;
+  background: #f3f3f3;
+  color: #999;
   font-family: 'Verdana', Sans-serif;
   text-align: left;
 }
@@ -41,7 +41,8 @@ h1 {
 }
 
 h4 {
-  margin: 0.6em 0 0.2em 0;
+  margin: 1.2em 0 0.2em 0;
+  color: #000;
 }
 
 div {
@@ -53,7 +54,7 @@ div.block {
   max-width: 600px;
   margin: 0 0 0.6em 0;
   padding: 0.4em 0;
-  background: #ebebeb;
+  background: #fff;
 }
 
 em {
@@ -63,11 +64,11 @@ em {
 h1 em,
 em:hover,
 div.block:hover {
-  color: red;
+  color: #000;
 }
 
 span {
-  color: #666;
+  color: blue;
 }
 
 </style>
@@ -127,11 +128,6 @@ span {
 <span>Example:</span><br>
 <div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" class="box"&gt;</em></div>
 
-<h4>Box for video</h4>
-<em>&nbsp;class="tv"</em> &nbsp;<span>[ grey 'lozenge' surround ]</span><br>
-<span>Example:</span><br>
-<div class="block"><em>&lt;div class="w1200"&gt;<br><br>&lt;div class="tv" style="max-width: <span>xxx</span>px;"&gt;<br><br>&lt;div class="video"&gt;<br>&lt;video width="<span>auto</span>" height="<span>auto</span>" autoplay controls loop&gt;<br>&lt;source src="<span>./video/filename.mp4</span>" type="video/mp4"&gt;<br>Your browser does not support the video tag.<br>&lt;/video&gt;<br>&lt;/div&gt;<br><br>&lt;/div&gt;<br><br>&lt;/div&gt;</em></div>
-
 <h4>Bullet point list</h4>
 <div class="block"><em>&lt;ul&gt;<br>
 &lt;li&gt;<span>item 1</span>&lt;/li&gt;<br>
@@ -161,7 +157,7 @@ span {
 <span>Content</span><br><br>
 &lt;/blockquote&gt;</div>
 
-<span>superMicro CMS 28/11/2020</span><br>
+superMicro CMS <em>24 May 2024</em><br>
 
 </body>
 </html>

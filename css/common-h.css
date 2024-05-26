@@ -1,113 +1,65 @@
 @charset "UTF-8";
 
-/* open-sans-regular - latin */
+/* open-sans-regular (400) - latin */
 @font-face {
+  font-display: swap;
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 400;
-  src: local('Open Sans Regular'), local('OpenSans-Regular'),
-    url('../fonts/open-sans-v18-latin-regular.woff2') format('woff2'),
-    url('../fonts/open-sans-v18-latin-regular.woff') format('woff');
+  src: url('../fonts/open-sans-v40-latin-regular.woff2') format('woff2');
 }
 
-/* open-sans-italic - latin */
+/* open-sans-italic (400) - latin */
 @font-face {
+  font-display: swap; 
   font-family: 'Open Sans';
   font-style: italic;
   font-weight: 400;
-  src: local('Open Sans Italic'), local('OpenSans-Italic'),
-    url('../fonts/open-sans-v18-latin-italic.woff2') format('woff2'),
-    url('../fonts/open-sans-v18-latin-italic.woff') format('woff');
+  src: url('../fonts/open-sans-v40-latin-italic.woff2') format('woff2');
 }
 
 /* open-sans-600 - latin */
 @font-face {
+  font-display: swap;
   font-family: 'Open Sans';
   font-style: normal;
   font-weight: 600;
-  src: local('Open Sans SemiBold'), local('OpenSans-SemiBold'),
-    url('../fonts/open-sans-v18-latin-600.woff2') format('woff2'),
-    url('../fonts/open-sans-v18-latin-600.woff') format('woff');
+  src: url('../fonts/open-sans-v40-latin-600.woff2') format('woff2');
 }
 
 /* open-sans-600italic - latin */
 @font-face {
+  font-display: swap;
   font-family: 'Open Sans';
   font-style: italic;
   font-weight: 600;
-  src: local('Open Sans SemiBold Italic'), local('OpenSans-SemiBoldItalic'),
-    url('../fonts/open-sans-v18-latin-600italic.woff2') format('woff2'),
-    url('../fonts/open-sans-v18-latin-600italic.woff') format('woff');
+  src: url('../fonts/open-sans-v40-latin-600italic.woff2') format('woff2');
 }
 
 /* ubuntu-500 - latin */
 @font-face {
+  font-display: swap;
   font-family: 'Ubuntu';
   font-style: normal;
   font-weight: 500;
-  src: local(''),
-       url('../fonts/ubuntu-v15-latin-500.woff2') format('woff2'),
-       url('../fonts/ubuntu-v15-latin-500.woff') format('woff')
+  src: url('../fonts/ubuntu-v20-latin-500.woff2') format('woff2');
 }
 
 /* ubuntu-500italic - latin */
 @font-face {
+  font-display: swap;
   font-family: 'Ubuntu';
   font-style: italic;
   font-weight: 500;
-  src: local(''),
-       url('../fonts/ubuntu-v15-latin-500italic.woff2') format('woff2'),
-       url('../fonts/ubuntu-v15-latin-500italic.woff') format('woff')
+  src: url('../fonts/ubuntu-v20-latin-500italic.woff2') format('woff2');
 }
 
-/* poppins-regular - latin */
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 400;
-  src: url('../fonts/poppins-v20-latin-regular.woff2') format('woff2');
-}
-
-/* poppins-500 - latin */
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 500;
-  src: url('../fonts/poppins-v20-latin-500.woff2') format('woff2');
-}
-
-/* poppins-500italic - latin */
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 500;
-  src: url('../fonts/poppins-v20-latin-500italic.woff2') format('woff2');
-}
-
-/* poppins-600 - latin */
-@font-face {
-  font-family: 'Poppins';
-  font-style: normal;
-  font-weight: 600;
-  src: url('../fonts/poppins-v20-latin-600.woff2') format('woff2');
-}
-
-/* poppins-600italic - latin */
-@font-face {
-  font-family: 'Poppins';
-  font-style: italic;
-  font-weight: 600;
-  src: url('../fonts/poppins-v20-latin-600italic.woff2') format('woff2');
-}
-
-/* [last update 02 Feb 2024] */
+/* [last update 25 May 2024] */
 /* Self-hosted fonts */
 
 @media screen {
-/* normalize-unminified.css minified (all screen widths) [last update 25 Jan 2023] */
-*{margin:0;padding:0}html,body{margin:0}html{box-sizing:content-box}body{overflow-y:scroll;text-align:center;line-height:1}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}small{font-size:90%}img{vertical-align:bottom}input,select,textarea{-webkit-appearance:none;outline:none}input:focus,select:focus,textarea:focus,button:focus{outline:none}a:active,a:hover{outline:0}a{background:transparent}input[type=password]{filter:none}
-html{-webkit-text-size-adjust:100%;} /* Prevent font scaling in landscape while allowing user zoom */
-}
+/* normalize-unminified.css minified (all screen widths) */
+*{margin:0;padding:0}html,body{margin:0}html{position:relative;-moz-box-sizing:content-box;-webkit-box-sizing:content-box;box-sizing:content-box}body{overflow-y:scroll;text-align:center;line-height:1}article,aside,details,figcaption,figure,footer,header,hgroup,main,menu,nav,section,summary{display:block}small{font-size:90%}img{vertical-align:bottom}input,select,textarea{-webkit-appearance:none;outline:none}input:focus,select:focus,textarea:focus,button:focus{outline:none}a:active,a:hover{outline:0}a{background:#fff0}span{color:#649300}span.red{color:crimson}span.blue{color:#39f}span.orange{color:#e18d08}span.grey{color:#999}span.u{border-bottom:1px solid var(--black);color:var(--black)}input[type=password]{filter:none}html{-webkit-text-size-adjust:100%}
 
 @media print {
 /* print-unminified.css minified '[last update 00.20 June 25 2020] */

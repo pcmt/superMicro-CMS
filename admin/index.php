@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2024 */
+/* Last updated 25 May 2024 */
 
 define('ACCESS', TRUE);
 
@@ -98,7 +98,7 @@ if (function_exists('p_title')) {
 <link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
@@ -110,14 +110,7 @@ if (function_exists('p_title')) {
 
 if (!$login) {
 // Logged out
-
-	if (!file_exists('./login-form.php')) {
-		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
-		exit();
-	} else {
-		require('./login-form.php');
-	}
-
+	includeFileIfExists('./login-form.php');
 } elseif ($login) {
 
 /* -------------------------------------------------- */
@@ -180,7 +173,7 @@ if (!$login) {
 
 ?>
 
-<div id="wrap">
+<div id="o"><div id="wrap">
 
 <h1><?php
 
@@ -707,7 +700,7 @@ $obj->Template();
 	}
 ?></label>
 
-<input type="text" name="page_id" size="60" value="<?php
+<input type="text" name="page_id" size="42" value="<?php
 
 /* ================================================== */
 /* TITLE BOX */
@@ -762,36 +755,38 @@ $obj->Template();
 		}
 	}
 
-?>" maxlength="60"> <label style="display: inline;"><?php
+?>" maxlength="60"> <label style="display: inline;"> <?php
 	if ($do_stylesheet) {
-		?>[ a stylesheet file ]<?php
+		_print('[ a stylesheet file ]');
 	} elseif ($do_menu) {
-		?>[ the menu file ]<?php
+		_print('[ the menu file ]');
 	} else {
-		?>[ for URL and menu text ]</label><?php
+		_print('[ for URL and menu text ]');
 	}
-?>
+?></label>
 
-<label><?php
+<?php
 
 /* ================================================== */
 /* TEXT ABOVE MAIN BOX */
 
 	if ($do_stylesheet) { ?>
 
-The default styles can be restored with <em>Get styles</em> &raquo; <em>Default styles</em> &raquo; <em>Update styles</em><br>The optional <em>extra styles</em> supplement the active stylesheet: 'stylesheet.css' [ <a href="https://web.patricktaylor.com/cms-stylesheets" target="_blank">info</a> ]
+<p class="pages">The default styles can be restored with <em>Get styles</em> &raquo; <em>Default styles</em> &raquo; <em>Update styles</em><br>The optional <em>extra styles</em> supplement the active stylesheet: 'stylesheet.css' [ <a href="https://web.patricktaylor.com/cms-stylesheets" target="_blank">info</a> ]</p>
 
 <?php } elseif ($do_menu) { ?>
 
-<b>NOTE</b>: (i) preserve the existing page names (listed below) and match the text exactly, (ii) do not include <em>index</em> (the home page is always on the menu), and (iii) ensure each item is on its own line (with no empty lines).<br>A leading # symbol (eg: #example-page) means the page is not in the navigation menu and <i>vice versa</i> [ <a href="https://web.patricktaylor.com/cms-navigation-menu" target="_blank">info</a> ]
+<p class="pages"><b>NOTE</b>: (i) preserve the existing page names (listed below) and match the text exactly, (ii) do not include <em>index</em> (the home page is always on the menu), and (iii) ensure each item is on its own line (with no empty lines).<br>A leading # symbol (eg: #example-page) means the page is not in the navigation menu and <i>vice versa</i> [ <a href="https://web.patricktaylor.com/cms-navigation-menu" target="_blank">info</a> ]</p>
 
 	<?php } else { ?>
 
-<strong>Line 1</strong> not displayed. Add plus symbol <em>+</em> to add page to menu <span>&#124;</span> <em>~~password~~</em> to password protect<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3 leave blank</strong></span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [&nbsp;<a href="markup.html" target="_blank">get&nbsp;HTML&nbsp;markup</a>&nbsp;]
+<p class="pages"><strong>Line 1</strong> not displayed. Add plus symbol <em>+</em> to add page to menu <span>&#124;</span> <em>~~password~~</em> to password protect <span>&#124;</span> ampersand symbol <em>&</em> enables comments [ <a href="https://web.patricktaylor.com/cms-comments" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://web.patricktaylor.com/cms-extras" target="_blank">info</a> ]<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3</strong>: leave blank</span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [&nbsp;<a href="markup.html" target="_blank">get&nbsp;HTML&nbsp;markup</a>&nbsp;]</p>
 
-	<?php } ?></label>
+	<?php } ?>
 
-<textarea name="content" rows="20">
+		<div class="textarea-container">
+
+<textarea class="flexitem" name="content" rows="20">
 <?php
 
 /* ================================================== */
@@ -866,7 +861,7 @@ The default styles can be restored with <em>Get styles</em> &raquo; <em>Default 
 	/* -------------------------------------------------- */
 	// This page first loaded or 'example' clicked
 	} else {
-		_print('#
+		_print_nlb('#
 Page Heading
 
 Content...');
@@ -876,6 +871,8 @@ Content...');
 ?>
 </textarea>
 
+		</div><!-- end .textarea-container //-->
+
 <?php if ($do_menu) { ?>
 
 <p><a href="./index.php" title="Back to 'Pages'">&laquo; Back to 'Pages'</a></p>
@@ -884,13 +881,9 @@ Content...');
 
 <p><a href="./index.php" title="Back to 'Pages'">&laquo; Back to 'Pages'</a></p>
 
-<?php } else { // Default to: ?>
-
-<p><strong>Line 1</strong> ampersand symbol <em>&</em> enables comments [ <a href="https://web.patricktaylor.com/cms-comments" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://web.patricktaylor.com/cms-extras" target="_blank">info</a> ]</p>
-
 <?php } ?>
 
-	</div>
+	</div><!-- end #boxes //-->
 
 <?php
 
@@ -904,17 +897,21 @@ Content...');
 
 <p>Pages:</p>
 
-<input type="submit" name="submit1" value="Create new page">
+		<div><!-- first group //-->
+
+<input type="submit" name="submit1" value="Add new page">
 <input type="submit" name="submit2" value="Preview page">
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit3'])) {
 		_print('submit3');
+		$preclass = 'class="pre" ';
 	} else {
 		_print('pre-submit3');
+		$preclass = '';
 	}
 
-?>" value="Update page">
+?>" <?php _print($preclass); ?>value="Update page">
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit4']) && file_exists($to_delete)) {
@@ -927,7 +924,9 @@ Content...');
 <input type="submit" name="submit11" value="Get comments">
 <input type="submit" name="submit12" value="Get extras">
 
-<p class="fade">Styles:</p>
+		</div>
+
+<p>Styles:</p>
 
 <select id="dropdown" name="select_style">
 <?php
@@ -969,28 +968,35 @@ Content...');
 <option value="extra"><?php echo $extra; ?></option>
 </select>
 
+		<div><!-- second group //-->
+
 <input type="submit" name="submit5" class="fade" value="Get styles">
 <input type="submit" name="<?php
 
-	if (isset($_POST['pre-submit6']) && (strlen(trim(stripslashes($_POST['content']))) > 1) && (strpos($_POST['page_id'], '.css') !== FALSE)) {
-		_print('submit6');
-	} else {
-		_print('pre-submit6');
-	}
-
 	if (isset($_POST['pre-submit6']) || isset($_POST['submit5'])) {
 		if ((strpos($_POST['page_id'], '.css') !== FALSE) || $cssfilename) {
-			$class1 = 'em';
+			$preclass = 'class="em" '; // White text on black
 		} else {
-			$class1 = 'fade';
+			$preclass = 'class="fade" '; // No go, so keep it faded
 		}
 	} else {
-		$class1 = 'fade';
+		$preclass = 'class="fade" '; // Default starting position class
 	}
 
-?>" class="<?php echo $class1; ?>" value="Update styles">
+	if (isset($_POST['pre-submit6']) && (strlen(trim(stripslashes($_POST['content']))) > 1) && (strpos($_POST['page_id'], '.css') !== FALSE)) {
+		_print('submit6'); // Ready to update
+		$preclass = 'class="pre" ';
+	} else {
+		_print('pre-submit6'); // Default starting position name
+	}
 
-<p class="fade">Menu:</p>
+?>" <?php _print($preclass); ?>value="Update styles">
+
+		</div>
+
+<p>Menu:</p>
+
+		<div><!-- third group //-->
 
 <input type="submit" name="submit9" class="fade" value="Get the menu">
 <input type="submit" name="<?php
@@ -1009,7 +1015,9 @@ Content...');
 
 ?>" class="<?php _print($class2); ?>" value="Save the menu">
 
-	</div>
+		</div>
+
+	</div><!-- end #buttons //-->
 
 </form>
 
@@ -1023,7 +1031,7 @@ Content...');
 
 <?php
 
-	include('./footer.php');
+	includeFileIfExists('./footer.php');
 
 } else {
 
@@ -1034,6 +1042,7 @@ Content...');
 }
 
 ?>
+</div></div>
 
 </body>
 </html>

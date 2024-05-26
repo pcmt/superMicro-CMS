@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 31 May 2023 */
+/* Last updated 20 May 2024 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -55,10 +55,14 @@ if (!empty($_SERVER['HTTP_HOST'])) {
 }
 
 // (3) Try to establish whether SSL or not
-if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
+
+$protocol = get_protocol() ? 'https://' : 'http://'; // See functions.php
+if ($protocol == 'https://') {
 	$secure = TRUE;
+	$show_protocol = 'https: (secure)'; // Displayed in admin
 } else {
 	$secure = FALSE;
+	$show_protocol = 'http: (not secure)'; // Displayed in admin
 }
 
 // (4) Type of cookie

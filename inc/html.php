@@ -5,11 +5,8 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 31 Jan 2024 */
-// Looks for $source, not $textArray
-// Comments detection
+/* Last updated 24 May 2024 */
 
-// Most 'if (file_exists)' were removed on 24 Jan 2020
 // (all required files checked in /admin/setup.php)
 
 define('ACCESS', TRUE); // Allow includes here
@@ -27,7 +24,7 @@ class Page {
 		define('INC', $_inc);
 
 		// error-reporting.php loads settings.php and functions.php
-		require(INC . 'error-reporting.php');
+		include(INC . 'error-reporting.php');
 
 		$_textfile = $this->Textfilename;
 		$source = './pages/' . $_textfile;
@@ -39,7 +36,7 @@ class Page {
 			$textArray = file($source);
 
 			/* -------------------------------------------------- */
-			// Extract and process the first line (of array)
+			// Extract and process the first line of array
 			$lineone = trim(array_shift($textArray));
 			$lineone = str_replace(' ', '', $lineone); // Strips whitespace
 
@@ -78,7 +75,7 @@ class Page {
 				$extras = FALSE;
 			}
 
-			// Get the new first line as title
+			// Get the new first line (<h1>) for HTML <title> and Open Graph title
 			$title = trim(array_shift($textArray));
 
 			if (strlen(trim($title)) < 1) {
@@ -90,12 +87,12 @@ class Page {
 
 			/* -------------------------------------------------- */
 			// Load 'system' texts exactly here
-			require(INC . 'lang.php');
+			include(INC . 'lang.php');
 
 			/* -------------------------------------------------- */
-			// Process title tag (convert br to space then strip all tags)
-			$titletag = str_replace(array('<br>', '<br/>', '<br />'), ' ', $title);
-			$titletag = strip_tags($titletag);
+			// Process the page title for HTML <title> and Open Graph title
+			$titletag = str_ireplace(array('<br>', '<br/>', '<br />'), ' ', $title);
+			$titletag = str_replace("\"", "'", $titletag);
 
 			/* -------------------------------------------------- */
 			// Date modified
@@ -107,10 +104,10 @@ class Page {
 
 			/* -------------------------------------------------- */
 			// Output some HTML (nav & main & col)
-			require(INC . 'top.php');
+			include(INC . 'top.php');
 			_print("\n<div id=\"wrap\">\n\n");
-			require(INC . 'extra-body.php');
-			require(INC . 'menu.php');
+			include(INC . 'extra-body.php');
+			include(INC . 'menu.php');
 			_print("\n	<main id=\"content\">\n\n		<div class=\"col\">\n\n");
 
 			/* -------------------------------------------------- */
@@ -119,18 +116,18 @@ class Page {
 
 				// If correct password entered
 				if (isset($_SESSION['password']) && ($_SESSION['password'] == "{$password}") ) {
-					require(INC . 'content.php');
-					// See ppp.php for why logout form is not displayed (18 Jan 20)
+					include(INC . 'content.php');
+					// See ppp.php for why logout form isn't used
 					// require(INC . 'logout-form.php');
 				} else {
 					// Logged out (show login form)
-					require(INC . 'login-form.php');
+					include(INC . 'login-form.php');
 				}
 
 			/* -------------------------------------------------- */
 			// Not password-protected
 			} else {
-				require(INC . 'content.php');
+				include(INC . 'content.php');
 			}
 
 			/* -------------------------------------------------- */
@@ -138,18 +135,18 @@ class Page {
 			_print("\n		</div><!-- end .col //-->\n\n	</main>\n");
 
 			/* -------------------------------------------------- */
-			// Output footer (tracking moved to footer 07 Dec 20)
-			require(INC . 'footer.php');
+			// Output footer
+			include(INC . 'footer.php');
 
 			/* -------------------------------------------------- */
-			// Output some HTML (end #wrap)
-			_print("\n</div>\n\n</body>\n</html>");
+			// End #wrap and conclude HTML
+			_print("\n</div><!-- end #wrap //-->\n\n</body>\n</html>");
 
 			/* -------------------------------------------------- */
-			// See ppp.php (logout form normally unsets but not displayed)
-			// Deactivated (sessions ends when browser closed)
+			// Passworded session ends when browser closed
+			// Next bit would end session immediately
 			// if (isset($_SESSION['password'])) {
-			// 	unset($_SESSION['password']); // Need to unset session
+			// 	unset($_SESSION['password']);
 			// }
 
 		} else {
@@ -157,7 +154,7 @@ class Page {
 			/* -------------------------------------------------- */
 			// If there is no page.txt file
 			header('HTTP/1.1 404 Not Found');
-			require(INC . '404.php');
+			include(INC . '404.php');
 			exit();
 
 		}

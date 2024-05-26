@@ -20,3 +20,7 @@
   RewriteRule .* inc/404.php [L]
 </IfModule>
 # END superMicro CMS
+
+# BEGIN GZIP
+#
+# END GZIP

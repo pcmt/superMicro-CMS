@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 20 May 2024 */
 
 define('ACCESS', TRUE);
 
@@ -43,7 +43,7 @@ if (function_exists('p_title')) {
 <link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
@@ -91,7 +91,7 @@ if (!$login) {
 
 ?>
 
-<div id="wrap">
+<div id="o"><div id="wrap">
 
 <h1><?php
 
@@ -237,7 +237,10 @@ if (!$login) {
 " maxlength="60">
 
 <label>Edit extras.</label>
-<textarea name="extras" cols="90" rows="21">
+
+		<div class="textarea-container">
+
+<textarea class="flexitem" name="content" rows="20">
 <?php
 
 	if (isset($_POST['presubmit']) || isset($_POST['submit'])) {
@@ -248,6 +251,8 @@ if (!$login) {
 
 ?>
 </textarea>
+
+		</div>
 
 	</div>
 
@@ -269,7 +274,7 @@ if (!$login) {
 
 <?php
 
-	include('./footer.php');
+	includeFileIfExists('./footer.php');
 
 } else {
 
@@ -280,6 +285,7 @@ if (!$login) {
 }
 
 ?>
+</div></div>
 
 </body>
 </html>

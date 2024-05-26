@@ -5,40 +5,33 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 April 2023 */
+/* Last updated 20 May 2024 */
 
 define('ACCESS', TRUE);
 
 // Declare variables etc
 $response = $response1 = $display = $delete = $_file = $dimensions = $problem = "";
+
 $num = "0";
 $thisAdmin = 'images'; // For nav
 $imgfolder = '../img/';
-$excludedFiles = ['bg_footer.gif', 'bg_footer_monochrome.gif', 'bg-dots1.gif', 'loader.gif', 'og.jpg'];
+$excludedFiles = ['bg-dots1.gif', 'loader.gif', 'og.jpg', 'og.png', 'floral.jpg', 'logo.png', 'navbox.jpg', 'fold70.png'];
 
 require('./top.php');
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php
-
-if (function_exists('p_title')) {
-	p_title('images');
-} else {
-	_print('Install the latest version of functions.php');
-}
-
-?></title>
+<title><?php p_title('images'); ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
 <link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
@@ -51,12 +44,7 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-	if (!file_exists('./login-form.php')) {
-		_print("Error: the file '/admin/login-form.php' does not exist. It must be installed.");
-		exit();
-	} else {
-		require('./login-form.php');
-	}
+	includeFileIfExists('./login-form.php');
 
 } elseif ($login) {
 
@@ -65,26 +53,13 @@ if (!$login) {
 
 ?>
 
-<div id="wrap">
+<div id="o"><div id="wrap">
 
-<h1><?php
-
-	if (function_exists('h1')) {
-		h1('images');
-	} else {
-		_print('Install the latest version of functions.php');
-	}
-
-?></h1>
+<h1><?php h1('images'); ?></h1>
 
 <?php
 
-	if (file_exists('./nav.php')) {
-		require('./nav.php');
-	} else {
-		_print("Error: the file '/admin/nav.php' does not exist. It must be installed.");
-		exit();
-	}
+	includeFileIfExists('./nav.php');
 
 	if (array_key_exists('submit1', $_POST)) { // Upload
 
@@ -110,6 +85,7 @@ if (!$login) {
 				$pieces = explode('.', $_FILES['upload']['name']);
 				$extension = strtolower(array_pop($pieces));
 				$extensions = array('jpg', 'jpeg', 'gif', 'png', 'webp');
+
 				if ((in_array($extension, $extensions)) && $size) {
 					$filename = $filename . '.' . $extension;
 					if (move_uploaded_file($_FILES['upload']['tmp_name'], "../img/{$filename}")) {
@@ -188,7 +164,7 @@ if (!$login) {
 	}
 
 ?>" maxlength="60">
-<input type="submit" name="submit1" class="images" value="Upload image">
+<input type="submit" name="submit1" class="stacked" value="Upload image">
 
 </form>
 
@@ -214,7 +190,10 @@ function displayLoading() {
 <form action="<?php _print($self); ?>" method="post">
 <label>Enter filename (eg: <b>image1.jpg</b> - include file extension):</label>
 <input type="text" name="delete" size="40" value="<?php if (isset($_POST['submit2'])) _print($_POST['delete']); ?>" maxlength="60">
-<input type="submit" name="submit2" class="images" value="Delete image">
+<input type="submit" name="submit2" class="stacked" value="Delete image">
+
+<input type="submit" name="" class="stacked fade" value="Reset form">
+
 </form>
 
 <hr>
@@ -279,7 +258,7 @@ function displayLoading() {
 
 <?php
 
-	include('./footer.php');
+	includeFileIfExists('./footer.php');
 
 } else {
 
@@ -290,6 +269,7 @@ function displayLoading() {
 }
 
 ?>
+</div></div>
 
 </body>
 </html>

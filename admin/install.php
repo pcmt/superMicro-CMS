@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-// Last updated 05 Feb 2024
+// Last updated 20 May 2024
 
 define('ACCESS', TRUE);
 
@@ -14,6 +14,67 @@ $sh_password = $salt = $domain = $cookie_status = $test_cookie = $missing_passwo
 
 error_reporting(0);
 // error_reporting(E_ALL);
+
+/* CHECK THAT THINGS EXIST ========================== */
+
+// This can't be in functions.php because it checks it
+function hasFunction($file_path, $to_check) {
+
+	$file_content = file_get_contents($file_path);
+	// Check each function
+	foreach ($to_check as $function) {
+		// Regular expression for 'name(' or 'name  )'
+		$pattern = '/\bfunction\s+' . preg_quote($function, '/') . '\s*\(/';
+		if (!preg_match($pattern, $file_content)) {
+			return false; // Function missing
+		}
+	}
+
+	return true; // All functions found
+}
+
+/* -------------------------------------------------- */
+// Verify the current /inc/functions file
+// Get /inc/functions.php as simple string, not as array to loop through
+$file_path = '../inc/functions.php';
+
+// The current /inc/ functions (keep up to date)
+$to_check = array('_print', '_print_nla', '_print_nlab', '_print_nlb', '_autop_newline_preservation_helper', 'autop', 'bits_and', 'absolute_it', 'img_path', 'srcset_path', 'video_path', 'suffix_it');
+
+// Check the file
+if (!hasFunction($file_path, $to_check)) {
+	$incorrect_form_problem = TRUE;
+	$error = "Error: can't install. Missing function in '/inc/functions.php'. Install the latest version.";
+}
+
+/* -------------------------------------------------- */
+// Verify the current /admin/functions file
+// Get /inc/functions.php as simple string, not as array to loop through
+$file_path = './functions.php';
+
+// The current /inc/ functions (keep up to date)
+$to_check = array('_print', '_print_nla', '_print_nlab', '_print_nlb', 'p_title', 'h1', 'includeFileIfExists', 'phpSELF', 'loggedoutFooter', 'get_protocol', 'sanitizeIt', 'randomString', 'allowedChars', 'allChars', 'getBetween', 'getchmod', 'removeEmptyLines', 'stripAnchor', 'isWritable', 'win_isWritable'); // isWritable() and win_isWritable() aren't used
+
+// Check the file
+if (!hasFunction($file_path, $to_check)) {
+	$incorrect_form_problem = TRUE;
+	echo "Error: can't install. Missing function in '/admin/functions.php'. Install the latest version.";
+	exit(); // because this file requires functions
+}
+
+/* -------------------------------------------------- */
+/* Verify all the required files (admin and inc) */
+
+// The actual files
+$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './language.php', './list.php', './login-form.php', './nav.php', './password-sample.php', './setup.php', './stopwords.php', './top.php', './upload.php', './video.php', './text/extra-css.txt', './text/index.txt', './text/inmenu.txt', './text/mobile.txt', './text/password.txt', './text/stylesheet.txt', '../inc/404.php', '../inc/content.php', '../inc/error-reporting.php', '../inc/extra-content.php', '../inc/extra-body.php', '../inc/extra-head.php', '../inc/filter-email.php', '../inc/footer.php', '../inc/form.php', '../inc/functions.php', '../inc/history.php', '../inc/html.php', '../inc/index.php', '../inc/lang.php', '../inc/login-form.php', '../inc/menu.php', '../inc/ppp.php', '../inc/prelims.php', '../inc/stylesheets.php', '../inc/top.php', '../inc/tracking.php', '../inc/languages/en.php');
+
+foreach ($required as $file) {
+	if (!file_exists($file)) { // Exit if an actual file is missing
+		$file = str_replace("..", "", $file);
+		echo "Error: the file '{$file}' does not exist. It must be installed.";
+		exit(); // because all the files are required
+	}
+}
 
 /* -------------------------------------------------- */
 // Delete previous login cookie if it exists
@@ -31,8 +92,8 @@ $tm_start = array_sum(explode(' ', microtime()));
 /* -------------------------------------------------- */
 // Check the PHP version
 
-if (version_compare(phpversion(), '5.2.0', '<')) {
-	$error = 'superMicro CMS needs PHP version 5.2.0 or later. Your server is running PHP version ' . PHP_VERSION . '. Try installing anyway.';
+if (version_compare(phpversion(), '7.2.0', '<')) {
+	$error = 'superMicro CMS needs PHP version 7.2.0 or later. Your server is running PHP version ' . PHP_VERSION . '. Try installing anyway.';
 	$old_phpV = TRUE;
 } else {
 	$old_phpV = FALSE;
@@ -81,16 +142,6 @@ if ($secure_cookie) {
 }
 
 /* -------------------------------------------------- */
-/* Verify all the required admin files */
-
-$required = array('./backup.php', './comments.php', './extras.php', './footer.php', './functions.php', './htaccess.php', './images.php', './index.php', './list.php', './login-form.php', './text/mobile.txt', './nav.php', './setup.php', './stopwords.php', './top.php', './upload.php', './text/extra-css.txt', './text/index.txt', './text/inmenu.txt','./text/pageid.txt', './text/password.txt', './text/stylesheet.txt');
-
-foreach ($required as $file) {
-	if (!file_exists($file)) { // Exit if a file is missing
-		echo "Error: the file '{$file}' does not exist. It must be installed.";
-		exit();
-	}
-}
 
 // Get functions.php
 require('./functions.php');
@@ -274,12 +325,12 @@ $salt = "' . $admin_s . '";
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Install superMicro CMS</title>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
 
-<div id="wrap">
+<div id="o" style="max-width: 860px;"><div id="wrap">
 
 	<div class="min-height">
 
@@ -293,7 +344,7 @@ if (!$install) { // Keeps form visible until form and files OK
 
 <h3>Step 1: [salted and hashed] password and salt</h3>
 
-<p>If you haven't got a <em>[salted and hashed] password</em> and <em>salt</em> <a href="https://patricktaylor.com/hash-sha256" target="_blank">get them here&nbsp;&raquo;</a></p>
+<p>If you haven't got a <em>[salted and hashed] password</em> and <em>salt</em> <a href="https://web.patricktaylor.com/hash-sha256" target="_blank">get them here&nbsp;&raquo;</a></p>
 <p>IMPORTANT. Remember (or write down) your actual password. Login to admin with <em>your password</em>, <b>not</b> the [salted and hashed] password.</p>
 
 <hr>
@@ -401,7 +452,7 @@ include('./footer.php');
 
 ?>
 
-</div>
+</div></div>
 
 </body>
 </html>

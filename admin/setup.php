@@ -5,16 +5,16 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 Jan 2024 */
+/* Last updated 20 May 2024 */
 
 define('ACCESS', TRUE);
 
 // Declare variables ($feedback and $value used only when testing)
-$setupstatus = $response = $response1 = $response2 = $response3 = $update = $problem = $invalid_email = $posted = "";
+$setupstatus = $response = $response1 = $response2 = $response3 = $update = $problem = $invalid_email = $posted = $invalid_HEX = $g_zip = "";
 
 $thisAdmin = 'setup'; // For nav
 
-require('./top.php'); // Loads functions.php
+include('./top.php'); // Loads functions.php
 
 // Temporary $_values for get 'Current setup' after updating
 
@@ -23,6 +23,7 @@ if (isset($_POST['name'])) { $_name = trim($_POST['name']); }
 if (isset($_POST['email'])) { $_email = trim($_POST['email']); }
 if (isset($_POST['site_name'])) { $_site_name = trim($_POST['site_name']); }
 if (isset($_POST['own_name'])) { $_own_name = trim($_POST['own_name']); }
+if (isset($_POST['link_colour'])) { $_link_colour = trim($_POST['link_colour']); }
 if (isset($_POST['contact_text'])) { $_contact_text = trim(stripslashes($_POST['contact_text'])); }
 if (isset($_POST['contact_menu'])) {
 	$_contact_menu = trim(stripslashes($_POST['contact_menu']));
@@ -57,7 +58,7 @@ if (function_exists('p_title')) {
 <link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
@@ -83,7 +84,7 @@ if (!$login) {
 	// Logged in
 
 	// Declare the version
-	$version = '5.3'; // Edit footer.php and text/index.txt as well
+	$version = '5.4'; // Edit footer.php and text/index.txt as well
 
 /* ================================================== */
 /* SECTION 1: PREPARATORY */
@@ -236,6 +237,15 @@ if (!$login) {
 	}
 
 	/* -------------------------------------------------- */
+	/* TEST FOR GZIP */
+
+	if (substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'gzip') || substr_count($_SERVER['HTTP_ACCEPT_ENCODING'], 'x-gzip')){
+		$g_zip = 'TRUE';
+	} else {
+		$g_zip = 'FALSE';
+	}
+
+	/* -------------------------------------------------- */
 	/* OTHER BITS */
 
 	if (file_exists('../e.php')) { // Contact page renamed 20 Jan 2020
@@ -265,17 +275,6 @@ if (!$login) {
 /* ================================================== */
 
 	if (isset($_POST['submit1']) && $do_setup) {
-
-		/* -------------------------------------------------- */
-		/* VERIFY INC FILES */
-		$required = array('../inc/languages/en.php', '../inc/404.php', '../inc/content.php', '../inc/error-reporting.php', '../inc/extra-body.php', '../inc/extra-content.php', '../inc/extra-head.php', '../inc/filter-email.php', '../inc/footer.php', '../inc/form.php', '../inc/functions.php', '../inc/history.php', '../inc/html.php', '../inc/lang.php', '../inc/login-form.php', '../inc/logout-form.php', '../inc/menu.php', '../inc/ppp.php', '../inc/prelims.php', '../inc/stylesheets.php', '../inc/top.php');
-
-		foreach ($required as $file) {
-			if (!file_exists($file)) { // Exit if a file is missing
-				echo "<h5>Error: the file '{$file}' does not exist. It must be installed.</h5></body></html>";
-				exit();
-			}
-		}
 
 		/* -------------------------------------------------- */
 		/* CHECK THE FORM */
@@ -381,6 +380,18 @@ YES or NO, otherwise default YES is shown as something to enter.
 			$name = FALSE;
 		}
 
+		$link_colour = trim($_POST['link_colour']);
+		if ((strlen($link_colour) < 1) || ($link_colour == 'Enter a HEX')) {
+			$problem = TRUE;
+			$link_colour = FALSE;
+		}
+
+		if (!preg_match('/^#[a-f0-9]{6}$/i', trim($link_colour))) {
+			$problem = TRUE;
+			$link_colour = FALSE;
+			$invalid_HEX = TRUE;
+		}
+
 		if ($contact_page) {
 			$contact_text = trim($_POST['contact_text']);
 			$contact_text = allowedChars($contact_text);
@@ -431,6 +442,7 @@ define('ADMIN', '{$admin}');
 define('APACHE', {$apache});
 define('WINDOWS', {$windows});
 define('OPSYS', '{$opSystem}');
+define('G_ZIP', {$g_zip});
 define('HOME_LINK', '{$home_link}');
 define('NAME', '{$name}');
 define('ALPHABETICAL', {$alphabetical});
@@ -441,6 +453,7 @@ define('EMAIL', '{$email}');
 define('SITE_NAME', '{$site_name}');
 define('SITE_ID', '{$siteID}');
 define('OWN_NAME', '{$own_name}');
+define('LINK_COLOUR', '{$link_colour}');
 define('CONTACT_TEXT', '{$contact_text}');
 define('CONTACT_MENU', '{$contact_menu}');
 define('FONT_TYPE', '{$font_type}');
@@ -494,7 +507,7 @@ define('VERSION', '{$version}');
 
 ?>
 
-<div id="wrap">
+<div id="o"><div id="wrap">
 
 <h1><?php
 
@@ -557,14 +570,20 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 <form action="<?php _print($self); ?>" method="post" accept-charset="UTF-8">
 
-	<div id="boxes2">
+	<div id="boxes-setup">
 
 		<div class="group one">
 
 <label>Menu text for home page</label>
 <input type="text" name="home_link" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_home_link)) {
+			_print($_home_link);
+		} else {
+			_print(HOME_LINK);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$home_link && $problem) {
 			_print('Enter menu text');
 		} else {
@@ -583,7 +602,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Name in footer</label>
 <input type="text" name="name" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_name)) {
+			_print($_name);
+		} else {
+			_print(NAME);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$name && $problem) {
 			_print('Enter a name');
 		} else {
@@ -712,7 +737,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Your name</label>
 <input type="text" name="own_name" size="60" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_own_name)) {
+			_print($_own_name);
+		} else {
+			_print(OWN_NAME);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$own_name && $problem) {
 			_print('Enter a name');
 		} else {
@@ -730,7 +761,13 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 <label>Site name (20 max)</label>
 <input type="text" name="site_name" size="20" value="<?php
 
-	if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_site_name)) {
+			_print($_site_name);
+		} else {
+			_print(SITE_NAME);
+		}
+	} elseif (isset($_POST['submit1'])) {
 		if (!$site_name && $problem) {
 			_print('Enter site name');
 		} else {
@@ -773,8 +810,28 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 ?>
 " maxlength="3">
 
-<label>Empty</label>
-<input type="text" name="empty" size="60" value=" " maxlength="3">
+<!-- LINK COLOUR ============================== //-->
+<label>Link colour [ <a href="https://qwwwik.com/links#hex" target="_blank">info</a> ]</label>
+<input type="text" name="link_colour" size="60" value="<?php
+
+	$invalid_HEX = ""; // Required to re-declare variable
+	if (isset($_POST['submit1'])) {
+		if (!$link_colour && $problem) {
+			_print('Enter a HEX colour');
+		} else {
+			if ($invalid_HEX) {
+				_print(trim($_POST['link_colour']));
+			} else {
+				_print($link_colour);
+			}
+		}
+	} elseif (defined('LINK_COLOUR')) {
+		_print(LINK_COLOUR);
+	} else {
+		_print('#FF0099');
+	}
+
+?>" maxlength="7">
 
 		</div><!-- End group two //-->
 
@@ -788,9 +845,15 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 		<div id="bottom">
 
 <label>Contact page introductory text (or delete contact page /e.php)</label>
-<textarea name="contact_text" size="60" rows="4" cols="30"><?php
+<div class="textarea-container"><textarea name="contact_text" class="flexitem" rows="4"><?php
 
-		if (isset($_POST['submit1'])) {
+	if (isset($_POST['submit2'])) {
+		if (isset($_contact_text)) {
+			_print($_contact_text);
+		} else {
+			_print(CONTACT_TEXT);
+		}
+	} elseif (isset($_POST['submit1'])) {
 			if (!$contact_text && $problem) {
 				_print('Enter some text');
 			} else {
@@ -802,7 +865,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 			_print('To get in touch, feel free to use this contact form (all fields required). The form will send me an email. Privacy respected.');
 		}
 
-?></textarea>
+?></textarea></div>
 
 <label>Menu text for contact page (leave blank to hide contact page from menu)</label>
 <input type="text" name="contact_menu" size="60" value="<?php
@@ -842,7 +905,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 ?>
 
-	</div><!-- End boxes 2 //-->
+	</div><!-- End boxes-setup //-->
 
 <?php
 
@@ -852,7 +915,7 @@ _print('<p><span class="padded-multiline">' . $response1 . ' ' . $response2 . ' 
 
 ?>
 
-	<div id="buttons2">
+	<div id="buttons-setup">
 
 <div>
 <select id="dropdown" name="font_type"><?php
@@ -923,6 +986,12 @@ if (isset($_POST['submit1'])) {
 		_print_nlb('<p class="break_word">Problem: server protocol (https or http) not detected. Setup can <strong>not</strong> proceed.</p>');
 	}
 
+	if ($g_zip === 'TRUE') { // Test 'TRUE'
+		_print_nlb('<p>GZIP is <strong>available</strong></p>');
+	} else {
+		_print_nlb('<p>GZIP is <strong>not available</strong></p>');
+	}
+
 ?>
 <p>Optional <strong><a href="./stopwords.php">stopwords</a></strong> for contact page and comments.</p>
 <p>See also <a href="https://web.patricktaylor.com/cms-setup" target="_blank">about setup&nbsp;&#187;</a></p>
@@ -933,14 +1002,7 @@ if (isset($_POST['submit1'])) {
 
 <?php
 
-// Uncomment this for tests (add more tests as required)
-/*
-if (file_exists('./test.php')) {
-	include('./test.php');
-}
-*/
-
-	include('./footer.php');
+	includeFileIfExists('./footer.php');
 
 } else {
 
@@ -951,6 +1013,7 @@ if (file_exists('./test.php')) {
 }
 
 ?>
+</div></div>
 
 </body>
 </html>

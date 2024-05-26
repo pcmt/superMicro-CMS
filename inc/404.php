@@ -5,13 +5,13 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 March 2023 */
+/* Last updated 21 May 2024 */
 
 ob_start();
 header('HTTP/1.1 404 Not Found');
 
 // Declare variables
-$inc = $protocol = $anchor = $output = NULL;
+$protocol = $anchor = $output = NULL;
 
 // No PHP errors detected in testing so
 // normally leave error reporting off
@@ -21,12 +21,10 @@ ini_set('display_errors', 0);
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 
-$_inc = str_replace('\\', '/', dirname(__FILE__)) . '/';
-
-define('INC', $_inc);
 define('ACCESS', TRUE); // For settings.php
 
-require(INC . 'settings.php');
+$settings = dirname(__FILE__) . '/settings.php';
+include($settings);
 
 if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
 	$protocol = 'https://';

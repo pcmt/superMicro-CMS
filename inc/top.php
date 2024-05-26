@@ -1,14 +1,14 @@
 <?php
 /**
- * superMicro CMS
+ * Qwwwik
  * ==============
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 Jan 2024 */
+/* Last updated 23 March 2024 */
 
 // Declare variables
-$protected = $the_page = $adminlink = $siteID = $admin = $history = $historyArray = $to_omit = $skip = $found = $num = $a = $b = $c = $update = $path = $pos = $folder_above = "";
+$protected = $nocopy = $adminlink = $siteID = $admin = $rewrite = $the_page = $to_omit = $skip = $found = $history = $history_array = $update = $a = $b = $c = $cookie_folder = "";
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
@@ -20,30 +20,22 @@ $time = explode(' ', $time);
 $starttime = $time[1] + $time[0];
 
 if ($password) { // From html.php
-
 	$titletag = 'Password Protected';
-
-	if (file_exists(INC . 'ppp.php')) {
-		include(INC . 'ppp.php');
-		$protected = TRUE;
-	} else {
-		_print("Error in /inc/top.php: '/inc/ppp.php' could not be found.");
-		exit(); // For security (file has to exist)
-	}
-
+	include(INC . 'ppp.php');
+	$protected = TRUE;
 }
 
 if (defined('SITE_ID')) {
 	$adminlink = 'adminlink_' . SITE_ID;
 	$siteID = SITE_ID;
 } else {
-	$adminlink = 'x';
+	$adminlink = FALSE;
 }
 
 // For one-hour admin link in menu.php - be careful: reveals admin folder
 // Accessing the cookie only shows the link (can theoretically be logged out)
 // Logout MUST delete the cookie
-if (isset($_COOKIE[$adminlink]) && (($_COOKIE[$adminlink] == $siteID) || (stripos(LOCATION, 'localhost') !== FALSE))) {
+if (isset($_COOKIE[$adminlink]) && (($_COOKIE[$adminlink] == $siteID) || (stripos(LOCATION, 'localhost') != FALSE))) {
 	$admin = TRUE;
 } else {
 	$admin = FALSE;
@@ -67,31 +59,12 @@ if (isset($_COOKIE[$adminlink]) && (($_COOKIE[$adminlink] == $siteID) || (stripo
 // Assemble the canonical URL
 global $rewrite; // Make available throughout
 
-if (APACHE === FALSE) { // Not Apache
-
-	$rewrite = FALSE; // Has .php file extensions
-	$the_page = $pageID . '.php'; // Add extension
-
-	// Also get folder above (not Apache)
-	// $path = dirname(__DIR__);
-	// $pos = strrpos($path, '\\');
-	// $folder_above = $pos === false ? $path : substr($path, $pos + 1);
-
-} elseif (APACHE === TRUE)  { // Is Apache
-
+if (APACHE) { // Is Apache
 	$rewrite = TRUE; // No .php file extensions
 	$the_page = $pageID; // Both the same
-
-	// Also get folder above for history cookie (seems to work)
-	$path = dirname(__DIR__);
-	$pos = strrpos($path, '/');
-	$folder_above = ($pos === false ? $path : substr($path, $pos + 1));
-	if ($folder_above == 'public_html') { // Standard for shared hosting
-		$folder_above = '/';
-	} else {
-		$folder_above = $folder_above . '/';
-	}
-
+} else { // Not Apache
+	$rewrite = FALSE; // Has .php file extensions
+	$the_page = $pageID . '.php'; // Add extension
 }
 
 if ($pageID == 'index') { // Home page
@@ -117,21 +90,21 @@ if (defined('SHOW_HISTORY') && (SHOW_HISTORY === TRUE)) {
 		}
 	}
 
-	// Get the history
-	if (isset($_COOKIE["supermicro_history"])) {
+	$smcms_history = 'x' . SITE_ID;
 
-		$history = $_COOKIE["supermicro_history"];
-		$historyArray = explode(" ", $history); // Make array
+	// Get the history
+	if (isset($_COOKIE[$smcms_history])) {
+
+		$history = $_COOKIE[$smcms_history];
+		// Whitespace changed to underscore (no whitespace in cookie values)
+		// See corresponding 'explode' in history.php
+		$historyArray = explode("_", $history); // Make array
 
 		if (!$skip) {
 			// If the current page is already in the cookie, do nothing
 			// otherwise add it to the cookie for next page view.
 			// If it is not in the cookie and the page is refreshed,
 			// it will be added. The history will then show the current page.
-			// When a next page is viewed, the cookie contains its page ID
-			// but it has not yet been read. The point is, it is there and
-			// would need to be removed before it is read. But this leaves
-			// the history one short. Don't know the answer.
 			if (strpos($history, $pageID) === FALSE) {
 
 				// Number of values
@@ -155,20 +128,22 @@ if (defined('SHOW_HISTORY') && (SHOW_HISTORY === TRUE)) {
 				}
 
 				if ($pageID != 'index') { // Exclude home page
-					$update = $pageID . ' ' . $a . ' ' . $b; // Add this page
+					// $update is the cookie value (no whitespace)
+					$update = $pageID . '_' . $a . '_' . $b; // Add this page
 				} else { // Is home page
-					$update = $a . ' ' . $b . ' ' . $c; // Home page (do nothing)
+					$update = $a . '_' . $b . '_' . $c; // Home page (do nothing)
 				}
 
 				// Update cookie with this page ID, $a and $b being moved along and $c dropped
-				setcookie("supermicro_history", trim($update), time() + 31556926, $folder_above); // One year
+				// $update may have a trailing underscore (rtrimmed in history.php)
+				setcookie($smcms_history, trim($update), time() + 31556926, $cookie_folder); // One year
 			}
 		}
 
 	} else {
 
 		if (!$skip) {
-			setcookie("supermicro_history", $pageID, time() + 31556926, $folder_above); // One year
+			setcookie($smcms_history, $pageID, time() + 31556926, $cookie_folder); // One year
 		}
 
 	}
@@ -179,6 +154,7 @@ if (defined('SHOW_HISTORY') && (SHOW_HISTORY === TRUE)) {
 /* ================================================== */
 
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>

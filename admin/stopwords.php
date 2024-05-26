@@ -5,16 +5,21 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Feb 2021 */
+/* Last updated 25 May 2024 */
 
 define('ACCESS', TRUE);
 
 // Declare variables
-$response = $response1 = "";
+$response = $preclass = "";
 
 $thisAdmin = 'stopwords'; // For nav
 
-require('./top.php');
+if (!file_exists('./top.php')) { // Leave this
+	echo "Error. The file '/admin/<strong>top.php</strong>' does not exist.";
+	exit();
+}
+
+include('./top.php'); // Loads functions.php
 
 ?>
 <!DOCTYPE html>
@@ -23,20 +28,12 @@ require('./top.php');
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php
-
-if (function_exists('p_title')) {
-	p_title('stopwords');
-} else {
-	_print('Install the latest version of functions.php');
-}
-
-?></title>
+<title><?php p_title('stopwords'); ?></title>
 <?php if (file_exists('../inc/settings.php')) { ?>
 <link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
 <?php } ?>
 <meta name="robots" content="noindex,nofollow">
-<link rel="stylesheet" href="stylesheet.css" type="text/css">
+<link rel="stylesheet" href="styles.css" type="text/css">
 
 </head>
 <body>
@@ -49,12 +46,8 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-	if (!file_exists('./login-form.php')) {
-		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
-		exit();
-	} else {
-		require('./login-form.php');
-	}
+	includeFileIfExists('./login-form.php');
+
 
 } elseif ($login) {
 
@@ -63,26 +56,13 @@ if (!$login) {
 
 ?>
 
-<div id="wrap">
+<div id="o"><div id="wrap">
 
-<h1><?php
-
-	if (function_exists('h1')) {
-		h1('stopwords');
-	} else {
-		_print('Install the latest version of functions.php');
-	}
-
-?></h1>
+<h1><?php h1('stopwords'); ?></h1>
 
 <?php
 
-	if (file_exists('./nav.php')) {
-		require('./nav.php');
-	} else {
-		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
-		exit();
-	}
+	includeFileIfExists('./nav.php');
 
 	$thefile = ('../inc/stopwords.txt');
 
@@ -110,7 +90,7 @@ if (!$login) {
 
 ?>
 
-<h3>Spam control stopwords for contact page</h3>
+<h3>Spam control stopwords for messages</h3>
 
 	<div id="response">
 
@@ -133,7 +113,10 @@ if (!$login) {
 	<div id="boxes">
 
 <label>Edit stopwords or phrases and update as required (each on a separate line, with no empty lines).</label>
-<textarea name="content" cols="90" rows="21">
+
+		<div class="textarea-container">
+
+<textarea class="flexitem" name="content" cols="90" rows="21">
 <?php
 
 	if (isset($_POST['pre-submit'])) { // First press
@@ -147,20 +130,28 @@ if (!$login) {
 ?>
 </textarea>
 
+		</div><!-- end .textarea-container //-->
+
 	</div>
 
 	<div id="buttons">
+
+		<div>
 
 <input type="submit" name="<?php
 
 	if (!isset($_POST['pre-submit'])) {
 		_print('pre-submit');
+		$preclass = '';
 	} else {
 		_print('submit');
+		$preclass = 'class="pre" ';
 	}
 
-?>" value="Update 'stopwords'">
+?>" <?php _print($preclass); ?>value="Add stopwords">
 <input type="submit" name="submit2" class="fade" value="Get current">
+
+		</div>
 
 	</div>
 
@@ -168,7 +159,8 @@ if (!$login) {
 
 <?php
 
-	include('./footer.php');
+	includeFileIfExists('./footer.php');
+
 
 } else {
 
@@ -179,6 +171,7 @@ if (!$login) {
 }
 
 ?>
+</div></div>
 
 </body>
 </html>

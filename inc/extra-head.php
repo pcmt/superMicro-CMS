@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Oct 2023 */
+/* Last updated 24 May 2024 */
 /* $canonical from top.php */
 
 if (!defined('ACCESS')) {
@@ -20,9 +20,6 @@ if ($pageID == 'index') {
 } else {
 	$type = 'article';
 }
-
-// Replace quotes etc
-$titletag = str_replace(array("\"", "'"), "&#34;", $titletag);
 
 if (defined('SITE_NAME')) {
 	_print_nla('<meta property="og:site_name" content="' . SITE_NAME . '">');

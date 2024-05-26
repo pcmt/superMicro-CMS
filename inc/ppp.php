@@ -5,10 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 16 March 2023 */
+/* Last updated 11 Feb 2024 */
 
 // top.php loads this file, but only if html.php detects a password
-// (1) This file starts a session then:
+// (1) This file then starts a session and:
 // (2) checks whether both parts of the password form were submitted
 // (3) checks the password for valid characters
 // (4) compares the entered password with the one in the page (html.php)
@@ -37,5 +37,8 @@ if (isset($_POST['submit_pass']) && $_POST['pass']) {
 	}
 
 }
+
+// There is a logout form but it isn't required
+// because closing the browser ends the session
 
 ?>

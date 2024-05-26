@@ -303,9 +303,9 @@ function displayLoading() {
 
 ?>
 
-		</div></main>
+		</div><!-- end s //-->
 
-	</main>
+	</div></main><!-- end col & main //-->
 
 <?php
 

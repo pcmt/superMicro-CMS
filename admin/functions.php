@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 31 May 2023 */
+/* Last updated 21 May 2024 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -56,111 +56,34 @@ function h1($page) {
 }
 
 /* --------------------------------------------------
- * setup.php
- */
-
-function getchmod($file) {
-
-	$perms = fileperms($file);
-
-	if (($perms & 0xC000) == 0xC000) {
-		// Socket
-		$info = 's';
-	} elseif (($perms & 0xA000) == 0xA000) {
-		// Symbolic Link
-		$info = 'l';
-	} elseif (($perms & 0x8000) == 0x8000) {
-		// Regular
-		$info = '-';
-	} elseif (($perms & 0x6000) == 0x6000) {
-		// Block special
-		$info = 'b';
-	} elseif (($perms & 0x4000) == 0x4000) {
-		// Directory
-		$info = 'd';
-	} elseif (($perms & 0x2000) == 0x2000) {
-		// Character special
-		$info = 'c';
-	} elseif (($perms & 0x1000) == 0x1000) {
-		// FIFO pipe
-		$info = 'p';
-	} else {
-		// Unknown
-		$info = 'u';
-	}
-
-	// Owner
-	$info .= (($perms & 0x0100) ? 'r' : '-');
-	$info .= (($perms & 0x0080) ? 'w' : '-');
-	$info .= (($perms & 0x0040) ?
-		(($perms & 0x0800) ? 's' : 'x' ) :
-		(($perms & 0x0800) ? 'S' : '-'));
-
-	// Group
-	$info .= (($perms & 0x0020) ? 'r' : '-');
-	$info .= (($perms & 0x0010) ? 'w' : '-');
-	$info .= (($perms & 0x0008) ?
-		(($perms & 0x0400) ? 's' : 'x' ) :
-		(($perms & 0x0400) ? 'S' : '-'));
-
-	// World
-	$info .= (($perms & 0x0004) ? 'r' : '-');
-	$info .= (($perms & 0x0002) ? 'w' : '-');
-	$info .= (($perms & 0x0001) ?
-		(($perms & 0x0200) ? 't' : 'x' ) :
-		(($perms & 0x0200) ? 'T' : '-'));
-
-	$realmode = '';
-	$legal =  array('', 'w', 'r', 'x', '-');
-	$attarray = preg_split('//', $info);
-
-	for ($i=0; $i < count($attarray); $i++)
-		if ($key = array_search($attarray[$i], $legal))
-			$realmode .= $legal[$key];
-
-		$info = str_pad($realmode, 10, '-', STR_PAD_LEFT);
-		$trans = array('-'=>'0', 'r'=>'4', 'w'=>'2', 'x'=>'1');
-		$info = strtr($info, $trans);
-
-		$newmode = $info[0];
-		$newmode .= $info[1] + $info[2] + $info[3];
-		$newmode .= $info[4] + $info[5] + $info[6];
-		$newmode .= $info[7] + $info[8] + $info[9];
-
-	return $newmode;
-}
-
-/* --------------------------------------------------
+ * Most admin files:
+ * index.php
+ * images.php
+ * upload.php
  * htaccess.php
+ * backup.php
+ * setup.php
+ * stopwords.php
+ * upload.php
+ * video.php
  */
 
-function getBetween($content, $start, $end) {
-	$r = explode($start, $content);
-	if (isset($r[1])) {
-		$r = explode($end, $r[1]);
-		return $r[0];
+function includeFileIfExists($filename) {
+
+	// Prevent 'Undefined variable' error
+	global $self; // For login-form.php
+	global $tm_start; // For footer.php
+	global $thisAdmin; // For nav.php
+	global $rewrite; // For list.php
+
+	if (file_exists($filename)) {
+		include($filename);
+	} else {
+		echo "Error. The file '{$filename}' doesn't exist. It must be installed.";
+		exit();
 	}
 
-	return '';
-}
-
-/* --------------------------------------------------
- * index.php
- */
-
-function removeEmptyLines($str) {
-	return preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $str);
-}
-
-/* --------------------------------------------------
- * index.php
- */
-
-function stripAnchor($str) {
-	$str = preg_replace("/\[[^\]]*]/", "", $str);
-	$str = trim($str);
-
-	return $str;
+	// Usage: includeFileIfExists('./example.php');
 }
 
 /* --------------------------------------------------
@@ -189,44 +112,33 @@ function phpSELF() {
 }
 
 /* --------------------------------------------------
- * install.php
+ * index.php
+ * comments.php
+ * extras.php
+ * images.php
+ * upload.php
  * htaccess.php
+ * backup.php
+ * setup.php
+ * stopwords.php
+ * upload.php
+ * video.php
  */
 
-// Replaces PHP is_writable() as workaround for Windows bug in is_writable() function
-function isWritable($path) {
-	if ('WIN' === strtoupper(substr(PHP_OS, 0, 3 ))) {
-		return win_isWritable($path);
-	} else {
-		return is_writable($path);
-	}
-}
-
-/* --------------------------------------------------
- * Used in function isWritable (above)
- */
-
-// This function is called only on Windows servers (adapted from WordPress 4.0)
-function win_isWritable($path) {
-	if ($path[strlen($path) - 1] == '/') { // If it looks like a directory...
-		return win_isWritable($path . uniqid(mt_rand()) . '.tmp');
-	} elseif (is_dir($path)) { // If it is a directory and not a file...
-		return win_isWritable($path . '/' . uniqid(mt_rand()) . '.tmp');
+// Displays footer on logout
+function loggedoutFooter() {
+	global $dofooter;
+	if ($dofooter) {
+		$anchor = str_replace(['http://', 'https://'], '', LOCATION);
+		echo '<p><a href="' . LOCATION . '">' . $anchor . '</a></p>';
 	}
 
-	// Check tmp file for read/write capabilities
-	$should_delete_tmp_file = !file_exists($path);
-	$f = @fopen($path, 'a');
-	if ($f === FALSE) {
-		return FALSE;
+	if (file_exists('./install.php') && !file_exists('./password.php')) { // For when not installed
+		echo '<p>It seems superMicro CMS is not yet installed.</p>
+<p><a href="./install.php">Install here&nbsp;&raquo;</a></p>';
+	} else { // Is installed
+		echo '<p><a href="https://web.patricktaylor.com/hash-sha256" target="_blank">Lost or forgotten password&nbsp;&raquo;</a></p>';
 	}
-	fclose($f);
-
-	if ($should_delete_tmp_file) {
-		unlink($path);
-	}
-
-	return TRUE;
 }
 
 /* --------------------------------------------------
@@ -253,33 +165,30 @@ function get_protocol() {
 }
 
 /* --------------------------------------------------
- * index.php
- * comments.php
- * extras.php
- * images.php
- * upload.php
- * htaccess.php
- * backup.php
- * setup.php
- * stopwords.php
- * upload.php
- * video.php
+ * top.php
  */
 
-// Displays footer on logout
-function loggedoutFooter() {
-	global $dofooter; // What was $cms_dir (12 Aug 2020) ?
-	if ($dofooter) {
-		$anchor = str_replace('http://', '', LOCATION);
-		echo '<p><a href="' . LOCATION . '">' . $anchor . '</a> (logged out)</p>';
+function sanitizeIt($var) {
+	$var = trim($var);
+	$var = str_replace(["<", ">", "\"", "'", "\\", "/"], '', $var);
+	$var = stripslashes($var);
+	return $var;
+}
+
+/* --------------------------------------------------
+ * install.php
+ */
+
+// For cookies and site ID
+function randomString($length) {
+	$chars = "abcdefghijklmnopqrstuvwxyz";
+	$str = '';
+	$size = strlen($chars);
+	for ($i = 0; $i < $length; $i++) {
+		$str .= $chars[rand(0, $size - 1)];
 	}
 
-	if (file_exists('./install.php') && !file_exists('./password.php')) { // For when not installed
-		echo '<p>It seems superMicro CMS is not yet installed.</p>
-<p><a href="./install.php">Install here&nbsp;&raquo;</a></p>';
-	} else { // Is installed
-		echo '<p><a href="https://patricktaylor.com/hash-sha256.php" target="_blank">Lost or forgotten password&nbsp;&raquo;</a></p>';
-	}
+	return $str;
 }
 
 /* --------------------------------------------------
@@ -362,30 +271,152 @@ function allChars($str) {
 }
 
 /* --------------------------------------------------
- * install.php
+ * htaccess.php
  */
 
-// For cookies and site ID
-function randomString($length) {
-	$chars = "abcdefghijklmnopqrstuvwxyz";
-	$str = '';
-	$size = strlen($chars);
-	for ($i = 0; $i < $length; $i++) {
-		$str .= $chars[rand(0, $size - 1)];
+function getBetween($content, $start, $end) {
+	$r = explode($start, $content);
+	if (isset($r[1])) {
+		$r = explode($end, $r[1]);
+		return $r[0];
 	}
+
+	return '';
+}
+
+/* --------------------------------------------------
+ * setup.php
+ */
+
+function getchmod($file) {
+
+	$perms = fileperms($file);
+
+	if (($perms & 0xC000) == 0xC000) {
+		// Socket
+		$info = 's';
+	} elseif (($perms & 0xA000) == 0xA000) {
+		// Symbolic Link
+		$info = 'l';
+	} elseif (($perms & 0x8000) == 0x8000) {
+		// Regular
+		$info = '-';
+	} elseif (($perms & 0x6000) == 0x6000) {
+		// Block special
+		$info = 'b';
+	} elseif (($perms & 0x4000) == 0x4000) {
+		// Directory
+		$info = 'd';
+	} elseif (($perms & 0x2000) == 0x2000) {
+		// Character special
+		$info = 'c';
+	} elseif (($perms & 0x1000) == 0x1000) {
+		// FIFO pipe
+		$info = 'p';
+	} else {
+		// Unknown
+		$info = 'u';
+	}
+
+	// Owner
+	$info .= (($perms & 0x0100) ? 'r' : '-');
+	$info .= (($perms & 0x0080) ? 'w' : '-');
+	$info .= (($perms & 0x0040) ?
+		(($perms & 0x0800) ? 's' : 'x' ) :
+		(($perms & 0x0800) ? 'S' : '-'));
+
+	// Group
+	$info .= (($perms & 0x0020) ? 'r' : '-');
+	$info .= (($perms & 0x0010) ? 'w' : '-');
+	$info .= (($perms & 0x0008) ?
+		(($perms & 0x0400) ? 's' : 'x' ) :
+		(($perms & 0x0400) ? 'S' : '-'));
+
+	// World
+	$info .= (($perms & 0x0004) ? 'r' : '-');
+	$info .= (($perms & 0x0002) ? 'w' : '-');
+	$info .= (($perms & 0x0001) ?
+		(($perms & 0x0200) ? 't' : 'x' ) :
+		(($perms & 0x0200) ? 'T' : '-'));
+
+	$realmode = '';
+	$legal =  array('', 'w', 'r', 'x', '-');
+	$attarray = preg_split('//', $info);
+
+	for ($i=0; $i < count($attarray); $i++)
+		if ($key = array_search($attarray[$i], $legal))
+			$realmode .= $legal[$key];
+
+		$info = str_pad($realmode, 10, '-', STR_PAD_LEFT);
+		$trans = array('-'=>'0', 'r'=>'4', 'w'=>'2', 'x'=>'1');
+		$info = strtr($info, $trans);
+
+		$newmode = $info[0];
+		$newmode .= $info[1] + $info[2] + $info[3];
+		$newmode .= $info[4] + $info[5] + $info[6];
+		$newmode .= $info[7] + $info[8] + $info[9];
+
+	return $newmode;
+}
+
+/* --------------------------------------------------
+ * index.php
+ */
+
+function removeEmptyLines($str) {
+	return preg_replace("/(^[\r\n]*|[\r\n]+)[\s\t]*[\r\n]+/", "\n", $str);
+}
+
+/* --------------------------------------------------
+ * index.php
+ */
+
+function stripAnchor($str) {
+	$str = preg_replace("/\[[^\]]*]/", "", $str);
+	$str = trim($str);
 
 	return $str;
 }
 
 /* --------------------------------------------------
- * top.php
+ * install.php
+ * htaccess.php
  */
 
-function sanitizeIt($var) {
-	$var = trim($var);
-	$var = str_replace(["<", ">", "\"", "'", "\\", "/"], '', $var);
-	$var = stripslashes($var);
-	return $var;
+// Replaces PHP is_writable() as workaround for Windows bug in is_writable() function
+function isWritable($path) {
+	if ('WIN' === strtoupper(substr(PHP_OS, 0, 3 ))) {
+		return win_isWritable($path);
+	} else {
+		return is_writable($path);
+	}
+}
+
+/* --------------------------------------------------
+ * Used in function isWritable (above)
+ */
+
+// This function is called only on Windows servers (adapted from WordPress 4.0)
+function win_isWritable($path) {
+	if ($path[strlen($path) - 1] == '/') { // If it looks like a directory...
+		return win_isWritable($path . uniqid(mt_rand()) . '.tmp');
+	} elseif (is_dir($path)) { // If it is a directory and not a file...
+		return win_isWritable($path . '/' . uniqid(mt_rand()) . '.tmp');
+	}
+
+	// Check tmp file for read/write capabilities
+	$should_delete_tmp_file = !file_exists($path);
+	$f = @fopen($path, 'a');
+	if ($f === FALSE) {
+		return FALSE;
+	}
+	fclose($f);
+
+	if ($should_delete_tmp_file) {
+		unlink($path);
+	}
+
+	return TRUE;
 }
 
 ?>
