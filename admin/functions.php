@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 May 2024 */
+/* Last updated 04 Sept 2024 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to functions.php');
@@ -64,6 +64,7 @@ function h1($page) {
  * backup.php
  * setup.php
  * stopwords.php
+ * stylesheets.php
  * upload.php
  * video.php
  */
@@ -95,6 +96,7 @@ function includeFileIfExists($filename) {
  * backup.php
  * setup.php
  * stopwords.php
+ * stylesheets.php
  * upload.php
  * video.php
  */
@@ -121,6 +123,7 @@ function phpSELF() {
  * backup.php
  * setup.php
  * stopwords.php
+ * stylesheets.php
  * upload.php
  * video.php
  */
@@ -146,7 +149,7 @@ function loggedoutFooter() {
  * setup.php
  */
 
-// HTTPS or HTTP (from 22 Nov 18)
+// HTTPS or HTTP
 function get_protocol() {
 	if (isset($_SERVER['HTTPS'])) {
 		if ('on' === strtolower($_SERVER['HTTPS'])) {
@@ -192,6 +195,17 @@ function randomString($length) {
 }
 
 /* --------------------------------------------------
+ * Not used?
+ */
+/*
+function getPostValue($key) {
+	// Each variable is assigned the trimmed value IF the corresponding
+	// key exists in the $_POST array, otherwise an empty string is assigned
+	// eg: $_value = if condition ? if true : if false
+	return isset($_POST[$key]) ? trim($_POST[$key]) : '';
+}
+*/
+/* --------------------------------------------------
  * setup.php
  */
 
@@ -205,27 +219,13 @@ function allowedChars($str) {
 		/* English */
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 		/* Latin */
-		'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ő', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ű', 'Ý', 'Þ', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ő', 'ø', 'ù', 'ú', 'û', 'ü', 'ű', 'ý', 'þ', 'ÿ',
-		/* Greek */
-		'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω', 'Ά', 'Έ', 'Ί', 'Ό', 'Ύ', 'Ή', 'Ώ', 'Ϊ', 'Ϋ', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω', 'ά', 'έ', 'ί', 'ό', 'ύ', 'ή', 'ώ', 'ς', 'ϊ', 'ΰ', 'ϋ', 'ΐ',
-		/* Turkish */
-		'Ş', 'İ', 'Ç', 'Ü', 'Ö', 'Ğ', 'ş', 'ı', 'ç', 'ü', 'ö', 'ğ',
-		/* Russian */
-		'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
-		/* Ukrainian */
-		'Є', 'І', 'Ї', 'Ґ', 'є', 'і', 'ї', 'ґ',
-		/* Czech */
-		'Č', 'Ď', 'Ě', 'Ň', 'Ř', 'Š', 'Ť', 'Ů', 'Ž', 'č', 'ď', 'ě', 'ň', 'ř', 'š', 'ť', 'ů', 'ž',
-		/* Polish */
-		'Ą', 'Ć', 'Ę', 'Ł', 'Ń', 'Ó', 'Ś', 'Ź', 'Ż', 'ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż',
-		/* Latvian */
-		'Ā', 'Č', 'Ē', 'Ģ', 'Ī', 'Ķ', 'Ļ', 'Ņ', 'Š', 'Ū', 'Ž', 'ā', 'č', 'ē', 'ģ', 'ī', 'ķ', 'ļ', 'ņ', 'š', 'ū', 'ž'
+		'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ő', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ű', 'Ý', 'Þ', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ő', 'ø', 'ù', 'ú', 'û', 'ü', 'ű', 'ý', 'þ', 'ÿ'
 	);
 
 	$allowed = implode("", $charArray);
 	$str = preg_replace("/[^' . $allowed . ']+/u", "", $str); // Strip all characters except $allowed
 	$str = preg_replace("/[[:space:]]+/", " ", $str); // Strip multiple spaces
-	$str = str_replace("'", "\'", $str); // Escape single quotes for settings.php
+	$str = preg_replace("#'+#", "\'", $str); // Escape multiple single quotes for settings.php
 
 	return $str;
 }
@@ -244,21 +244,7 @@ function allChars($str) {
 		/* English */
 		'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
 		/* Latin */
-		'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ő', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ű', 'Ý', 'Þ', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ő', 'ø', 'ù', 'ú', 'û', 'ü', 'ű', 'ý', 'þ', 'ÿ',
-		/* Greek */
-		'Α', 'Β', 'Γ', 'Δ', 'Ε', 'Ζ', 'Η', 'Θ', 'Ι', 'Κ', 'Λ', 'Μ', 'Ν', 'Ξ', 'Ο', 'Π', 'Ρ', 'Σ', 'Τ', 'Υ', 'Φ', 'Χ', 'Ψ', 'Ω', 'Ά', 'Έ', 'Ί', 'Ό', 'Ύ', 'Ή', 'Ώ', 'Ϊ', 'Ϋ', 'α', 'β', 'γ', 'δ', 'ε', 'ζ', 'η', 'θ', 'ι', 'κ', 'λ', 'μ', 'ν', 'ξ', 'ο', 'π', 'ρ', 'σ', 'τ', 'υ', 'φ', 'χ', 'ψ', 'ω', 'ά', 'έ', 'ί', 'ό', 'ύ', 'ή', 'ώ', 'ς', 'ϊ', 'ΰ', 'ϋ', 'ΐ',
-		/* Turkish */
-		'Ş', 'İ', 'Ç', 'Ü', 'Ö', 'Ğ', 'ş', 'ı', 'ç', 'ü', 'ö', 'ğ',
-		/* Russian */
-		'А', 'Б', 'В', 'Г', 'Д', 'Е', 'Ё', 'Ж', 'З', 'И', 'Й', 'К', 'Л', 'М', 'Н', 'О', 'П', 'Р', 'С', 'Т', 'У', 'Ф', 'Х', 'Ц', 'Ч', 'Ш', 'Щ', 'Ъ', 'Ы', 'Ь', 'Э', 'Ю', 'Я', 'а', 'б', 'в', 'г', 'д', 'е', 'ё', 'ж', 'з', 'и', 'й', 'к', 'л', 'м', 'н', 'о', 'п', 'р', 'с', 'т', 'у', 'ф', 'х', 'ц', 'ч', 'ш', 'щ', 'ъ', 'ы', 'ь', 'э', 'ю', 'я',
-		/* Ukrainian */
-		'Є', 'І', 'Ї', 'Ґ', 'є', 'і', 'ї', 'ґ',
-		/* Czech */
-		'Č', 'Ď', 'Ě', 'Ň', 'Ř', 'Š', 'Ť', 'Ů', 'Ž', 'č', 'ď', 'ě', 'ň', 'ř', 'š', 'ť', 'ů', 'ž',
-		/* Polish */
-		'Ą', 'Ć', 'Ę', 'Ł', 'Ń', 'Ó', 'Ś', 'Ź', 'Ż', 'ą', 'ć', 'ę', 'ł', 'ń', 'ó', 'ś', 'ź', 'ż',
-		/* Latvian */
-		'Ā', 'Č', 'Ē', 'Ģ', 'Ī', 'Ķ', 'Ļ', 'Ņ', 'Š', 'Ū', 'Ž', 'ā', 'č', 'ē', 'ģ', 'ī', 'ķ', 'ļ', 'ņ', 'š', 'ū', 'ž'
+		'À', 'Á', 'Â', 'Ã', 'Ä', 'Å', 'Æ', 'Ç', 'È', 'É', 'Ê', 'Ë', 'Ì', 'Í', 'Î', 'Ï', 'Ð', 'Ñ', 'Ò', 'Ó', 'Ô', 'Õ', 'Ö', 'Ő', 'Ø', 'Ù', 'Ú', 'Û', 'Ü', 'Ű', 'Ý', 'Þ', 'ß', 'à', 'á', 'â', 'ã', 'ä', 'å', 'æ', 'ç', 'è', 'é', 'ê', 'ë', 'ì', 'í', 'î', 'ï', 'ð', 'ñ', 'ò', 'ó', 'ô', 'õ', 'ö', 'ő', 'ø', 'ù', 'ú', 'û', 'ü', 'ű', 'ý', 'þ', 'ÿ'
 	);
 
 	$allowed = implode("", $charArray);
@@ -273,7 +259,22 @@ function allChars($str) {
 /* --------------------------------------------------
  * htaccess.php
  */
+/*
+Initial Split (explode($start, $content)):
+The explode function splits the $content string at each occurrence of the $start substring. The result is an array $r where the first element ($r[0]) contains everything before the first occurrence of $start, and the second element ($r[1]) contains everything after it.
 
+Check if $start was found:
+The isset($r[1]) check is used to determine if the $start substring was found in the $content. If $start is not found, $r[1] will not be set, and the function will return an empty string.
+
+Second Split (explode($end, $r[1])):
+If $start was found, the code then splits the second part of the string (everything after $start) at the first occurrence of the $end substring. This returns another array where $r[0] contains the string between $start and $end.
+
+Return the Substring:
+The function returns the string found between $start and $end. If $end is not found, the entire string after $start will be returned.
+
+Fallback Return:
+If $start is not found in the content, the function returns an empty string.
+*/
 function getBetween($content, $start, $end) {
 	$r = explode($start, $content);
 	if (isset($r[1])) {
@@ -282,81 +283,6 @@ function getBetween($content, $start, $end) {
 	}
 
 	return '';
-}
-
-/* --------------------------------------------------
- * setup.php
- */
-
-function getchmod($file) {
-
-	$perms = fileperms($file);
-
-	if (($perms & 0xC000) == 0xC000) {
-		// Socket
-		$info = 's';
-	} elseif (($perms & 0xA000) == 0xA000) {
-		// Symbolic Link
-		$info = 'l';
-	} elseif (($perms & 0x8000) == 0x8000) {
-		// Regular
-		$info = '-';
-	} elseif (($perms & 0x6000) == 0x6000) {
-		// Block special
-		$info = 'b';
-	} elseif (($perms & 0x4000) == 0x4000) {
-		// Directory
-		$info = 'd';
-	} elseif (($perms & 0x2000) == 0x2000) {
-		// Character special
-		$info = 'c';
-	} elseif (($perms & 0x1000) == 0x1000) {
-		// FIFO pipe
-		$info = 'p';
-	} else {
-		// Unknown
-		$info = 'u';
-	}
-
-	// Owner
-	$info .= (($perms & 0x0100) ? 'r' : '-');
-	$info .= (($perms & 0x0080) ? 'w' : '-');
-	$info .= (($perms & 0x0040) ?
-		(($perms & 0x0800) ? 's' : 'x' ) :
-		(($perms & 0x0800) ? 'S' : '-'));
-
-	// Group
-	$info .= (($perms & 0x0020) ? 'r' : '-');
-	$info .= (($perms & 0x0010) ? 'w' : '-');
-	$info .= (($perms & 0x0008) ?
-		(($perms & 0x0400) ? 's' : 'x' ) :
-		(($perms & 0x0400) ? 'S' : '-'));
-
-	// World
-	$info .= (($perms & 0x0004) ? 'r' : '-');
-	$info .= (($perms & 0x0002) ? 'w' : '-');
-	$info .= (($perms & 0x0001) ?
-		(($perms & 0x0200) ? 't' : 'x' ) :
-		(($perms & 0x0200) ? 'T' : '-'));
-
-	$realmode = '';
-	$legal =  array('', 'w', 'r', 'x', '-');
-	$attarray = preg_split('//', $info);
-
-	for ($i=0; $i < count($attarray); $i++)
-		if ($key = array_search($attarray[$i], $legal))
-			$realmode .= $legal[$key];
-
-		$info = str_pad($realmode, 10, '-', STR_PAD_LEFT);
-		$trans = array('-'=>'0', 'r'=>'4', 'w'=>'2', 'x'=>'1');
-		$info = strtr($info, $trans);
-
-		$newmode = $info[0];
-		$newmode .= $info[1] + $info[2] + $info[3];
-		$newmode .= $info[4] + $info[5] + $info[6];
-		$newmode .= $info[7] + $info[8] + $info[9];
-
-	return $newmode;
 }
 
 /* --------------------------------------------------
@@ -371,52 +297,18 @@ function removeEmptyLines($str) {
  * index.php
  */
 
+// Remove text enclosed in square brackets from a given string
 function stripAnchor($str) {
+/*
+Breakdown of the pattern:
+\[: matches the literal [
+[^\]]*: matches any characters that are not ] zero or more times
+]: Matches the literal ]
+*/
 	$str = preg_replace("/\[[^\]]*]/", "", $str);
 	$str = trim($str);
 
 	return $str;
-}
-
-/* --------------------------------------------------
- * install.php
- * htaccess.php
- */
-
-// Replaces PHP is_writable() as workaround for Windows bug in is_writable() function
-function isWritable($path) {
-	if ('WIN' === strtoupper(substr(PHP_OS, 0, 3 ))) {
-		return win_isWritable($path);
-	} else {
-		return is_writable($path);
-	}
-}
-
-/* --------------------------------------------------
- * Used in function isWritable (above)
- */
-
-// This function is called only on Windows servers (adapted from WordPress 4.0)
-function win_isWritable($path) {
-	if ($path[strlen($path) - 1] == '/') { // If it looks like a directory...
-		return win_isWritable($path . uniqid(mt_rand()) . '.tmp');
-	} elseif (is_dir($path)) { // If it is a directory and not a file...
-		return win_isWritable($path . '/' . uniqid(mt_rand()) . '.tmp');
-	}
-
-	// Check tmp file for read/write capabilities
-	$should_delete_tmp_file = !file_exists($path);
-	$f = @fopen($path, 'a');
-	if ($f === FALSE) {
-		return FALSE;
-	}
-	fclose($f);
-
-	if ($should_delete_tmp_file) {
-		unlink($path);
-	}
-
-	return TRUE;
 }
 
 ?>

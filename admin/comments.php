@@ -5,16 +5,17 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 May 2024 */
+/* Last updated 09 September 2024 */
+// Triple ===
 
 define('ACCESS', TRUE);
 
 // Declare variables
-$page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = "";
+$page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = $preclass = "";
 
 $thisAdmin = 'comments'; // For nav
 
-require('./top.php');
+include('./top.php');
 
 // For $fileurl link to successful update
 if (APACHE) {
@@ -25,23 +26,13 @@ if (APACHE) {
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php
-
-if (function_exists('p_title')) {
-	p_title('comments');
-} else {
-	_print('Install the latest version of functions.php');
-}
-
-?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<title><?php p_title('comments') ?></title>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -56,12 +47,7 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-	if (!file_exists('./login-form.php')) {
-		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
-		exit();
-	} else {
-		require('./login-form.php');
-	}
+	includeFileIfExists('./login-form.php');
 
 } elseif ($login) {
 
@@ -75,7 +61,7 @@ if (!$login) {
 			$commentfilename = $filetitle . '.txt';
 			if (file_exists("../comments/{$commentfilename}")) {
 				$file_contents = stripslashes(file_get_contents("../comments/{$commentfilename}"));
-				if ($filetitle == 'index') {
+				if ($filetitle === 'index') {
 					$fileurl = LOCATION;
 				} else {
 					$fileurl = LOCATION . $filetitle . $ext;
@@ -93,24 +79,11 @@ if (!$login) {
 
 <div id="o"><div id="wrap">
 
-<h1><?php
-
-	if (function_exists('h1')) {
-		h1('comments');
-	} else {
-		_print('Install the latest version of functions.php');
-	}
-
-?></h1>
+<h1><?php h1('comments'); ?></h1>
 
 <?php
 
-	if (file_exists('./nav.php')) {
-		require('./nav.php');
-	} else {
-		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
-		exit();
-	}
+	includeFileIfExists('./nav.php');
 
 /* ---------------------------------------------------------------------- */
 /* Get comments */
@@ -125,7 +98,7 @@ if (!$login) {
 				$response = '<em>Sorry, this comments file does not exist. Try another.</em>';
 			} else {
 				$file_contents = stripslashes(file_get_contents("../comments/{$commentsfilename}"));
-				if ($filetitle == 'index') {
+				if ($filetitle === 'index') {
 					$fileurl = LOCATION;
 				} else {
 					$fileurl = LOCATION . $filetitle . $ext;
@@ -139,10 +112,10 @@ if (!$login) {
 /* Prepare to edit comments */
 
 	if (isset($_POST['presubmit'])) {
-		if (trim($_POST['comments_id']) == '') {
+		if (trim($_POST['comments_id']) === '') {
 			$response = "<em>You didn't enter a page name.</em>";
 			$update = FALSE;
-		} elseif (trim($_POST['content']) == '') {
+		} elseif (trim($_POST['content']) === '') {
 			$response = "<em>You didn't enter any comments.</em>";
 			$update = FALSE;
 		} else {
@@ -165,10 +138,10 @@ if (!$login) {
 
 	if (isset($_POST['submit'])) {
 		$filetitle = trim($_POST['comments_id']);
-		if ($filetitle == '') {
+		if ($filetitle === '') {
 			$response = "<em>You didn't enter a page name.</em>";
 			$update = FALSE;
-		} elseif (trim($_POST['content']) == '') {
+		} elseif (trim($_POST['content']) === '') {
 			$response = "<em>You didn't enter any comments.</em>";
 			$update = FALSE;
 		} else {
@@ -185,7 +158,7 @@ if (!$login) {
 				$fp = fopen($commentsfilename, 'w+');
 				fwrite($fp, $commentscontent);
 				fclose($fp);
-				if ($filetitle == 'index') {
+				if ($filetitle === 'index') {
 					$fileurl = LOCATION;
 				} else {
 					$fileurl = LOCATION . $filetitle . $ext;
@@ -261,15 +234,18 @@ if (!$login) {
 		<div>
 
 <input type="submit" name="get_comments" class="fade" value="Get comments">
+
 <input type="submit" name="<?php
 
 	if (isset($_POST['presubmit']) && $update) { // Move forward only if not whitespace
 		_print('submit');
+		$preclass = 'class="pre" ';
 	} else {
 		_print('presubmit');
+		$preclass = '';
 	}
 
-?>" value="Update comments">
+?>" <?php _print($preclass); ?>value="Update comments">
 
 		</div>
 

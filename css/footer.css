@@ -1,0 +1,30 @@
+/* Light footer [last update 02 July 2024] */
+
+@media screen and (min-width: 798px) {
+
+  footer {
+    border-top: 1px solid #ddd;
+    border-bottom: 2.4em solid var(--white);
+    color: var(--black);
+    background: var(--white) url('../img/bg_light_footer.png') no-repeat;
+    background-position: center bottom;
+    -webkit-box-shadow: 0 700px 0 700px var(--white);
+    -moz-box-shadow: 0 700px 0 700px var(--white);
+    box-shadow: 0 700px 0 700px var(--white);
+  }
+
+  footer a {
+    color: var(--black);
+    padding-bottom: 1px;
+    border-bottom: 1px solid #ddd;
+  }
+
+  footer p a:hover {
+    color: var(--link);
+  }
+
+  footer span {
+    color: #666;
+  }
+
+}

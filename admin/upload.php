@@ -5,7 +5,8 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 May 2024 */
+/* Last updated 02 September 2024 */
+// Triple ===
 
 define('ACCESS', TRUE);
 
@@ -25,9 +26,7 @@ include('./top.php');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php p_title('uploads'); ?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -87,9 +86,12 @@ if (!$login) {
 					$uploads_dir = realpath(__DIR__ . '/../uploads');
 					$random_string = randomString( 2 );
 					$new_filename = $random_string . '_' . $filename;
+					// Replace whitespace with dash
+					$new_filename = preg_replace('/\s+/', '-', trim($new_filename));
 					$target_file = $uploads_dir . '/' . $new_filename;
 
 					$file_to_upload = $_FILES['upload']['tmp_name'];
+
 					if (move_uploaded_file($file_to_upload, $target_file)) {
 						$response = '<em>The file <b>' . $new_filename . '</b> has been uploaded.</em>';
 					} else {
@@ -146,7 +148,7 @@ if (!$login) {
 
 <form enctype="multipart/form-data" action="<?php _print($self); ?>" method="post" onSubmit="displayLoading();">
 <label>2 megabytes max.<br>2 letters are added to your filename for security</label>
-<input type="file" name="upload">
+<input type="file" name="upload" style="width: 95%;">
 <input type="submit" name="submit1" class="stacked" value="Upload file">
 </form>
 
@@ -205,7 +207,7 @@ function displayLoading() {
 				foreach ($filesArray as $file) {
 
 					// For file just uploaded, otherwise no class
-					if (isset($_POST['submit1']) && ($file == $new_filename)) {
+					if (isset($_POST['submit1']) && ($file === $new_filename)) {
 						$mark = ' class="mark"';
 					} else {
 						$mark = NULL;

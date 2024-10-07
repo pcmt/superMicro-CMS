@@ -5,7 +5,8 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 May 2024 */
+/* Last updated 02 September 2024 */
+// Triple ===
 
 define('ACCESS', TRUE);
 
@@ -15,9 +16,9 @@ $response = $response1 = $display = $delete = $_file = $dimensions = $problem = 
 $num = "0";
 $thisAdmin = 'images'; // For nav
 $imgfolder = '../img/';
-$excludedFiles = ['bg-dots1.gif', 'loader.gif', 'og.jpg', 'og.png', 'floral.jpg', 'logo.png', 'navbox.jpg', 'fold70.png'];
+$excludedFiles = ['bg-dots1.gif', 'loader.gif', 'og.png', 'bg_dark_footer.png', 'bg_light_footer.png', 'bg_nav.png'];
 
-require('./top.php');
+include('./top.php');
 
 ?>
 <!DOCTYPE html>
@@ -27,9 +28,7 @@ require('./top.php');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php p_title('images'); ?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php echo LOCATION; ?>favicon.ico">
-<?php } ?>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -88,6 +87,8 @@ if (!$login) {
 
 				if ((in_array($extension, $extensions)) && $size) {
 					$filename = $filename . '.' . $extension;
+					// Replace whitespace with dash
+					$filename = preg_replace('/\s+/', '-', trim($filename));
 					if (move_uploaded_file($_FILES['upload']['tmp_name'], "../img/{$filename}")) {
 						$response = '<em>The file named <b>' . $filename . '</b> has been uploaded.</em>';
 						$display = '<img src="../img/' . $filename . '" class="upload" alt="">';
@@ -120,12 +121,12 @@ if (!$login) {
 
 		if (in_array($delete, $excludedFiles)) {
 			$problem = TRUE;
-			$response = "<em>The default images can't be deleted. Maybe upload a new one (<b>og.jpg</b> must be 200 pixels square).</em>";
+			$response = "<em>The default images can't be deleted but they can be replaced with new ones the same size (<b>og.jpg</b> must be 200 pixels square).</em>";
 		}
 
 		if (!$problem && file_exists($_file)) {
 			unlink($_file);
-			$response = '<em>Gone. <b>' . $delete . '</b> was deleted.</em>';
+			$response = '<em><b>' . $delete . '</b> was deleted.</em>';
 		}
 
 	}
@@ -154,7 +155,7 @@ if (!$login) {
 
 <form enctype="multipart/form-data" action="<?php echo $self; ?>" method="post" onSubmit="displayLoading();">
 
-<input type="file" name="upload">
+<input type="file" name="upload" style="width: 95%;">
 <label>Choose a name for the upload file (eg: <b>image1</b> - omit file extension):</label>
 <input type="hidden" name="MAX_FILE_SIZE" value="2097152">
 <input type="text" size="40" name="filename" value="<?php
@@ -234,7 +235,7 @@ function displayLoading() {
 				$kb = number_format($size); // Whole numbers
 
 				// For image just uploaded, otherwise no class
-				if (isset($_POST['submit1']) && ($file == $filename)) {
+				if (isset($_POST['submit1']) && ($file === $filename)) {
 					$mark = ' class="mark"';
 				} else {
 					$mark = NULL;

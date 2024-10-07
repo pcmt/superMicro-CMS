@@ -5,23 +5,24 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 May 2024 */
+/* Last updated 27 Sept 2024 */
+// Triple ===
 
 define('ACCESS', TRUE);
 
 // Declare variables (see also top.php)
-$root = $response = $canonical_1 = $canonical_2 = $protocol = $show_protocol = $filestatus = $g_zip_enabled = $GZIP_status = $htaccess_text = $to_replace1 = $to_replace2 = $has_GZIP = $not_active = "";
+$root = $response = $canonical_1 = $canonical_2 = $show_protocol = $filestatus = $g_zip_enabled = $GZIP_status = $htaccess_text = $to_replace1 = $to_replace2 = $has_GZIP = $not_active = "";
 $add_GZIP = 0;
 
 $thisAdmin = 'htaccess'; // For nav
 
-require('./top.php');
+include('./top.php');
 
 // Detect current .htaccess file
 $filename = ('../.htaccess');
 if (file_exists($filename)) {
 	$htaccess_text = file_get_contents($filename);
-	if ($htaccess_text !== false) {
+	if ($htaccess_text !== FALSE) {
 		if (strpos($htaccess_text, 'Facebook') !== FALSE) {
 			$filestatus = 'extended file';
 		} else {
@@ -46,9 +47,7 @@ if (defined('G_ZIP') && G_ZIP) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php p_title('.htaccess file generator'); ?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -241,7 +240,9 @@ AddOutputFilterByType DEFLATE application/javascript
   RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/(pages)/(.*)\.txt [NC]
   RewriteRule ^ "-" [F]
 
-# Rewrite non php URLs to php on server
+# Exclude static files from being rewritten then
+# rewrite non php URLs to php on server
+  RewriteCond %{REQUEST_URI} !\.(css|js|jpg|jpeg|png|gif|ico|svg)$ [NC]
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteCond %{REQUEST_FILENAME}\.php -f
   RewriteRule ^(.*)$ $1.php [L]
@@ -267,22 +268,23 @@ AddOutputFilterByType DEFLATE application/javascript
 		$htaccess_core = '
 <IfModule mod_rewrite.c>
   RewriteEngine on
-# Forbid direct viewing of txt files in pages folder
-  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/pages/(.*)\.txt [NC]
+
+# Forbid direct viewing txt files in pages folder
+  RewriteCond %{THE_REQUEST} ^[A-Z]{3,}\ (.*)/(pages)/(.*)\.txt [NC]
   RewriteRule ^ "-" [F]
-# Rewrite non php URLs to php on server
-# php URLs still usable
-#     is not a directory
+
+# Exclude static files from being rewritten then
+# rewrite non php URLs to php on server
+  RewriteCond %{REQUEST_URI} !\.(css|js|jpg|jpeg|png|gif|ico|svg)$ [NC]
   RewriteCond %{REQUEST_FILENAME} !-d
-#     is a php file
   RewriteCond %{REQUEST_FILENAME}\.php -f
-# Internally rewrite to actual php file
   RewriteRule ^(.*)$ $1.php [L]
-# If not found, relative path to error 404 file
-#     is not an actual file or directory
+
+# If not found then relative path to error 404 file
   RewriteCond %{REQUEST_FILENAME} !-f
   RewriteCond %{REQUEST_FILENAME} !-d
   RewriteRule .* inc/404.php [L]
+
 </IfModule>
 ';
 
@@ -294,7 +296,7 @@ AddOutputFilterByType DEFLATE application/javascript
 /* SECTION 4: SUBMIT SELECTION (1 or 2) */
 /* ================================================== */
 
-	if ( ( isset($_POST['submit1']) || isset($_POST['submit2']) ) && ($do_htaccess == TRUE) ) {
+	if ( ( isset($_POST['submit1']) || isset($_POST['submit2']) ) && ($do_htaccess === TRUE) ) {
 
 		/* -------------------------------------------------- */
 		// (1) Deal with GZIP first (add or remove without affecting original or extended)
@@ -360,7 +362,7 @@ AddOutputFilterByType DEFLATE application/javascript
 
 ?>
 
-<h3>.htaccess generator for Qwwwik (Apache Web Server only)</h3>
+<h3>.htaccess generator for superMicro CMS (Apache Web Server only)</h3>
 
 	<div id="response">
 

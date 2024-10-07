@@ -5,24 +5,33 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 29 May 2023 */
+/* Last updated 25 August 2024 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to menu.php');
 }
 
-if (defined('SITE_NAME') && (strlen(SITE_NAME) > 0)) { // &nbsp; nudges right for centred letter-spacing
-	_print('<p id="sitename">&nbsp;<a href="' . LOCATION . '" title="' . SITE_NAME . '">' . SITE_NAME . "</a></p>");
+// Mobiles only (appears at top)
+if (defined('SITE_NAME') && (strlen(SITE_NAME) > 0)) {
+	_print('<p id="sitename"><span class="left">///</span> <a href="' . LOCATION . '" title="' . SITE_NAME . '">' . SITE_NAME . '</a></p>');
 	_print("\n\n");
 }
 
 ?>
-	<nav id="navbar">
+	<nav>
 
 <ul>
 <?php
 
-if (isset($pageID) && ($pageID == 'index')) {
+// Non mobile (appears in list)
+if (defined('SITE_NAME') && (strlen(SITE_NAME) > 0)) {
+	_print('<li class="sitename"><a href="' . LOCATION . '" title="' . SITE_NAME . '">' . SITE_NAME . '&nbsp;</a></li>');
+}
+
+/* ================================================== */
+// The main part of the menu:
+
+if (isset($pageID) && ($pageID === 'index')) {
 	_print('<li class="home"><strong>' . HOME_LINK . "</strong></li>");
 } else {
 	_print('<li class="home"><a href="' . LOCATION . '" title="' . HOME_LINK . '">' . HOME_LINK . '</a></li>');
@@ -71,7 +80,7 @@ or, if used, [anchor text] as from v7.12
 		$link = trim(preg_replace('/\[[^\]]*]/', '', $link));
 
 		// Get anchor text only
-		$anchor = substr($line, ($pos = strpos($line, '[')) !== false ? $pos + 1 : 0);
+		$anchor = substr($line, ($pos = strpos($line, '[')) !== FALSE ? $pos + 1 : 0);
 		$anchor = str_replace(array('-', '_', ']'), ' ', $anchor);
 		$anchor = stripslashes(ucwords($anchor));
 		$anchor = trim($anchor);
@@ -88,7 +97,7 @@ or, if used, [anchor text] as from v7.12
 }
 
 if (file_exists('s.php')) { // Nothing if there isn't a file
-	if (isset($pageID) && ($pageID == 's')) { // In search page, so must be on it
+	if (isset($pageID) && ($pageID === 's')) { // In search page, so must be on it
 			_print('<li><strong>' . TEXT16 . '</strong></li>');
 	} else { // Not on search page
 		if ($rewrite) {
@@ -101,7 +110,7 @@ if (file_exists('s.php')) { // Nothing if there isn't a file
 
 if (file_exists('e.php')) { // Nothing if there isn't a file
 	if (defined('CONTACT_MENU') && (CONTACT_MENU != '')) { // Nothing if blank in setup
-		if (isset($pageID) && ($pageID == 'e')) { // In contact page, so must be on it
+		if (isset($pageID) && ($pageID === 'e')) { // In contact page, so must be on it
 			_print('<li><strong>' . CONTACT_MENU . '</strong></li>');
 		} else { // Not on contact page
 			if ($rewrite) {
@@ -114,12 +123,15 @@ if (file_exists('e.php')) { // Nothing if there isn't a file
 }
 
 if ($admin) { // From top.php
-	if ($pageID == 'preview') {
-		$page = ""; /* 03 Aug 20 edit ($page) to avoid undefined var error */
-		if (isset($_GET['page']) && isset($page)) { /* 03 Aug 20 edit (page) */
+	if ($pageID === 'preview') {
+		$page = ""; /* Avoid undefined var error */
+
+		if (isset($_GET['page']) && isset($page)) {
 			$page = trim($_GET['page']);
 		}
+
 		_print('<li class="admin"><a href="' . LOCATION . ADMIN . '/index.php?page=' . $page . '&mode=preview" title="' . TEXT47 . '">' . TEXT47 . '</a></li>');
+
 	} else {
 		if (isset($_textfile)) { /* See html.php for $_textfile (in function) */
 			$_textfile = str_replace('.txt', '', $_textfile); /* Use $pageID? */

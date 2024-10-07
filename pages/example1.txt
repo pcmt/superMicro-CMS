@@ -1,0 +1,32 @@
+#
+Example 1
+
+<h5>Side-by-side image and text</h5>
+
+</div><!-- temporarily stop col //-->
+
+<div class="flexcontainer1 row"><!-- or rowreverse as desired //-->
+
+<div class="box1">
+
+<div><img src="img/photo.jpg" width="640" height="500" class="bgleft3" alt=""></div>
+
+<p class="caption">Caption (optional)</p>
+
+</div><!-- end box 1 //-->
+
+<div class="box2">
+
+<h5>H5 heading</h5>
+
+Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+
+</div><!-- end box 2 //-->
+
+</div><!-- end flexcontainer 1 //-->
+
+<div class="col"><!-- restart col //-->
+
+<em>Return to normal <strong>.col</strong>:</em> Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam, eaque ipsa quae ab illo inventore veritatis et quasi architecto beatae vitae dicta sunt explicabo. Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione voluptatem sequi nesciunt.
+
+<hr class="section">

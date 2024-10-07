@@ -9,10 +9,15 @@ intellectual property.
 https://patricktaylor.com/
 https://web.patricktaylor.com/
 
-The program is released under the GNU General Public License (GPL) version 3
-See http://www.gnu.org/licenses/gpl-3.0.html
+The program is not released under License.
 
-superMicro CMS is not to be distributed for a fee.
+superMicro CMS can be released to individuals for personal use as named users
+only and is not to be given or distributed to others. The program is free of
+charge. The copyright holder and/or any other parties provide the program "as
+is" without warranty of any kind, either expressed or implied, including but
+not limited to any implied warranties of fitness for a particular purpose. The
+entire risk as to the quality and performance of the program is yours. Should
+it prove defective, you assume the cost of all servicing, repair or correction.
 
 THE PROGRAM IS LICENSED FREE OF CHARGE. THE COPYRIGHT HOLDER AND/OR OTHER
 PARTIES PROVIDE THE PROGRAM "AS IS" WITHOUT WARRANTY OF ANY KIND, EITHER
@@ -23,7 +28,7 @@ PROVE DEFECTIVE YOU ASSUME THE COST OF ALL SERVICING, REPAIR OR CORRECTION.
 
 ----------------------------------------------------------------------------
 
-Current version: 5.4 (build: May 2024).
+Current version: 6.1 (build: 01 September 2024).
 
 (1) Designed for Linux / APACHE web server - superMicro CMS uses .htaccess.
 

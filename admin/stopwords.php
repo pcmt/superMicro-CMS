@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 25 May 2024 */
+/* Last updated 01 July 2024 */
 
 define('ACCESS', TRUE);
 
@@ -23,15 +23,13 @@ include('./top.php'); // Loads functions.php
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php p_title('stopwords'); ?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 

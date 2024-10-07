@@ -5,16 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 04 Oct 2023 (tracking removed) */
+/* Last updated 08 July 2024 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to footer.php');
 }
 
 // Declare variables
-$protocol = $logged = "";
-$tracking = FALSE;
-$feedback = 'No feedback';
+$protocol = "";
 
 ?>
 
@@ -34,11 +32,11 @@ if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on') {
 
 $anchor = str_replace($protocol, '', LOCATION);
 
-$output2 = '<p><a href="' . LOCATION . '">' . $anchor . '</a>';
-$output2 .= ' &copy; ' . NAME . ' ' . date("Y");
-$output2 .= '</p>';
+$output = '<p><a href="' . LOCATION . '">' . $anchor . '</a>';
+$output .= ' &copy; ' . NAME . ' ' . date("Y");
+$output .= '</p>';
 
-_print_nlab($output2);
+_print_nlab($output);
 
 ?>
 
@@ -46,17 +44,9 @@ _print_nlab($output2);
 
 <?php
 
-if ($admin) {
-	$logged = 'Logged in';
-} else {
-	$logged = 'Logged out';
+if (file_exists(INC . 'tracking.php')) {
+	include(INC . 'tracking.php');
 }
-
-/* Visitor tracking ============================== */
-
-/* Removed */
-
-/* End visitor tracking ========================== */
 
 $time = microtime();
 $time = explode(" ", $time);

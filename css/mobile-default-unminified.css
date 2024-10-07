@@ -1,6 +1,5 @@
 /* 'Standalone' mobile-default-unminified CSS: all rules for max-width: 797px */
-/* Unminified version [last update 26 May 2024] */
-/* slides p link increased */
+/* Unminified version [last update 12 September 2024 20.00] */
 
 /*
 
@@ -60,6 +59,8 @@ body {
 /* NAV LINKS */
 /* ================================================== */
 
+nav li.sitename { display: none; }
+
 nav li a,
 nav li strong {
   display: inline;
@@ -68,13 +69,11 @@ nav li strong {
 
 nav li strong {
   color: #649300;
-  background-color: var(--white);
-  font-weight: normal;
+  font-weight: 400;
 }
 
 nav li a {
   color: var(--black);
-  background-color: var(--white);
 }
 
 nav li.admin a {
@@ -85,6 +84,10 @@ nav li a:hover {
   color: #ff0099;
 }
 
+nav li.admin a:hover {
+  background-color: var(--white);
+}
+
 /* GENERAL TEXT STYLES */
 /* ================================================== */
 
@@ -93,13 +96,15 @@ nav li a:hover {
 p#sitename {
   position: fixed;
   top: 0; left: 0;
-  height: 34px;
+  height: 44px;
   width: 100%;
   margin: 0 auto;
-  padding: 20px 0 0 0;
+  padding: 18px 0 0 0;
   text-align: center;
+  vertical-align: middle;
   font-size: 0.85em;
   font-weight: 600;
+  line-height: 1.0;
   letter-spacing: 5px;
   text-transform: uppercase;
   color: var(--white);
@@ -109,11 +114,25 @@ p#sitename {
   z-index: 2;
 }
 
+p#sitename span.left {
+  margin-left: -30px; /* Try to centralise site name */
+  display: inline-block;
+  vertical-align: -15%;
+  letter-spacing: -4px;
+  font-size: 2.1em;
+  color: #666;
+}
+
+p#sitename span.left {
+  padding-right: 6px;
+}
+
 nav ul {
   margin: 0 auto;
   padding: 0 20px;
   text-align: center;
   font-size: 1.0em;
+  font-weight: 400;
   list-style-type: none;
   line-height: 1.2;
   text-transform: capitalize;
@@ -125,18 +144,17 @@ nav li {
 }
 
 nav strong {
-  font-weight: normal;
+  font-weight: 400;
 }
 
 h1 {
-  font-family: "Ubuntu", sans-serif;
-  margin: 1.1em 20px 0 20px;
+  margin: 1.6em 20px 10px 20px;
   padding: 0 0 0.25em 0;
   text-align: center;
   font-size: 1.8em;
   line-height: 1.2;
   letter-spacing: 0;
-  font-weight: 500;
+  color: #444;
   text-shadow: 1px 1px 3px #ccc;
   border-bottom: 1px solid #f9f9f9;
 }
@@ -145,8 +163,31 @@ h1 span {
   color: #649300;
 }
 
+h1 span.left {
+  display: block;
+  margin-left: 0;
+  margin-bottom: -6px;
+  padding: 4px 8px 4px 8px;
+  text-align: left;
+  color: #444;
+}
+
+h1 span.lemon { border-left: 30px solid #cce402; }
+h1 span.salmon { border-left: 30px solid #ffa07a; }
+h1 span.sky { border-left: 30px solid #6f98c6; }
+h1 span.tomato { border-left: 30px solid #ff6347; }
+h1 span.purple { border-left: 30px solid #6a5acd; }
+h1 span.plum { border-left: 30px solid #dda0dd; }
+h1 span.pink { border-left: 30px solid #db7093; }
+h1 span.black { border-left: 30px solid #444; }
+h1 span.gold { border-left: 30px solid #daa520; }
+
 h1#s {
   text-align: center;
+}
+
+h2, h3, h4, h5, h6 {
+  color: #555;
 }
 
 h2, h3 {
@@ -163,13 +204,16 @@ h4, h6 {
 }
 
 h5 {
-  margin: 1.0em auto 0 auto;
+  margin: 1.2em auto 0.6em auto;
   padding-right: 20px;
   padding-left: 20px;
   text-align: center;
-  font-size: 1.3em;
-  font-weight: 500;
-  line-height: 1.3;
+  font-size: 1.5em;
+  line-height: 1.4;
+}
+
+h5.left {
+  text-align: left;
 }
 
 #comments h4 {
@@ -183,7 +227,6 @@ h5 {
   margin-bottom: 0.9em;
   text-align: left;
   font-size: 1.3em;
-  font-weight: 600;
   line-height: 1.0;
 }
 
@@ -303,6 +346,7 @@ ul {
 
 li {
   padding: 0.2em 0;
+  font-weight: 400;
 }
 
 ol li {
@@ -328,14 +372,8 @@ ul.listing li {
   border-bottom: 1px solid #ddd;
 }
 
-ul.inline {
-  margin: 1.6em 32px 2.0em 32px;
-  list-style-type: none;
-}
-
-ul.inline li {
-  display: inline;
-  margin: 0;
+p#history {
+  margin: 1.6em 20px 1.6em 20px;
 }
 
 footer p {
@@ -350,8 +388,8 @@ footer p {
 
 nav {
   display: block;
-  margin: 56px 0 0 0;
-  padding: 1.0em 0 0.9em 0;
+  margin: 60px 0 0 0; /* Pushes everything down */
+  padding: 1.6em 0 1.0em 0;
   background-color: var(--white);
   border-bottom: 1px solid #bbb;
   text-align: center;
@@ -380,6 +418,11 @@ nav {
   margin-left: 0;
 }
 
+.social {
+  margin-right: 20px;
+  margin-left: 20px;
+}
+
 footer {
   display: block;
   width: 100%;
@@ -391,7 +434,7 @@ footer {
   font-size: 0.9em;
   text-align: center;
   color: var(--black);
-  background: var(--white) url("../img/bg_footer.gif") no-repeat;
+  background: var(--white) url("../img/bg_light_footer.png") no-repeat;
   background-position: bottom;
 }
 
@@ -411,12 +454,13 @@ div.bg4 {
   width: auto;
   overflow: auto;
   margin: 1.6em auto 1.6em auto;
-  padding: 0.8em 0 0.8em 0;
+  padding: 1.0em 0 1.1em 0;
 }
 
 div.bg5 {
   width: auto;
   overflow: auto;
+  padding: 1.0em 0 1.1em 0;
 }
 
 @media screen and (min-width: 641px) {
@@ -446,8 +490,8 @@ div.bg5 {
 }
 
 div.bg1 {
-  color: #f1fdd7;
-  background-color: #6b3960;
+  color: var(--white);
+  background-color: #6c5db5;
 }
 
 div.bg2 {
@@ -456,12 +500,8 @@ div.bg2 {
 }
 
 div.bg3 {
-  color: #6b701f;
-  background-color: #fdfeeb;
-  border-top: 1px solid #dee47e;
-  border-bottom: 1px solid #dee47e;
-  border-right: none;
-  border-left: none;
+  color: var(--white);
+  background-color: #d16356;
 }
 
 div.bg4 {
@@ -670,34 +710,11 @@ hr.section {
   background-color: #f9f9f9;
 }
 
-span,
 .response {
   color: #649300;
 }
 
-span.u {
-  border-bottom: 1px solid #000;
-  color: var(--black);
-}
-
-pre {
-  margin: 1.0em 0 1.0em 0;
-  padding: 1.0em 20px;
-  font-size: 1.05em;
-  font-weight: 400;
-  color: #606;
-  background-color: var(--white);
-  border-top: 1px solid #ddd;
-  border-bottom: 1px solid #ddd;
-  line-height: 1.4em;
-  width: auto;
-  word-break: break-all;
-  white-space: pre-wrap;
-  white-space: -moz-pre-wrap !important;
-  white-space: -pre-wrap;
-  white-space: -o-pre-wrap;
-  word-wrap: break-word;
-}
+.flip { transform: scaleX(-1); }
 
 .toggle-content { /* Requires /js/toggle.js */
   display: none;
@@ -767,6 +784,20 @@ p#sitename a {
 
 p#sitename a:hover {
   color: #e4ff00;
+}
+
+/* Darker boxes */
+
+div.bg1 a,
+div.bg3 a {
+  color: var(--white);
+  border-bottom: 1px dotted var(--white);
+}
+
+div.bg1 a:hover,
+div.bg3 a:hover {
+  color: var(--white);
+  border-bottom: 1px solid  var(--white);
 }
 
 /* Slides */
@@ -871,6 +902,34 @@ footer p a {
 
 footer p a:hover {
   color:  var(--link);
+}
+
+.faux-button { /* eg: validate */
+  max-width: 180px;
+  margin: 2.4em auto 1.6em auto;
+  text-align: center;
+}
+
+#content .faux-button p {
+  font-size: 0.9rem;
+  line-height: 1.0;
+  text-align: center;
+}
+
+.faux-button a {
+  color: #555;
+  padding: 8px 16px 8px 15px;
+  text-align: center;
+  line-height: 1.0;
+  background-color: var(--white);
+  border: 1px solid #ddd;
+  border-radius: 6px;
+}
+
+.faux-button a:hover {
+  color: var(--black);
+  background-color: #f9f9f9;
+  border: 1px solid #999;
 }
 
 /* End links */
@@ -1050,6 +1109,99 @@ input[type=password]:focus {
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
 }
 
+/* ACCORDION */
+/* ================================================== */
+
+.accordion {
+  margin: 1.6em auto;
+}
+
+.tab {
+  position: relative;
+  background-color: var(--white);
+  color: var(--black);
+  margin-top: 0.6em;
+  padding: 16px 20px 16px 20px;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  max-width: 100%;
+  text-align: left;
+  font-size: inherit;
+  line-height: 1.5;
+  transition: 0.4s;
+  cursor: pointer;
+}
+
+@media screen and (max-width: 640px) {
+
+  .tab {
+    border-right: none;
+    border-left: none;
+  }
+
+}
+
+.tab div {
+  max-width: 96%;
+}
+
+.accordion .tab:hover {
+  background-color: #ddd;
+}
+
+.accordion .active {
+  background-color: #eee;
+}
+
+.tab:after {
+  position: absolute;
+  top: 10px;
+  right: 16px;
+  content: '+';
+  font-size: 1.6rem;
+  color: var(--black);
+  transition: 0.2s;
+}
+
+.accordion .active:after {
+  transform: rotate(45deg);
+}
+
+.panel {
+  margin-bottom: 1.0em;
+  padding: 0;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.4s ease-out;
+}
+
+/* MAX (see scrollbar-width.js) */
+/* ================================================== */
+
+/* https://css-tricks.com/full-width-containers-limited-width-parents/ */
+/* adjusted by me for scrollbar */
+
+.max {
+  width: calc(100vw - var(--scrollbar-width));
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-top: 1.6em;
+  margin-bottom: 1.6em;
+  margin-left: calc(-50vw + (var(--scrollbar-width) / 2));
+  margin-right: calc(-50vw + (var(--scrollbar-width) / 2));
+  text-align: center;
+}
+
+.max p { margin: 0; color: var(--white); }
+
+.max img {
+  max-width: 100%;
+  width: 100%;
+  margin: 0 auto;
+  height: auto;
+}
+
 /* MORE BITS */
 /* ================================================== */
 
@@ -1075,13 +1227,14 @@ input[type=password]:focus {
 /* ================================================== */
 
 .box2 {
-  margin: 2.4em 20px 2.4em 20px;
   padding: 30px 20px 30px 20px;
 }
 
 @media screen and (min-width: 641px) {
 
   .box2 {
+    max-width: 600px;
+    margin: 2.4em auto 2.4em auto;
     font-size: 0.9em;
   }
 
@@ -1090,6 +1243,8 @@ input[type=password]:focus {
 @media screen and (max-width: 640px) {
 
   .box2 {
+    width: auto;
+    margin: 2.4em 20px 2.4em 20px;
     font-size: 1.0em;
   }
 
@@ -1106,6 +1261,12 @@ input[type=password]:focus {
 .flexcontainer1 {
   flex: 0;
   margin: 2.4em auto 0.6em auto;
+}
+
+#content .flexcontainer1 .box2 h5 {
+  font-size: 1.3em;
+  text-align: left;
+  margin: 0.6em 0 0.6em 0;
 }
 
 .flexcontainer2 {
@@ -1146,7 +1307,5 @@ input[type=password]:focus {
 
 #content .flexitem h5 {
   margin: 10px 20px 1.0em 20px;
-  color: #666;
   font-size: 1.1em;
-  font-weight: 500;
 }

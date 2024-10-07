@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 19 Jan 2021 */
+/* Last updated 25 June 2024 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to list.php');
@@ -54,7 +54,7 @@ if (defined('LOCATION') && defined('ADMIN')) {
 
 			$pagename = str_replace('.php', '', $file);
 
-			if ($pagename == $filetitle) {
+			if (isset($filetitle) && $pagename == $filetitle) {
 				$mark = ' class="mark"'; // To highlight the page on
 			} else {
 				$mark = NULL;

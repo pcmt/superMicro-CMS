@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 May 2024 */
+/* Last updated 21 July 2024 */
 
 ob_start();
 header('HTTP/1.1 404 Not Found');
@@ -107,7 +107,7 @@ img {
 
 <h1>Sorry. Not found.</h1>
 
-<img src="<?php echo LOCATION; ?>img/og.jpg" width="200" height="200" alt="">
+<img src="<?php echo LOCATION; ?>img/og.png" width="200" height="200" alt="">
 
 <?php
 

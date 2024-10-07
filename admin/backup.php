@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 22 May 2024 */
+/* Last updated 29 August 2024 */
 
 define('ACCESS', TRUE);
 
@@ -14,7 +14,7 @@ $_pages = $_images = $response = $file_in_folder = $canZIP = "";
 
 $thisAdmin = 'backup'; // For nav
 
-require('./top.php');
+include('./top.php');
 
 ?>
 <!DOCTYPE html>
@@ -24,9 +24,7 @@ require('./top.php');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php p_title('backup'); ?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -102,18 +100,20 @@ includeFileIfExists('./nav.php');
 					$phpfile = str_replace('.txt', '.php', $file);
 
 					// Check if the .php file and its corresponding .txt file exist and are not directories
-					if ( !is_dir($_root . '/' . $phpfile) && !is_dir($_root . '/pages/' . $file) && !is_dir($_root . '/comments/' . $file) && !is_dir($_root . '/extras/' . $file)) {
+					if ( !is_dir($_root . '/' . $phpfile) && !is_dir($_root . '/pages/' . $file) && !is_dir($_root . '/comments/' . $file) && !is_dir($_root . '/extras/' . $file) && !is_dir($_root . '/data/' . $file) ) {
 						// Add the .php and .txt file paths to the filesArray
 						$filesArray[] = $_root . '/' . $phpfile;
 						$filesArray[] = $_root . '/pages/' . $file;
 						$filesArray[] = $_root . '/comments/' . $file;
 						$filesArray[] = $_root . '/extras/' . $file;
+						$filesArray[] = $_root . '/data/' . $file;
 					}
 				}
 			}
 
 			// Add additional files to the filesArray
 			$filesArray[] = $_root . '/css/stylesheet.css';
+			$filesArray[] = $_root . '/css/mobile.css';
 			$filesArray[] = $_root . '/css/extra.css';
 
 			// Should now have the files so close the directory

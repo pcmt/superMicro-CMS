@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 May 2024 */
+/* Last updated 01 July 2024 */
 
 define('ACCESS', TRUE);
 
@@ -26,9 +26,7 @@ include('./top.php');
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php p_title('video'); ?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -148,7 +146,7 @@ if (!$login) {
 					$kb = number_format($size); // Whole numbers
 
 					// For file just uploaded, otherwise no class
-					if (isset($_POST['submit1']) && ($file == $new_filename)) {
+					if (isset($_POST['submit1']) && ($file === $new_filename)) {
 						$mark = ' class="mark"';
 					} else {
 						$mark = NULL;

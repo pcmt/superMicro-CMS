@@ -5,8 +5,8 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 09 Feb 2024 */
-/* This file is required for e.php and s.php */
+/* Last updated 25 June 2024 */
+/* This file is required for e.php and search.php */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to prelims.php');
@@ -24,28 +24,13 @@ ini_set('display_errors', 0);
 // error_reporting(E_ALL);
 // ini_set('display_errors', 1);
 
-if (isset($_COOKIE['adminlink'])) {
-	$admin = TRUE;
-} else {
-	$admin = FALSE;
-}
+// Page not editable so admin link (removed 25/06/24)
 
-if (file_exists(INC . 'error-reporting.php')) { // Does not load top.php
-	require(INC . 'error-reporting.php');
-} else {
-	echo 'Error. Please install the file /inc/error-reporting.php';
-	exit();
-}
-
-if (file_exists(INC . 'lang.php')) {
-	require(INC . 'lang.php');
-} else {
-	echo 'Error. Please install the file /inc/lang.php';
-	exit();
-}
+include(INC . 'error-reporting.php');
+include(INC . 'lang.php');
 
 // Next bit from top.php which is not loaded here
-if ((APACHE == FALSE) || (!file_exists('./.htaccess'))) {
+if ((APACHE === FALSE) || (!file_exists('./.htaccess'))) {
 	$rewrite = FALSE;
 } else {
 	$rewrite = TRUE; // When not WINDOWS and .htaccess exists

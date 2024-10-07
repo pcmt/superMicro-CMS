@@ -1,0 +1,31 @@
+<?php
+
+if(!defined('ACCESS')) {
+	die('Direct access not permitted to settings.php');
+}
+
+/* Edit as required then save as /inc/settings.php */
+define('LOCATION', 'https://example.com/');
+define('ADMIN', 'admin');
+define('APACHE', TRUE);
+define('WINDOWS', FALSE);
+define('OPSYS', 'LINUX');
+define('G_ZIP', FALSE);
+define('HOME_LINK', 'Foxy Knoxy');
+define('NAME', 'Josephine Bloggs');
+define('ALPHABETICAL', FALSE);
+define('SHOW_ERRORS', FALSE);
+define('PHP_EXT', FALSE);
+define('SHOW_HISTORY', FALSE);
+define('EMAIL', 'mail@mydomain.com');
+define('SITE_NAME', 'My Website');
+define('SITE_ID', 'nrxyl');
+define('OWN_NAME', 'Stephanie');
+define('LINK_COLOUR', '#FF0099');
+define('CONTACT_TEXT', 'Hello. Email me.');
+define('CONTACT_MENU', 'Email');
+define('FONT_TYPE', 'hosted');
+define('VERSION', '5.5');
+define('TIMESTAMP', '1718049189');
+
+?>

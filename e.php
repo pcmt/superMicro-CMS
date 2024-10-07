@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 17 March 2023 */
+/* Last updated 06 July 2024 */
 
 define('ACCESS', TRUE);
 
@@ -19,7 +19,7 @@ $regex = "";
 $_inc = str_replace('\\', '/', dirname(__FILE__)) . '/inc/';
 define('INC', $_inc);
 
-require(INC . 'prelims.php');
+include(INC . 'prelims.php');
 
 /* -------------------------------------------------- */
 // Contact form submitted
@@ -69,7 +69,15 @@ if (isset($_POST['submit'])) {
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html<?php
+
+if (defined('LANG_ATTR')) {
+	_print(' lang="' . LANG_ATTR . '"');
+} else {
+	_print(' lang="en"');
+}
+
+?>>
 <?php
 
 if (defined('CONTACT_MENU') && (strlen(CONTACT_MENU) > 0)) {
@@ -84,8 +92,10 @@ if (defined('CONTACT_MENU') && (strlen(CONTACT_MENU) > 0)) {
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title><?php _print($contact_heading); ?></title>
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
 <?php
 
 include(INC . 'stylesheets.php');
@@ -162,9 +172,9 @@ if (!$phpMail) { // Hides form and just shows email address
 <p><?php _print(stripslashes(CONTACT_TEXT)); ?></p>
 
 <form method="post" class="contactform" action="" accept-charset="UTF-8">
-<input type="text" name="name" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['name'])); ?>" maxlength="60" tabindex="1"><label for="name"><?php _print(TEXT32); ?></label><br>
-<input type="text" name="email" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['email'])); ?>" maxlength="150" tabindex="2"><label for="email"><?php _print(TEXT33); ?></label><br>
-<span class="zap"><input type="text" name="url" size="22" value="" maxlength="150" tabindex="3"><label>Leave this box empty</label></span>
+<input type="text" name="name" id="name" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['name'])); ?>" maxlength="60" tabindex="1"><label for="name"><?php _print(TEXT32); ?></label><br>
+<input type="text" name="email" id="email" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['email'])); ?>" maxlength="150" tabindex="2"><label for="email"><?php _print(TEXT33); ?></label><br>
+<span class="zap"><input type="text" name="url" id="url" size="22" value="" maxlength="150" tabindex="3"><label>Leave this box empty</label></span>
 <textarea name="comment" rows="12" placeholder="Your comment"><?php if (isset($_POST['submit'])) _print(strip_tags($content)); ?></textarea>
 <input type="submit" name="submit" class="submit" value="<?php _print(TEXT34); ?>">
 </form>

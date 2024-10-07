@@ -5,8 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 05 Oct 2023 */
-/* Not uploaded */
+/* Last updated 25 June 2024 */
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to login-form.php');
@@ -28,7 +27,7 @@ if ($error) {
 
 _print_nlb('
 
-<form method="post" class="pw" action="" id="login">
+<form method="post" class="pw" action="#" id="login">
 <input type="password" name="pass">
 <input type="submit" class="submit" name="submit_pass" value="' . TEXT14 . '">
 </form>

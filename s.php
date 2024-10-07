@@ -5,24 +5,21 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last edited 04 Oct 2023 */
+/* Last edited 20 August 2024 */
 
 define('ACCESS', TRUE);
 
 // Declare variables
-$num_pages = $num_excluded = $terms = $search_time = $pagestime = "";
+$terms = $suffix = $search_time = $pagestime = $result = "";
+$num_pages = $num_excluded = 0; // Numeric
+
 $pageID = 's';
 
 // Define absolute path to /inc/ folder (as in html.php)
 $_inc = str_replace('\\', '/', dirname(__FILE__)) . '/inc/';
 define('INC', $_inc);
 
-if (file_exists(INC . 'prelims.php')) {
-	require(INC . 'prelims.php');
-} else {
-	echo 'Error. Please install the file /inc/prelims.php';
-	exit();
-}
+include(INC . 'prelims.php');
 
 /* -------------------------------------------------- */
 // Search submitted
@@ -37,14 +34,24 @@ if (isset($_POST['terms'])) { // Searches are only from this page
 
 ?>
 <!DOCTYPE html>
-<html lang="en">
+<html<?php
+
+if (defined('LANG_ATTR')) {
+	_print(' lang="' . LANG_ATTR . '"');
+} else {
+	_print(' lang="en"');
+}
+
+?>>
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Search</title>
-<link rel="shortcut icon" href="favicon.ico">
-<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png">
+<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+<link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+<link rel="manifest" href="/site.webmanifest">
 <?php
 
 include(INC . 'stylesheets.php');
@@ -83,17 +90,6 @@ if (!isset($_POST['terms'])) { // No search submitted
 
 			</div>
 
-<!-- Spinner below form //-->
-
-<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display: none;">
-<script type="text/javascript">
-function displayLoading() {
-	if (document.getElementById('search-progress')) {
-		document.getElementById('search-progress').style.display='block';
-	}
-}
-</script>
-
 <?php
 
 } else { // Search was submitted
@@ -122,7 +118,8 @@ function displayLoading() {
 
 <!-- Spinner below form //-->
 
-<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display:none">
+<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 30px auto; text-align: center; display:none">
+
 <script type="text/javascript">
 function displayLoading() {
 	if (document.getElementById('search-progress')) {
@@ -192,6 +189,8 @@ function displayLoading() {
 
 					$result = TRUE;
 
+					ob_start();
+
 					// Get link, title
 					$p_url = str_replace('.txt', '', $p_file);
 					$p_url = preg_replace('/\Aindex\Z/', '', $p_url);
@@ -202,7 +201,7 @@ function displayLoading() {
 						$w = TEXT38;
 					}
 
-				_print("<li>");
+					_print("<li>");
 
 					if (!$rewrite) { // Windows
 						if (!$p_url == '') {
@@ -229,7 +228,9 @@ function displayLoading() {
 					_print_nlb(' <span class="faded">...</span></li>');
 
 					flush();
+
 				}
+
 			} // End foreach
 
 			unset($filesArray);
@@ -270,17 +271,6 @@ function displayLoading() {
 </form>
 
 			</div>
-
-<!-- Spinner below form //-->
-
-<img src="img/loader.gif" width="84" height="84" id="search-progress" style="margin: 0 auto; text-align: center; display:none">
-<script type="text/javascript">
-function displayLoading() {
-	if (document.getElementById('search-progress')) {
-		document.getElementById('search-progress').style.display='block';
-	}
-}
-</script>
 
 <?php
 

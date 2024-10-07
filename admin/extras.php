@@ -5,16 +5,17 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 May 2024 */
+/* Last updated 28 July 2024 */
+// Triple ===
 
 define('ACCESS', TRUE);
 
 // Declare variables
-$page = $filetitle = $file_contents = $response = $rewrite = $ext = $update = "";
+$page = $filetitle = $file_contents = $response = $ext = $update = $preclass = "";
 
 $thisAdmin = 'extras'; // For nav
 
-require('./top.php');
+include('./top.php');
 
 // For $fileurl link to successful update
 if (APACHE) {
@@ -25,23 +26,13 @@ if (APACHE) {
 
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php
-
-if (function_exists('p_title')) {
-	p_title('extras');
-} else {
-	_print('Install the latest version of functions.php');
-}
-
-?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<title><?php p_title('extras'); ?></title>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -56,12 +47,7 @@ if (function_exists('p_title')) {
 if (!$login) {
 // Logged out
 
-	if (!file_exists('./login-form.php')) {
-		_print("Error. The file '/admin/login-form.php' does not exist. It must be installed.");
-		exit();
-	} else {
-		require('./login-form.php');
-	}
+	includeFileIfExists('./login-form.php');
 
 } elseif ($login) {
 
@@ -75,7 +61,7 @@ if (!$login) {
 			$extrasfilename = $filetitle . '.txt';
 			if (file_exists("../extras/{$extrasfilename}")) {
 				$file_contents = stripslashes(file_get_contents("../extras/{$extrasfilename}"));
-				if ($filetitle == 'index') {
+				if ($filetitle === 'index') {
 					$fileurl = LOCATION;
 				} else {
 					$fileurl = LOCATION . $filetitle . $ext;
@@ -93,24 +79,11 @@ if (!$login) {
 
 <div id="o"><div id="wrap">
 
-<h1><?php
-
-	if (function_exists('h1')) {
-		h1('extras');
-	} else {
-		_print('Install the latest version of functions.php');
-	}
-
-?></h1>
+<h1><?php h1('extras'); ?></h1>
 
 <?php
 
-	if (file_exists('./nav.php')) {
-		require('./nav.php');
-	} else {
-		_print("Error. The file '/admin/nav.php' does not exist. It must be installed.");
-		exit();
-	}
+	includeFileIfExists('./nav.php');
 
 /* ---------------------------------------------------------------------- */
 /* Get extras */
@@ -125,7 +98,7 @@ if (!$login) {
 				$response = '<em>Sorry, this extras file does not exist. Try another.</em>';
 			} else {
 				$file_contents = stripslashes(file_get_contents("../extras/{$extrasfilename}"));
-				if ($filetitle == 'index') {
+				if ($filetitle === 'index') {
 					$fileurl = LOCATION;
 				} else {
 					$fileurl = LOCATION . $filetitle . $ext;
@@ -138,11 +111,11 @@ if (!$login) {
 /* ---------------------------------------------------------------------- */
 /* Prepare to edit extras */
 
-	if (isset($_POST['presubmit'])) {
-		if (trim($_POST['extras_id']) == '') {
+	if (isset($_POST['pre-submit'])) {
+		if (trim($_POST['extras_id']) === '') {
 			$response = "<em>You didn't enter a page name.</em>";
 			$update = FALSE;
-		} elseif (trim($_POST['extras']) == '') {
+		} elseif (trim($_POST['content']) === '') {
 			$response = "<em>You didn't enter any text.</em>";
 			$update = FALSE;
 		} else {
@@ -165,10 +138,10 @@ if (!$login) {
 
 	if (isset($_POST['submit'])) {
 		$filetitle = trim($_POST['extras_id']);
-		if ($filetitle == '') {
+		if ($filetitle === '') {
 			$response = "<em>You didn't enter a page name.</em>";
 			$update = FALSE;
-		} elseif (trim($_POST['extras']) == '') {
+		} elseif (trim($_POST['content']) === '') {
 			$response = "<em>You didn't enter any text.</em>";
 			$update = FALSE;
 		} else {
@@ -181,11 +154,11 @@ if (!$login) {
 				$response = '<em>Sorry, this extras file does not exist. Try another.</em>';
 			} else {
 				$extrasfilename = "../extras/{$extrasfilename}";
-				$extrascontent = stripslashes($_POST['extras']);
+				$extrascontent = stripslashes($_POST['content']);
 				$fp = fopen($extrasfilename, 'w+');
 				fwrite($fp, $extrascontent);
 				fclose($fp);
-				if ($filetitle == 'index') {
+				if ($filetitle === 'index') {
 					$fileurl = LOCATION;
 				} else {
 					$fileurl = LOCATION . $filetitle . $ext;
@@ -222,7 +195,7 @@ if (!$login) {
 <label>Page title:</label>
 <input type="text" name="extras_id" size="60" value="<?php
 
-	if (isset($_POST['presubmit']) || isset($_POST['get_extras'])) {
+	if (isset($_POST['pre-submit']) || isset($_POST['get_extras'])) {
 		_print($_POST['extras_id']);
 	} elseif (isset($_POST['submit'])) {
 		if (strlen($filetitle) < 1) {
@@ -236,15 +209,15 @@ if (!$login) {
 ?>
 " maxlength="60">
 
-<label>Edit extras.</label>
+<label>Edit extras:</label>
 
 		<div class="textarea-container">
 
 <textarea class="flexitem" name="content" rows="20">
 <?php
 
-	if (isset($_POST['presubmit']) || isset($_POST['submit'])) {
-		_print(stripslashes(htmlentities($_POST['extras'])));
+	if (isset($_POST['pre-submit']) || isset($_POST['submit'])) {
+		_print(stripslashes(htmlentities($_POST['content'])));
 	} elseif (isset($_POST['get_extras']) || $page) {
 		_print(stripslashes(htmlentities($file_contents)));
 	}
@@ -261,13 +234,15 @@ if (!$login) {
 <input type="submit" name="get_extras" class="fade" value="Get extras">
 <input type="submit" name="<?php
 
-	if (isset($_POST['presubmit']) && $update) { // Move forward only if not whitespace
+	if (isset($_POST['pre-submit']) && $update) { // Only if not whitespace
 		_print('submit');
+		$preclass = 'class="pre" ';
 	} else {
-		_print('presubmit');
+		_print('pre-submit');
+		$preclass = '';
 	}
 
-?>" value="Update extras">
+?>" <?php _print($preclass); ?>value="Update extras">
 	</div>
 
 </form>

@@ -1,0 +1,16 @@
+#
+Example 2
+
+<h5>Menu page</h5>
+
+<p class="centre">[ edit as required ]</p>
+
+<ul class="boxlist">
+<li><a href="https://web.patricktaylor.com/">superMicro CMS home page</a></li>
+<li><a href="#">Page</a></li>
+<li><a href="#">Page</a></li>
+</ul>
+
+<p class="centre">If you don't want this menu, delete the page.</p>
+
+<hr class="section">

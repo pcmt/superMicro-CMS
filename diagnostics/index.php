@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 21 Aug 2020 */
+/* Last updated 02 Sept 2024 */
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
@@ -173,7 +173,10 @@ echo "</p>\n";
 echo '<p><span>dirname(__DIR__) = </span>' . dirname(__DIR__) . ' <span>(parent directory of the file)</span>';
 echo "</p>\n";
 
-echo '<p><span>dirname(dirname(__DIR__)) = </span>' . dirname(dirname(__DIR__)) . ' <span>(one directory higher)</span>';
+echo '<p><span>dirname(__DIR__, 1) = </span>' . dirname(__DIR__, 1) . ' <span>(also one directory higher)</span>';
+echo "</p>\n";
+
+echo '<p><span>dirname(dirname(__DIR__)) = </span>' . dirname(dirname(__DIR__)) . ' <span>(two directories higher)</span>';
 echo "</p>\n";
 
 echo "<p>FILE</p>\n";
@@ -196,6 +199,23 @@ echo '<p><span>basename(dirname(__FILE__)) = </span>' . basename(dirname(__FILE_
 echo "</p>\n";
 
 echo '<p><span>basename(getcwd()) = </span>' . basename(getcwd()) . ' <span>(current directory of the file only)</span>';
+echo "</p>\n";
+
+echo '<p><span>basename(realpath(dirname(__FILE__))) = </span>' . basename(realpath(dirname(__FILE__))) . ' <span>(current directory of the file only)</span>';
+echo "</p>\n";
+
+// Get the directory where the script is located
+$currentDir = dirname(__FILE__);
+
+// Get the parent directory's full path
+$parentDir = dirname($currentDir);
+
+$parentDirName = basename($parentDir);
+
+echo '<p><span>basename($parentDir) = </span>' . basename($parentDir) . ' <span>(directory above the directory of the file - see the script)</span>';
+echo "</p>\n";
+
+echo '<p><span>basename(dirname(dirname(__FILE__))) =  </span>' . basename(dirname(dirname(__FILE__))) . ' <span>(directory above the directory of the file)</span>';
 echo "</p>\n";
 
 echo "<h4>(5) Superglobal variables:</h4>\n";

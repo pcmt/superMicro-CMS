@@ -1,22 +1,21 @@
-/* 'Normalizer' (unminified) for all screen widths [ last update 25 May 2024 ] */
+/* 'Normalizer' (unminified) for all screen widths [ last update 29 June 2024 ] */
 
 /* When minified, paste into /css/common-g.css  and /css/common-h.css */
 
 * { margin: 0; padding: 0; }
 
-html,
-body {
-  margin: 0;
-}
-
 html {
+  margin: 0;
+  font-size: 16px;
   position: relative;
   -moz-box-sizing: content-box;
   -webkit-box-sizing: content-box;
+  -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
   box-sizing: content-box; /* Padding and borders increase box */
 }
 
 body {
+  margin: 0;
   overflow-y: scroll; /* MOVED Show vertical scrollbar */
   text-align: center;
   line-height: 1.0;
@@ -36,6 +35,24 @@ nav,
 section,
 summary {
   display: block;
+}
+
+/* CSS variables */
+:root {
+  --black: #000;
+  --white: #fff;
+  --link: #f09;
+  --font: "Open Sans", sans-serif;
+}
+
+h1 {
+  font-family: "Ubuntu", sans-serif;
+  font-weight: 500;
+}
+
+h2, h3, h4, h5, h6 {
+  font-family: var(--font), sans-serif;
+  font-weight: 600;
 }
 
 small {
@@ -87,5 +104,3 @@ span.u {
 input[type=password] {
   filter: none; /* Gets rid of yellow bg */
 }
-
-html{-webkit-text-size-adjust:100%;} /* Prevent font scaling in landscape while allowing user zoom */

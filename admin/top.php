@@ -5,14 +5,15 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 20 May 2024 */
+/* Last updated 04 Sept 2024 */
+// Triple ===
 
 if (!defined('ACCESS')) {
 	die('Direct access not permitted to top.php');
 }
 
 // Declare variables
-$notice = $user = $dofooter = $login = $domain = $secure = $secure_cookie = $path = $siteID = $self = $status = $form = "";
+$notice = $user = $dofooter = $login = $domain = $secure = $secure_cookie = $path = $siteID = $self = $status = $form = $protocol = "";
 
 /* -------------------------------------------------- */
 // For footer.php
@@ -26,17 +27,12 @@ $tm_start = array_sum(explode(' ', microtime()));
 
 include('./functions.php');
 
-if (file_exists('../inc/settings.php')) {
+if (file_exists('../inc/settings.php')) { // May not exist
 	include('../inc/settings.php');
 }
 
-if (file_exists('./password.php')) {
+if (file_exists('./password.php')) { // May not exist
 	include('./password.php');
-}
-
-if (!function_exists('sanitizeIt')) { // Function added 31 May 23
-	echo "Error: the function 'sanitizeIt' does not exist. Update /admin/functions.php";
-	exit();
 }
 
 /* ================================================== */
@@ -46,23 +42,40 @@ if (!function_exists('sanitizeIt')) { // Function added 31 May 23
 $path = '/' . basename(dirname(__FILE__)) . '/'; // One level up
 
 // (2) Try to get the domain
-if (!empty($_SERVER['HTTP_HOST'])) {
+if (!empty($_SERVER['HTTP_X_FORWARDED_HOST'])) {
+	// Use the forwarded host when the request is through a proxy or load balancer
+	$domain = $_SERVER['HTTP_X_FORWARDED_HOST'];
+} elseif (!empty($_SERVER['HTTP_HOST'])) {
+	// Use the standard HTTP host when no proxy is involved
 	$domain = $_SERVER['HTTP_HOST'];
 } elseif (!empty($_SERVER['SERVER_NAME'])) {
+	// Fallback to SERVER_NAME if HTTP_HOST and HTTP_X_FORWARDED_HOST are not available
 	$domain = $_SERVER['SERVER_NAME'];
 } else {
-	$domain = FALSE;
+	// If none of the variables are set, domain detection has failed
+	$do_setup = FALSE;
+	$response2 = '<em>Problem: site domain not detected.</em>';
 }
 
-// (3) Try to establish whether SSL or not
+// (3) Get protocol (https or http) otherwise don't setup
 
-$protocol = get_protocol() ? 'https://' : 'http://'; // See functions.php
-if ($protocol == 'https://') {
-	$secure = TRUE;
-	$show_protocol = 'https: (secure)'; // Displayed in admin
-} else {
-	$secure = FALSE;
-	$show_protocol = 'http: (not secure)'; // Displayed in admin
+if (function_exists('get_protocol')) { // Function added 21 Nov 18
+	$protocol = get_protocol() ? 'https://' : 'http://'; // See functions.php
+	// Check it's returned one or the other
+	// if (($protocol == 'https://') || ($protocol == 'http://')) {
+		// echo 'get_protocol function works'; // For testing only
+	// }
+} else { // If function doesn't exist
+	if (isset($_SERVER['HTTPS']) && strtolower($_SERVER['HTTPS']) == 'on' || isset($_SERVER['HTTP_X_FORWARDED_PROTO']) && strtolower($_SERVER['HTTP_X_FORWARDED_PROTO']) == 'https') {
+		$protocol = 'https://';
+	} else {
+		$protocol = 'http://';
+	}
+}
+
+if ($protocol == " ") {
+	$do_setup = FALSE;
+	$response3 = '<em>Problem: https or http not detected.</em>';
 }
 
 // (4) Type of cookie
@@ -111,11 +124,14 @@ if (!defined('PHP_EOL')) {
 // (8) Login form action fix for empty PHP_SELF (all admin)
 
 if (function_exists('phpSELF')) {
+	// If the function phpSELF exists, call it and sanitize the result
 	$self = htmlspecialchars(phpSELF(), ENT_QUOTES, "utf-8");
 } elseif (isset($_SERVER['PHP_SELF'])) {
+	// If phpSELF does not exist, use $_SERVER['PHP_SELF'] and sanitize the result
 	$self = htmlspecialchars($_SERVER['PHP_SELF'], ENT_QUOTES, "utf-8");
 } else {
-	$self = '';
+	// If neither method is available, set $self to an empty string
+	$self = '#';
 }
 
 // (9)
@@ -153,7 +169,7 @@ if (isset($_COOKIE[$loggedin]) && ($_COOKIE[$loggedin] === $siteID)) {
 
 // Check salted and hashed submitted password against file version
 
-if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
+if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] === 'POST')) {
 
 	// To check hidden field
 	$form = sanitizeIt($_POST['form']);
@@ -169,7 +185,7 @@ if (isset($_POST['submit0']) && ($_SERVER['REQUEST_METHOD'] == 'POST')) {
 
 	// If form ok, login
 	// Submitted password is hashed and must match $sh_password in password.php
-	if (($sh_submitted == $sh_password) && ($form == 'login')) {
+	if (($sh_submitted === $sh_password) && ($form === 'login')) {
 
 		$login = TRUE; // $login is picked up in all the admin pages
 
@@ -200,7 +216,7 @@ if(isset($_GET['status'])){
 	$status = $_GET['status'];
 }
 
-if ($status == 'logout') {
+if ($status === 'logout') {
 
 	$login = FALSE;
 

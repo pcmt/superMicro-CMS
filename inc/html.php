@@ -5,9 +5,9 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 May 2024 */
+/* Last updated 11 September 2024 */
 
-// (all required files checked in /admin/setup.php)
+// (all required files checked in /admin/install.php)
 
 define('ACCESS', TRUE); // Allow includes here
 
@@ -16,8 +16,8 @@ class Page {
 	function Template() { // Assembles and outputs the HTML
 
 		// Declare variables
-		$pageID = $password = $share = $comments = $nocopy = '';
-		// $outputpassword = NULL;
+		$pageID = $password = '';
+		$share = $comments = $nocopy = $extras = $validate = '';
 
 		// Define absolute path to /inc/ (this folder)
 		$_inc = str_replace('\\', '/', dirname(__FILE__)) . '/';
@@ -38,7 +38,7 @@ class Page {
 			/* -------------------------------------------------- */
 			// Extract and process the first line of array
 			$lineone = trim(array_shift($textArray));
-			$lineone = str_replace(' ', '', $lineone); // Strips whitespace
+			$lineone = preg_replace('/\s+/', '', $lineone); // Strips whitespace, tabs, newlines
 
 			// Detect password
 			if (preg_match('/~~(.*?)~~/', $lineone, $match) == 1) {
@@ -47,32 +47,29 @@ class Page {
 				$password = FALSE;
 			}
 
-			// Detect share status for Facebook share button
-			if (strpos($lineone, '^') !== FALSE) {
-				$share = TRUE;
-			} else {
-				$share = FALSE;
-			}
-
 			// Detect comment status
 			if (strpos($lineone, '&') !== FALSE) {
 				$comments = TRUE;
-			} else {
-				$comments = FALSE;
 			}
 
 			// Detect 'nocopy' status
 			if (strpos($lineone, 'X') !== FALSE) {
 				$nocopy = TRUE;
-			} else {
-				$nocopy = FALSE;
 			}
 
 			// Detect extras status
 			if (strpos($lineone, '$') !== FALSE) {
 				$extras = TRUE;
-			} else {
-				$extras = FALSE;
+			}
+
+			// Detect share status for Facebook share button
+			if (strpos($lineone, '^') !== FALSE) {
+				$share = TRUE;
+			}
+
+			// Detect validation status
+			if (strpos($lineone, 'V') !== FALSE) {
+				$validate = TRUE;
 			}
 
 			// Get the new first line (<h1>) for HTML <title> and Open Graph title
@@ -93,14 +90,7 @@ class Page {
 			// Process the page title for HTML <title> and Open Graph title
 			$titletag = str_ireplace(array('<br>', '<br/>', '<br />'), ' ', $title);
 			$titletag = str_replace("\"", "'", $titletag);
-
-			/* -------------------------------------------------- */
-			// Date modified
-			if (function_exists('filemtime')) {
-				$modified = date("d F, Y", filemtime($source));
-			} else {
-				$modified = 'date unknown';
-			}
+			$titletag = strip_tags($titletag);
 
 			/* -------------------------------------------------- */
 			// Output some HTML (nav & main & col)
@@ -124,15 +114,43 @@ class Page {
 					include(INC . 'login-form.php');
 				}
 
-			/* -------------------------------------------------- */
-			// Not password-protected
-			} else {
+			} else { // Not password-protected
 				include(INC . 'content.php');
 			}
 
+
 			/* -------------------------------------------------- */
 			// Output some HTML (end col and main)
-			_print("\n		</div><!-- end .col //-->\n\n	</main>\n");
+			_print_nlab('		</div><!-- end .col //-->');
+			_print_nlab('	</main><!-- end #content //-->');
+
+			if (file_exists('./js/slides.js')) { // From the website root
+				_print_nlab('<script src="' . LOCATION . 'js/slides.js"></script>');
+			}
+
+			if (file_exists('./js/simpleToggle.js')) { // From the website root
+				_print_nlb('<script src="' . LOCATION . 'js/simpleToggle.js"></script>');
+			}
+
+			if (file_exists('./js/modal-img.js')) { // From the website root
+				_print_nlb('<script src="' . LOCATION . 'js/modal-img.js"></script>');
+			}
+
+			#if (file_exists('./js/accordion.js')) { // From the website root
+			#	_print_nlb('<script src="' . LOCATION . 'js/accordion.js"></script>');
+			#}
+
+			if (file_exists('./js/facebook-sdk.js')) {
+				_print_nlb('<script src="' . LOCATION . 'js/facebook-sdk.js"></script>');
+			}
+
+			if (file_exists('./js/scrollbar-width.js')) {
+				_print_nlb('<script src="' . LOCATION . 'js/scrollbar-width.js"></script>');
+			}
+
+			if (file_exists('./js/accordion-animated.js')) {
+				_print_nlb('<script src="' . LOCATION . 'js/accordion-animated.js"></script>');
+			}
 
 			/* -------------------------------------------------- */
 			// Output footer

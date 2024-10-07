@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 24 Jan 2024 */
+/* Last updated 06 July 2024 */
 /* Not quite the same as e.php */
 
 /*
@@ -92,9 +92,9 @@ if (isset($_POST['submit'])) {
 <h4><?php _print(TEXT52); ?></h4>
 
 <form method="post" class="contactform" action="#response" accept-charset="UTF-8">
-<input type="text" name="name" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['name'])); ?>" maxlength="60" tabindex="1"><label for="name"><?php _print(TEXT32); ?></label><br>
-<input type="text" name="email" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['email'])); ?>" maxlength="150" tabindex="2"><label for="email"><?php _print(TEXT33); ?></label><br>
-<span class="zap"><input type="text" name="url" size="22" value="" maxlength="150" tabindex="3"><label>Leave this box empty</label></span>
+<input type="text" name="name" id="name" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['name'])); ?>" maxlength="60" tabindex="1"><label for="name"><?php _print(TEXT32); ?></label><br>
+<input type="text" name="email" id="email" size="22" value="<?php if (isset($_POST['submit'])) _print(strip_tags($_POST['email'])); ?>" maxlength="150" tabindex="2"><label for="email"><?php _print(TEXT33); ?></label><br>
+<span class="zap"><input type="text" name="url" id="url" size="22" value="" maxlength="150" tabindex="3"><label>Leave this box empty</label></span>
 <textarea name="comment" rows="8" placeholder="Your comment"><?php if (isset($_POST['submit'])) _print(strip_tags($comment)); ?></textarea>
 <input type="submit" name="submit" class="submit" value="<?php _print(TEXT34); ?>">
 </form>

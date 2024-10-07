@@ -36,7 +36,12 @@
   src: url('../fonts/open-sans-v40-latin-600italic.woff2') format('woff2');
 }
 
-/* [last update 25 May 2024] */
+/* From Qwwwik [last update 10 September 2024] */
+
+/*
+These Qwwwik styles include admin styles for superMicro CMS admin
+not required for Qwwwik in order to have only one admin stylesheet
+*/
 
 * { margin: 0; padding: 0; }
 
@@ -45,7 +50,7 @@ html, body {
 }
 
 html {
-  font-size: 14px;
+  font-size: 14px; /* Default is 16px */
   position: relative;
   box-sizing: content-box; /* Padding and borders increase box */
   -webkit-text-size-adjust: 100%; /* Prevent font scaling in landscape while allowing user zoom */
@@ -54,7 +59,7 @@ html {
 body {
   text-align: center;
   font-family: 'Open Sans', Sans-Serif;
-  background-color: #333;
+  background-color: #f3f1ec;
   overflow-y: scroll;
 }
 
@@ -107,6 +112,49 @@ body {
 }
 
 /* ================================================== */
+/* FONT SIZES EXCEPT FORM-RELATED */
+
+h1 { font-size: 1.7rem; }
+
+h3, h5 { font-size: 1.4rem }
+
+h4 { font-size: 1.0rem; }
+
+p { font-size: 1.0rem; }
+
+@media screen and (max-width: 640px) {
+
+  p#nav { font-size: 1.2rem; }
+
+}
+
+#response { font-size: 1.0rem; }
+
+ul { font-size: 1.0rem; }
+
+#info ul { font-size: 1.0rem; }
+
+label { font-size: 1.0rem; }
+
+#list { font-size: 1.0rem; }
+
+@media screen and (max-width: 640px) {
+
+  p, #info p, #info ul {
+    font-size: 1.2rem;
+  }
+
+  label {
+    font-size: 1.2rem;
+  }
+
+  #list { /* Bottom list */
+    font-size: 1.2rem;
+  }
+
+}
+
+/* ================================================== */
 /* LAYOUT */
 /*
 #boxes = pages and install
@@ -131,7 +179,6 @@ body {
 }
 
 #wrap {
-  width: 100%:
   margin: 0 auto;
   padding: 0 20px;
   text-align: left;
@@ -341,6 +388,10 @@ div.bg { /* Where is this? */
     width: auto;
   }
 
+  #buttons-setup {
+    width: auto;
+  }
+
 }
 
 /* END LAYOUT */
@@ -355,8 +406,7 @@ h1 {
   display: block;
   font-weight: 600;
   letter-spacing: 0;
-  font-size: 1.7em;
-  line-height: 1.0;
+  line-height: 1.2;
   color: #000;
   border-bottom: 3px solid #ebebeb;
   text-shadow: 1px 1px 1px #ccc;
@@ -369,14 +419,13 @@ h1 i {
 h3, h5 {
   display: block;
   font-weight: 600;
-  font-size: 1.35em;
   color: #333;
   text-shadow: 1px 1px 1px #ddd;
 }
 
 h3 {
   margin: 16px 0 6px 0;
-  line-height: 1.3;
+  line-height: 1.35;
 }
 
 h5 { /* Images */
@@ -390,13 +439,11 @@ h3 em {
 
 h4 {
   margin: 2px 0 10px 0;
-  font-size: 1.0em;
 }
 
 p {
   margin: 1.2em 0 0 0;
   padding: 0;
-  font-size: 1.0em;
   line-height: 1.4;
 }
 
@@ -434,7 +481,6 @@ p.pages {
 @media screen and (max-width: 640px) {
 
   p#nav {
-    font-size: 1.2em;
     line-height: 1.8;
   }
 
@@ -447,7 +493,6 @@ p.pages {
 /* #info is for htaccess & backup */
 #info p,
 p.backup {
-  font-size: 1.0em;
   margin-top: 1.0em;
 }
 
@@ -460,12 +505,12 @@ p#footer {
   padding-top: 1.2em;
   padding-bottom: 3.25em;
   color: #fff;
-  background: #555 url('img/bg_footer.gif') no-repeat;
+  background: #333 url('img/admin_bg_footer.png') no-repeat;
   background-position: 50% bottom;
   /* x-value y-value blur spread color */
-  -webkit-box-shadow: 0 700px 0 700px #555;
-  -moz-box-shadow: 0 700px 0 700px #555;
-  box-shadow: 0 700px 0 700px #555;
+  -webkit-box-shadow: 0 700px 0 700px #333;
+  -moz-box-shadow: 0 700px 0 700px #333;
+  box-shadow: 0 700px 0 700px #333;
 }
 
 p#footer em {
@@ -480,7 +525,7 @@ p.break_word {
   white-space: -moz-pre-wrap;
   white-space: -pre-wrap;
   white-space: -o-pre-wrap;
-  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 p.important {
@@ -532,7 +577,6 @@ i {
   height: auto;
   width: 100%;
   font-weight: 400;
-  font-size: 1.0em;
   border-top: 3px solid #b4ecd6;
   border-bottom: 3px solid #b4ecd6;
   background: #f6fffb; /* Pale green */
@@ -572,7 +616,6 @@ ul {
   margin: 6px 0 0 0;
   padding: 0;
   list-style-type: none;
-  font-size: 1.0em;
 }
 
 #info ul {
@@ -581,7 +624,6 @@ ul {
   padding: 5px 0 5px 0;
   list-style-type: disc;
   list-style-position: outside;
-  font-size: 1.1em;
   line-height: 1.4;
 }
 
@@ -593,7 +635,6 @@ ul {
   display: block;
   clear: both;
   margin-bottom: 14px;
-  font-size: 1.0em;
 }
 
 #list li.top {
@@ -683,10 +724,11 @@ p#footer a:hover {
 hr {
   clear: both;
   display: block;
-  margin: 10px auto 10px auto;
+  margin: 16px auto 16px auto;
   padding-bottom: 1px;
   height: 0;
   width: 100%;
+  max-width: 100%;
   background: #fff;
   border: none;
   border-top: 3px solid #ebebeb;
@@ -719,7 +761,6 @@ form#pw {
 label {
   display: block;
   margin: 6px 0 4px 0;
-  font-size: 1.0em;
   line-height: 1.3;
 }
 
@@ -776,15 +817,6 @@ form#pw input[type=password] {
   width: 270px;
 }
 
-input[type=file] { /* Tricky */
-  margin: 2px 0 6px 0;
-  padding: 6px 5px 5px 5px;
-  background: #fff;
-  border: 1px solid #b4ecd6;
-  border-radius: 4px;
-  font-size: 1.1em;
-}
-
 .checkbox-container {
   display: flex;
   align-items: center;
@@ -821,8 +853,9 @@ textarea.flexitem {
 /* -------------------- */
 /* Submit buttons */
 
-/* Start main colour control */
-input[type=submit] { /* All buttons except 'caution' */
+/* Start main Submit colour control */
+input[type=submit],
+input[type="file"]::file-selector-button {
   margin: 8px 0 9px 0;
   padding: 7px 6px 8px 5px;
   width: 170px;
@@ -839,6 +872,31 @@ input[type=submit] { /* All buttons except 'caution' */
   -webkit-box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.2);
   -moz-box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.2);
   box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+}
+
+a.faux-submit {
+  color: #000;
+  background-color: #fafafa;
+  border: 1px solid #bbb;
+  border-radius: 0;
+  text-decoration: none;
+  text-align: center;
+  font-size: 1.05em;
+  font-family: 'Open Sans', Sans-Serif;
+  transition: all 0.3s ease;
+  -webkit-appearance: none;
+  -webkit-box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.2);
+  -moz-box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 2px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* https://developer.mozilla.org/en-US/docs/Web/CSS/::file-selector-button */
+input[type="file"]::file-selector-button { /* Override main above */
+  margin-right: 10px;
+  padding: 6px 6px 7px 5px;
+  background-color: #2491fe;
+  border: 1px solid #2491fe;
 }
 
 input[type=submit]:hover {
@@ -847,6 +905,40 @@ input[type=submit]:hover {
   border: 1px solid #bbb;
   cursor: pointer;
 }
+
+/* Next three need to be separate */
+input[type="file"]::-ms-browse:hover {
+  color: #000;
+  background-color: #fafafa;
+  border: 1px solid #bbb;
+}
+
+input[type="file"]::-webkit-file-upload-button:hover {
+  color: #000;
+  background-color: #fafafa;
+  border: 1px solid #bbb;
+}
+
+input[type="file"]::file-selector-button:hover {
+  color: #000;
+  background-color: #fafafa;
+  border: 1px solid #bbb;
+}
+
+a.faux-submit {
+  display: block;
+  margin: 8px 0 16px 0;
+  padding-top: 9px;
+  width: 170px;
+  height: 29px;
+}
+
+a.faux-submit:hover {
+  color: #fff;
+  background-color: #2491fe;
+  border: 1px solid #2491fe;
+}
+
 /* End main colour control */
 
 form#pw input[type=submit] { /* Password */
@@ -876,6 +968,11 @@ input[type=submit].stacked { /* Images (beneath box) */
     width: 170px;
   }
 
+  a.faux-submit {
+    display: inline-block;
+    margin: 10px 6px 0 0;
+  }
+
 }
 
 #backup-buttons input[type=submit] { /* Backup */
@@ -892,18 +989,6 @@ input[type=submit].em:hover { /* Setup boxes??? */
   color: #03f;
 }
 
-input[type=submit].caution {
-  color: #000;
-  background-color: #fafafa;
-  border: 1px solid #bbb;
-}
-
-input[type=submit].caution:hover {
-  color: #fff;
-  background-color: #b85454;
-  border: 1px solid #b85454;
-}
-
 input[type=submit].pre {
   color: #fff;
   background-color: #2491fe;
@@ -915,6 +1000,28 @@ input[type=submit].pre:hover {
   background-color: #fafafa;
   border: 1px solid #bbb;
   cursor: pointer;
+}
+
+input[type=submit].light { /* Delete page */
+  color: #000;
+  background-color: #fafafa; /* Light, not dark */
+  border: 1px solid #bbb;
+}
+
+input[type=submit].light:hover {
+  color: #fff;
+  background-color: #b85454;
+  border: 1px solid #b85454;
+}
+
+input[type=submit].caution {
+  color: #fff;
+  background-color: #b85454;
+  border: 1px solid #b85454;
+}
+
+input[type=submit].caution:hover {
+  opacity: 0.6;
 }
 
 /* Enlarge things on screens less than 1201px */
@@ -929,6 +1036,13 @@ input[type=submit].pre:hover {
   }
 
   input[type=password] {
+    font-size: 1.2em;
+  }
+
+  a.faux-submit {
+    width: 170px;
+    height: 32px;
+    padding-top: 10px;
     font-size: 1.2em;
   }
 
@@ -992,18 +1106,6 @@ input.fade:hover {
     width: 186px;
   }
 
-  p {
-    font-size: 1.2em;
-  }
-
-  label {
-    font-size: 1.2em;
-  }
-
-  #list { /* Bottom list */
-    font-size: 1.2em;
-  }
-
   textarea {
     font-size: 1.2em;
   }
@@ -1028,5 +1130,16 @@ input.fade:hover {
     padding: 11px 6px 12px 5px;
   }
 
-} /* End adjustments 2 */
+  input[type="file"]::file-selector-button { /* Override main above */
+    margin-right: 10px;
+    padding: 9px 6px 10px 5px;
+    background-color: #2491fe;
+    border: 1px solid #2491fe;
+    font-size: 1.2em;
+  }
 
+  a.faux-submit {
+    font-size: 1.2em;
+  }
+
+} /* End adjustments 2 */

@@ -25,7 +25,7 @@ body {
 
 }
 
-@media screen and (max-width: 640px) {
+@media screen and (max-width: 680px) {
 
   body {
     margin: 20px 10px 30px 10px;
@@ -51,7 +51,7 @@ div {
 
 div.block {
   display: block;
-  max-width: 600px;
+  max-width: 640px;
   margin: 0 0 0.6em 0;
   padding: 0.4em 0;
   background: #fff;
@@ -92,7 +92,19 @@ span {
 <h4>Internal link</h4>
 <em>&lt;a href="<span>./page</span>"&gt;link text&lt;/a&gt;</em>
 
-<h4>Coloured side borders (images)</h4>
+<h4>Alternative H1 page headings</h4>
+Second line of page only (coloured left borders)<br>
+<em>&lt;span class="left <span>black</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>lemon</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>salmon</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>tomato</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>blue</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>purple</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>plum</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>pink</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em><br>
+<em>&lt;span class="left <span>gold</span>"&gt;<span>Heading text</span>&lt;/span&gt;</em>
+
+<h4>Coloured side bands (images)</h4>
 <em>&nbsp;class="bgmaxw0"</em> &nbsp;<span>[ darkish grey ]</span><br>
 <em>&nbsp;class="bgmaxw1"</em> &nbsp;<span>[ mid grey ]</span><br>
 <em>&nbsp;class="bgmaxw2"</em> &nbsp;<span>[ light grey ]</span><br>
@@ -102,31 +114,45 @@ span {
 <em>&nbsp;class="bgmaxw6"</em> &nbsp;<span>[ mid-tan ]</span><br>
 <em>&nbsp;class="bgmaxw7"</em> &nbsp;<span>[ mauve ]</span><br>
 <em>&nbsp;class="bgmaxw8"</em> &nbsp;<span>[ dark pink ]</span><br>
-<span>Example:</span><br>
-<div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" class="bgmaxw0"&gt;</em></div>
+Example:<br>
+<div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" class="<span>bgmaxw0</span>"&gt;</em></div>
+
+<h4>Coloured side band, left only (images)</h4>
+<em>&nbsp;class="bgleft0"</em> &nbsp;<span>[ darkish grey ]</span><br>
+<em>&nbsp;class="bgleft1"</em> &nbsp;<span>[ mid grey ]</span><br>
+<em>&nbsp;class="bgleft2"</em> &nbsp;<span>[ light grey ]</span><br>
+<em>&nbsp;class="bgleft3"</em> &nbsp;<span>[ black ]</span><br>
+<em>&nbsp;class="bgleft4"</em> &nbsp;<span>[ light turquoise ]</span><br>
+<em>&nbsp;class="bgleft5"</em> &nbsp;<span>[ blue-grey ]</span><br>
+<em>&nbsp;class="bgleft6"</em> &nbsp;<span>[ mid-tan ]</span><br>
+<em>&nbsp;class="bgleft7"</em> &nbsp;<span>[ mauve ]</span><br>
+<em>&nbsp;class="bgleft8"</em> &nbsp;<span>[ dark pink ]</span><br>
+Example:<br>
+<div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" class="<span>bgleft0</span>"&gt;</em></div>
 
 <h4>Narrower column for text</h4>
 <span>Not to include images, repeat as required</span><br>
 <div class="block"><em>&lt;section&gt;</em><br><br><span>Narrower text column (600 pixels wide)</span><br><br><em>&lt;/section&gt;</em></div>
 
-<h4>Coloured text boxes</h4>
-<span>Maroon, rounded corners:</span><br>
+<h4>Text boxes</h4>
+Maroon, rounded corners:<br>
 <div class="block"><em>&lt;div class="bg1"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
-<span>Light grey, rounded corners:</span><br>
+Light grey, rounded corners:<br>
 <div class="block"><em>&lt;div class="bg2"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
-<span>Light yellowy, rounded corners:</span><br>
+Light yellowy, rounded corners:<br>
 <div class="block"><em>&lt;div class="bg3"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
-<span>White background, thick grey border, square corners:</span><br>
+White background, thick grey border, square corners:<br>
 <div class="block"><em>&lt;div class="bg4"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
+White background, slight shadow:<br>
+<div class="block"><em>&lt;div class="bg5"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
+Light grey background, rounded corners, slight shadow:<br>
+<div class="block"><em>&lt;div class="box"&gt;</em><br><br><span>Content</span><br><br><em>&lt;/div&gt;</em></div>
+Above 'box' class for images<br>
+<div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" <span>class="box"</span>&gt;</em></div>
 
 <h4>Wide box</h4>
-<span>Example:</span><br>
-<div class="block"><em>&lt;div class="w1200"&gt;<br><br><span>Content (up to 1200 pixels wide <i>including borders</i>)</span><br><br>&lt;/div&gt;</em></div>
-
-<h4>Box for images (can be used for divs)</h4>
-<em>&nbsp;class="box"</em> &nbsp;<span>[ grey surround ]</span><br>
-<span>Example:</span><br>
-<div class="block"><em>&lt;img src="<span>img/filename.jpg</span>" width="<span>xxx</span>" height="<span>xxx</span>" alt="" class="box"&gt;</em></div>
+Example:<br>
+<div class="block"><em>&lt;div class="w1200"&gt;<br><br><span>Content (up to 1200 pixels wide <i>including side borders, if any</i>)</span><br><br>&lt;/div&gt;</em></div>
 
 <h4>Bullet point list</h4>
 <div class="block"><em>&lt;ul&gt;<br>
@@ -150,14 +176,72 @@ span {
 <div class="block"><em>&lt;ul class="boxlist"&gt;<br>
 &lt;li&gt;&lt;a href="<span>./page1</span>"&gt;<span>page 1</span>&lt;/a&gt;&lt;/li&gt;<br>
 &lt;li&gt;&lt;a href="<span>./page2</span>"&gt;<span>page 2</span>&lt;/a&gt;&lt;/li&gt;<br>
+&lt;li&gt;&lt;a href="<span>./page3</span>"&gt;<span>page 3</span>&lt;/a&gt;&lt;/li&gt;<br>
 &lt;/ul&gt;</em></div>
 
-<h4>Quote</h4>
+<h4>Quote block</h4>
 <div class="block"><em>&lt;blockquote&gt;<br><br>
 <span>Content</span><br><br>
-&lt;/blockquote&gt;</div>
+&lt;/blockquote&gt;</em></div>
 
-superMicro CMS <em>24 May 2024</em><br>
+<h4>Modal image</h4>
+<div class="block"><em>&lt;div class="relative" style="max-width: <span>740px</span>;"&gt;<br><br>
+&lt;p class="enlarge"&gt;Click picture to enlarge&lt;/p&gt;<br>
+&lt;p class="w"&gt;&lt;img src="img/<span>filename.jpg</span>" width="<span>740px</span>" height="<span>auto</span>" alt="<span>image caption when enlarged</span>" class="modal-target"&gt;&lt;/p&gt;<br><br>
+&lt;/div&gt;<br><br>
+&lt;div id="modal" class="modal"&gt;<br>
+&lt;div id="modal-close" class="modal-close"&gt;&times;&lt;/i&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;img src="#" alt="" id="modal-content" class="modal-content" style="width: 100%; max-width: <span>1024px</span>;"&gt;&lt;/div&gt;<br>
+&lt;div id="modal-caption" class="modal-caption" style="width: 80%; max-width: 640px;"&gt;&lt;/div&gt;<br>
+&lt;/div&gt;</em></div>
+
+<h4>Modal image used in box1 of side-by-side image and text</h4>
+<div class="block"><em>&lt;div class="relative" style="max-width: <span>740px</span>;"&gt;<br><br>
+&lt;p class="enlarge"&gt;Click picture to enlarge&lt;/p&gt;<br>
+&lt;div&gt;&lt;img src="img/<span>filename.jpg</span>" width="<span>740px</span>" height="<span>auto</span>" alt="<span>image caption when enlarged</span>" class="modal-target"&gt;&lt;/div&gt;<br><br>
+&lt;/div&gt;<br><br>
+&lt;div id="modal" class="modal"&gt;<br>
+&lt;div id="modal-close" class="modal-close"&gt;&times;&lt;/i&gt;&lt;/div&gt;<br>
+&lt;div&gt;&lt;img src="#" alt="" id="modal-content" class="modal-content" style="width: 100%; max-width: <span>1024px</span>;"&gt;&lt;/div&gt;<br>
+&lt;div id="modal-caption" class="modal-caption" style="width: 80%; max-width: 640px;"&gt;&lt;/div&gt;<br>
+&lt;/div&gt;</em></div>
+
+<h4>Side-by-side image and text</h4>
+<div class="block"><em>&lt;/div&gt;&lt;!-- ends col (important) //--&gt;<br><br>
+&lt;div class="flexcontainer1 row"&gt;&lt;!-- or rowreverse //--&gt;<br><br>
+&lt;div class="box1"&gt;<br><br>
+&lt;div&gt;&lt;img src="img/<span>example.jpg</span>" width="<span>640</span>" height="<span>xxx</span>" alt=""&gt;&lt;/div&gt;&lt;!-- max image width 640px //--&gt;<br><br>
+&lt;p class="caption"&gt;<span>Optional caption</span>&lt;/p&gt;<br><br>
+&lt;/div&gt;<br><br>
+&lt;div class="box2"&gt;<br><br>
+<span>Text</span><br><br>
+&lt;/div&gt;<br><br>
+&lt;/div&gt;<br><br>
+&lt;div class="col"&gt;&lt;!-- starts col again (important) //--&gt;</em></div>
+
+<h4>Accordion</h4>
+<div class="block"><em>&lt;div class="accordion"&gt;<br><br>
+&lt;div class="tab"&gt;<br><br>
+&lt;div&gt;<span>Accordion item 1</span>&lt;/div&gt;<br><br>
+&lt;/div&gt;<br><br>
+&lt;div class="panel"&gt;<br><br>
+<span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam (more text ...)</span><br><br>
+&lt;/div&gt;<br><br>
+&lt;div class="tab"&gt;<br><br>
+&lt;div&gt;<span>Accordion item 2</span>&lt;/div&gt;<br><br>
+&lt;/div&gt;<br><br>
+&lt;div class="panel"&gt;<br><br>
+<span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam (more text ...)</span><br><br>
+&lt;/div&gt;<br><br>
+&lt;div class="tab"&gt;<br><br>
+&lt;div&gt;<span>Accordion item 3</span>&lt;/div&gt;<br><br>
+&lt;/div&gt;<br><br>
+&lt;div class="panel"&gt;<br><br>
+<span>Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam (more text ...)</span><br><br>
+&lt;/div&gt;<br><br>
+&lt;/div&gt;</em></div>
+
+superMicro CMS <em>13 September 2024</em><br>
 
 </body>
 </html>

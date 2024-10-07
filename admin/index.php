@@ -5,12 +5,14 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 25 May 2024 */
+/* Last updated 09 September 2024 */
 
 define('ACCESS', TRUE);
 
 // Declare variables
-$notice = $page_id = $filetitle = $pagecontent = $file_contents = $response = $do_page = $do_stylesheet = $do_menu = $problem = $homepage = $page = $addmenu = $line_exists = $menuline = $menutext = $cssfilename = $rewrite = $ext = $mode = "";
+$page_id = $filetitle = $pagecontent = $file_contents = $response = $do_page = $do_menu = $problem = $homepage = $page = $addmenu = $line_exists = $menuline = $menutext = $rewrite = $ext = $mode = "";
+
+$page_link = FALSE;
 
 $thisAdmin = 'index'; // For nav
 
@@ -19,7 +21,7 @@ if (!file_exists('./top.php')) { // Leave this
 	exit();
 }
 
-require('./top.php');
+include('./top.php');
 
 // For $fileurl link to successful update
 if (defined('APACHE') && APACHE) { // May not yet be installed
@@ -35,68 +37,58 @@ if (defined('APACHE') && APACHE) { // May not yet be installed
 
 if (isset($_POST['submit2'])) {
 
-	// Block preview of stylesheet.css, extra.css and inmenu.txt
-	if (($_POST['page_id'] != 'stylesheet.css') && ($_POST['page_id'] != 'mobile.css') && ($_POST['page_id'] != 'extra.css') && ($_POST['page_id'] != 'inmenu.txt')) {
+	// Before creating a new one, delete any previous 'preview.txt'
+	// None should exist
+	if (file_exists('../pages/preview.txt')) {
+		unlink('../pages/preview.txt');
+	}
+
+	// Block preview of inmenu.txt
+	if ($_POST['page_id'] != 'inmenu.txt') {
 
 		$filetitle = trim($_POST['page_id']);
-		if (strlen($filetitle) < 1) {
-			$response = "<em>Select an existing page.</em>";
-		} else {
-			$pagecontent = stripslashes($_POST['content']);
-			if (strlen(trim($pagecontent)) < 1) {
-				$response = "<em>You didn't enter any content.</em>";
-			} else {
-				$textfilename = '../pages/preview.txt';
-				$fp = @fopen($textfilename, 'w+'); // Changed from 'wb' 30 Nov 18
-				fwrite($fp, $pagecontent);
-				fclose($fp);
 
-				if ($rewrite) {
-					header('Location: ' . LOCATION . 'preview?page=' . $filetitle);
-				} else {
-					header('Location: ' . LOCATION . 'preview' . $ext . '?page=' . $filetitle);
-				}
+		if (strlen($filetitle) < 1) {
+			$response = "<em>Select an existing page or enter a new page title.</em>";
+			$problem = TRUE;
+		}
+
+		// $pagecontent populates the textarea even if $problem
+		$pagecontent = stripslashes($_POST['content']);
+		if (strlen(trim($pagecontent)) < 1) {
+			$response = "<em>You didn't enter any content.</em>";
+			$problem = TRUE;
+		}
+
+		if (!$problem) {
+			$textfile = '../pages/preview.txt';
+			$fp = @fopen($textfile, 'w+');
+			fwrite($fp, $pagecontent);
+			fclose($fp);
+
+			if ($rewrite) {
+				header('Location: ' . LOCATION . 'preview?page=' . $filetitle);
+			} else {
+				header('Location: ' . LOCATION . 'preview' . $ext . '?page=' . $filetitle);
 			}
+
+			exit(); // Ensure script stops after redirect
 		}
 
 	} else {
-		$response = "<em>The stylesheet and menu files can't be previewed as a web page.</em>";
+		$response = "<em>Menu files can't be previewed as a web page.</em>";
 	}
 }
 
-/* -------------------------------------------------- */
-/* Comments page */
-	if (isset($_POST['submit11'])) {
-		$page_id = trim($_POST['page_id']);
-		header('Location: ' . LOCATION . ADMIN . '/comments.php?page=' . $page_id);
-	}
-
-/* -------------------------------------------------- */
-/* Extras page */
-	if (isset($_POST['submit12'])) {
-		$page_id = trim($_POST['page_id']);
-		header('Location: ' . LOCATION . ADMIN . '/extras.php?page=' . $page_id);
-	}
-
 ?>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title><?php
-
-if (function_exists('p_title')) {
-	p_title('pages');
-} else {
-	_print('Install the latest version of functions.php');
-}
-
-?></title>
-<?php if (file_exists('../inc/settings.php')) { ?>
-<link rel="shortcut icon" href="<?php _print(LOCATION); ?>favicon.ico">
-<?php } ?>
+<title><?php p_title('pages'); ?></title>
+<?php includeFileIfExists('./icons.php'); ?>
 <meta name="robots" content="noindex,nofollow">
 <link rel="stylesheet" href="styles.css" type="text/css">
 
@@ -110,7 +102,9 @@ if (function_exists('p_title')) {
 
 if (!$login) {
 // Logged out
+
 	includeFileIfExists('./login-form.php');
+
 } elseif ($login) {
 
 /* -------------------------------------------------- */
@@ -175,15 +169,7 @@ if (!$login) {
 
 <div id="o"><div id="wrap">
 
-<h1><?php
-
-	if (function_exists('h1')) {
-		h1('pages');
-	} else {
-		_print('Install the latest version of functions.php');
-	}
-
-?></h1>
+<h1><?php h1('pages'); ?></h1>
 
 <?php
 
@@ -205,7 +191,7 @@ if (!$login) {
 		$page_id = preg_replace("/[[:space:]]+/", "-", trim($_POST['page_id']));
 
 		// Prevent conflict with existing variables and folders
-		$disallowed = array('admin', 'index', 'preview', 'page', 'pages', 'content', 'example', 'e', 's', 'comments', 'extras', 'fonts', 'img', 'video', 'css', 'css-unminified', 'diagnostics', 'js', 'uploads');
+		$disallowed = array('admin', 'index', 'preview', 'page', 'pages', 'content', 'example', 'e', 's', 'comments', 'extras', 'fonts', 'img', 'video', 'css', 'css-unminified', 'diagnostics', 'js', 'uploads', 'data');
 		foreach ($disallowed as $title) {
 			if ($title == $page_id) { // If a file is missing
 				$problem = TRUE;
@@ -233,15 +219,8 @@ if (!$login) {
 			/* -------------------------------------------------- */
 
 			$filetitle = preg_replace("/^-/", "", $page_id); // Strip leading hyphen
-			$phpfilename = $filetitle . '.php';
-			$textfilename = $filetitle . '.txt';
-			$commentfilename = $filetitle . '.txt';
-			$extrafilename = $filetitle . '.txt';
-			$menutext = $filetitle; // Future development: allow foreign characters?
 
-			/* -------------------------------------------------- */
-
-			if (file_exists("../pages/{$textfilename}")) {
+			if (file_exists("../pages/{$filetitle}.txt")) {
 				$response = '<em>Sorry, this page title already exists. Try another.</em>';
 			} else {
 
@@ -274,36 +253,41 @@ if (!$login) {
 
 include(\'inc/html.php\');
 $obj = new Page;
-$obj->Textfilename = \'' . $textfilename . '\';
+$obj->Textfilename = \'' . $filetitle . '.txt\';
 $obj->Template();
 
 ?>';
 
-				$filename = "../{$phpfilename}";
+				$filename = "../{$filetitle}.php";
 				$fp = fopen($filename, 'w+');
 				fwrite($fp, $template);
 				fclose($fp);
 
-				$textfilename = "../pages/{$textfilename}";
-				$fp = fopen($textfilename, 'w+');
+				$textfile = "../pages/{$filetitle}.txt";
+				$fp = fopen($textfile, 'w+');
 				fwrite($fp, $pagecontent);
 				fclose($fp);
 
-				$commentfilename = "../comments/{$commentfilename}";
+				$commentfile = "../comments/{$filetitle}.txt";
 				// Create comment file only if it doesn't exist
-				if (!file_exists($commentfilename)) {
-					$fp = fopen($commentfilename, 'w+');
+				if (!file_exists($commentfile)) {
+					$fp = fopen($commentfile, 'w+');
 					fwrite($fp, 'No comments so far.');
 					fclose($fp);
 				}
 
-				$extrafilename = "../extras/{$extrafilename}";
+				$extrafile = "../extras/{$filetitle}.txt";
 				// Create extras file only if it doesn't exist
-				if (!file_exists($extrafilename)) {
-					$fp = fopen($extrafilename, 'w+');
+				if (!file_exists($extrafile)) {
+					$fp = fopen($extrafile, 'w+');
 					fwrite($fp, '<p>No extras so far.</p>');
 					fclose($fp);
 				}
+
+				$datafile = "../data/{$filetitle}.txt"; // New file
+				$fp = fopen($datafile, 'w+');
+				fwrite($fp, 'Get example'); // New empty file
+				fclose($fp);
 
 				$anchor = $filetitle;
 				if ($filetitle == 'index') {
@@ -318,16 +302,15 @@ $obj->Template();
 	}
 
 /* -------------------------------------------------- */
-/* Prepare to edit page */
+/* Prepare to update page */
 
 	if (isset($_POST['pre-submit3'])) {
+
 		$filetitle = trim($_POST['page_id']);
-		$textfilename = $filetitle . '.txt';
+
 		if (strlen($filetitle) < 1) {
 			$response = "<em>You didn't enter a page title.</em>";
-		} elseif ($filetitle == 'stylesheet.css') {
-			$response = "<em>You can't edit the stylesheet with this button.</em>";
-		} elseif (!file_exists("../pages/{$textfilename}")) {
+		} elseif (!file_exists("../pages/{$filetitle}.txt")) {
 			$response = "<em>Sorry, this page doesn't exist so can't update it. Click 'Create new page'.</em>";
 		} else {
 			$response = "<em>You are about to update <b>{$filetitle}</b> &raquo; click 'Update page' again, or [ <a href=\"index.php\" title=\"Abort\">abort</a> ]</em>";
@@ -335,31 +318,27 @@ $obj->Template();
 	}
 
 /* -------------------------------------------------- */
-/* Edit page */
+/* Update page */
 
 	if (isset($_POST['submit3'])) {
 
 		$filetitle = trim($_POST['page_id']);
+
 		if (strlen($filetitle) < 1) {
 			$problem = TRUE;
 			$response = "<em>You didn't enter a filename.</em>";
-		} elseif ($filetitle == 'stylesheet.css') {
-			$problem = TRUE;
-			$response = "<em>You can't edit the stylesheet with this button.</em>";
 		}
 
 		if (!$problem) {
 
-			$textfilename = $filetitle . '.txt';
-			if (!file_exists("../pages/{$textfilename}")) {
+			if (!file_exists("../pages/{$filetitle}.txt")) {
 				$response = "<em>Sorry, this page title doesn't exist. Try another or 'Create new page'.</em>";
 			} else {
-				$textfilename = "../pages/{$textfilename}";
 
-				$text = file($textfilename);
-
+				$textfile = "../pages/{$filetitle}.txt";
+				$text = file($textfile); // ??
 				$pagecontent = stripslashes($_POST['content']);
-				$fp = fopen($textfilename, 'w+');
+				$fp = fopen($textfile, 'w+');
 				fwrite($fp, $pagecontent);
 				fclose($fp);
 
@@ -446,6 +425,7 @@ $obj->Template();
 
 		$delete = trim($_POST['page_id']);
 		$to_delete = '../' . $delete . '.php';
+
 		if (strlen($delete) < 1) {
 			$response = "<em>You didn't enter a page title.</em>";
 		} elseif (!file_exists($to_delete)) {
@@ -465,29 +445,40 @@ $obj->Template();
 	if (isset($_POST['submit4'])) {
 
 		$delete = trim($_POST['page_id']);
-		$phpfilename = '../' . $delete . '.php';
-		$textfilename = '../pages/' . $delete . '.txt';
-		$commentfilename = '../comments/' . $delete . '.txt';
-		$extrafilename = '../extras/' . $delete . '.txt';
+
+		$phpfile = '../' . $delete . '.php';
+		$textfile = '../pages/' . $delete . '.txt';
+		$extrafile = '../extras/' . $delete . '.txt';
+		$commentfile = '../comments/' . $delete . '.txt';
+		$datafile = '../data/' . $delete . '.txt';
+
 		if ($delete == 'index') {
 			$response = "<em>You can't delete <b>index.php</b>.</em>";
 		} elseif ($delete == 'preview') {
 			$response = "<em>You can't delete <b>preview.php</b>.</em>";
 		} else {
-			if (file_exists($phpfilename)) {
-				unlink($phpfilename);
+
+			if (file_exists($phpfile)) {
+				unlink($phpfile);
 				$response = "<em>Success. <b>{$delete}</b> was deleted.</em>";
 			} else {
 				$response = "<em>Sorry, the page <b>{$delete}</b> doesn't exist.</em>";
 			}
-			if (file_exists($textfilename)) {
-				unlink($textfilename);
+
+			if (file_exists($textfile)) {
+				unlink($textfile);
 			}
-			if (file_exists($commentfilename)) {
-				unlink($commentfilename);
+
+			if (file_exists($extrafile)) {
+				unlink($extrafile);
 			}
-			if (file_exists($extrafilename)) {
-				unlink($extrafilename);
+
+			if (file_exists($commentfile)) {
+				unlink($commentfile);
+			}
+
+			if (file_exists($datafile)) {
+				unlink($datafile);
 			}
 
 			// Edit menu
@@ -506,91 +497,6 @@ $obj->Template();
 
 			// Update inmenu.txt
 			file_put_contents($inmenu, $newmenu);
-		}
-	}
-
-/* -------------------------------------------------- */
-/* Get a stylesheet */
-
-	if (isset($_POST['submit5'])) {
-
-		if ($_POST['select_style'] == 'current') {
-			$cssfilename = '../css/stylesheet.css';
-		} elseif ($_POST['select_style'] == 'current_mobile') {
-			$cssfilename = '../css/mobile.css';
-		} elseif ($_POST['select_style'] == 'default') {
-			$cssfilename = '../css/default.css';
-		} elseif ($_POST['select_style'] == 'default_unminified') {
-			$cssfilename = '../css/default-unminified.css';
-		} elseif ($_POST['select_style'] == 'mobile_default') {
-			$cssfilename = '../css/mobile-default.css';
-		} elseif ($_POST['select_style'] == 'mobile_default_unminified') {
-			$cssfilename = '../css/mobile-default-unminified.css';
-		} elseif ($_POST['select_style'] == 'extra') {
-			$cssfilename = '../css/extra.css';
-		} elseif ($_POST['select_style'] == 'none') {
-			$response = "<em>No stylesheet selected. Select a stylesheet in 'Styles:'</em>";
-			$cssfilename = FALSE;
-		}
-
-		// Verify the selected .css file exists
-		if ($cssfilename) {
-			if (!file_exists($cssfilename)) { // If not
-				$response = "<em>Sorry, the selected stylesheet doesn't exist.</em>";
-			} else { // otherwise
-				$file_contents = file_get_contents($cssfilename);
-			}
-		}
-	}
-
-/* -------------------------------------------------- */
-/* Prepare to edit stylesheet */
-
-	if (isset($_POST['pre-submit6'])) {
-
-		if (trim($_POST['page_id']) == 'extra.css') {
-			$stylesheet_name = 'extra';
-		} elseif (trim($_POST['page_id']) == 'mobile.css') {
-			$stylesheet_name = 'mobile';
-		} else {
-			$stylesheet_name = 'stylesheet';
-		}
-
-		if (strlen(trim(stripslashes($_POST['content']))) < 1) {
-			$response = "<em>No styles. You can't remove all styles.</em>";
-		} elseif (!strpos($_POST['page_id'], '.css')) {
-			$response = "<em>The filename must be a stylesheet.</em>";
-		} else {
-			$response = "<em>You are about to update the <b>{$stylesheet_name}</b> &raquo; click 'Update styles' again, or [ <a href=\"index.php\" title=\"Abort\">abort</a> ]</em>";
-		}
-	}
-
-/* -------------------------------------------------- */
-/* Edit stylesheet */
-
-	if (isset($_POST['submit6'])) {
-
-		if (trim($_POST['page_id']) == 'extra.css') {
-			$stylesheet_name = 'extra.css';
-		} elseif (trim($_POST['page_id']) == 'mobile.css') {
-			$stylesheet_name = 'mobile.css';
-		} else {
-			$stylesheet_name = 'stylesheet.css';
-		}
-
-		$cssfilename = '../css/' . $stylesheet_name;
-		if (!file_exists($cssfilename)) {
-			$response = "<em>Sorry, the stylesheet <b>{$stylesheet_name}</b> doesn't exist.</em>";
-		}
-
-		if (strlen(trim(stripslashes($_POST['content']))) < 1) {
-			$response = "<em>No styles. You can't remove all styles.</em>";
-		} else {
-			$csscontent = stripslashes($_POST['content']);
-			$fp = fopen($cssfilename, 'w+'); // Changed from 'wb' 30 Nov 18
-			fwrite($fp, $csscontent);
-			fclose($fp);
-			$response = '<em>The stylesheet was successfully updated.</em>';
 		}
 	}
 
@@ -640,7 +546,7 @@ $obj->Template();
 
 ?>
 
-<h3>Create/edit/delete a page | update styles | edit menu</h3>
+<h3>Create/edit/delete a page | edit menu</h3>
 
 	<div id="response">
 
@@ -674,10 +580,6 @@ $obj->Template();
 		$do_page = TRUE;
 	}
 
-	if (isset($_POST['submit5']) || isset($_POST['pre-submit6']) || isset($_POST['submit6'])) {
-		$do_stylesheet = TRUE;
-	}
-
 	if (isset($_POST['submit9']) || isset($_POST['pre-submit10']) || isset($_POST['submit10'])) {
 		$do_menu = TRUE;
 	}
@@ -687,16 +589,14 @@ $obj->Template();
 	<div id="boxes">
 
 <label><?php
-	if ($do_stylesheet) {
-		?>Edit the stylesheet:<?php
-	} elseif ($do_menu) {
+	if ($do_menu) {
 		if (ALPHABETICAL) {
 			?>The navigation menu is currently alphabetical (see Setup to order manually as below).<?php
 		} else {
 			?>Edit the navigation menu (ordered manually as below - see Setup to order alphabetically).<?php
 		}
 	} else {
-		?>Page title (words, numbers, -hyphens and _underscores only):<?php
+		?>Page title (letters, numbers, hyphens, underscores only):<?php
 	}
 ?></label>
 
@@ -707,7 +607,7 @@ $obj->Template();
 
 	/* -------------------------------------------------- */
 	// Clear all
-	if (isset($_POST['submit8']) || (isset($_POST['submit5']) && !$cssfilename)) {
+	if (isset($_POST['submit8'])) {
 		_print("");
 
 	/* -------------------------------------------------- */
@@ -717,23 +617,6 @@ $obj->Template();
 			_print('index'); // $filetitle is empty
 		} else {
 			_print($filetitle);
-		}
-
-	/* -------------------------------------------------- */
-	// CSS files to update: extra.css, mobile.css or stylesheet.css
-	} elseif ($do_stylesheet && $cssfilename) {
-		if ($cssfilename == '../css/extra.css') {
-			_print('extra.css');
-		} elseif ($cssfilename == '../css/mobile.css') {
-			_print('mobile.css');
-		} elseif ($cssfilename == '../css/mobile-unminified.css') {
-			_print('mobile.css');
-		} elseif ($cssfilename == '../css/mobile-default.css') {
-			_print('mobile.css');
-		} elseif ($cssfilename == '../css/mobile-default-unminified.css') {
-			_print('mobile.css');
-		} else {
-			_print('stylesheet.css');
 		}
 
 	/* -------------------------------------------------- */
@@ -756,12 +639,10 @@ $obj->Template();
 	}
 
 ?>" maxlength="60"> <label style="display: inline;"> <?php
-	if ($do_stylesheet) {
-		_print('[ a stylesheet file ]');
-	} elseif ($do_menu) {
-		_print('[ the menu file ]');
+	if ($do_menu) {
+		_print('&nbsp;[ the menu file ]');
 	} else {
-		_print('[ for URL and menu text ]');
+		_print('&nbsp;[ for URL ]');
 	}
 ?></label>
 
@@ -770,17 +651,13 @@ $obj->Template();
 /* ================================================== */
 /* TEXT ABOVE MAIN BOX */
 
-	if ($do_stylesheet) { ?>
-
-<p class="pages">The default styles can be restored with <em>Get styles</em> &raquo; <em>Default styles</em> &raquo; <em>Update styles</em><br>The optional <em>extra styles</em> supplement the active stylesheet: 'stylesheet.css' [ <a href="https://web.patricktaylor.com/cms-stylesheets" target="_blank">info</a> ]</p>
-
-<?php } elseif ($do_menu) { ?>
+	if ($do_menu) { ?>
 
 <p class="pages"><b>NOTE</b>: (i) preserve the existing page names (listed below) and match the text exactly, (ii) do not include <em>index</em> (the home page is always on the menu), and (iii) ensure each item is on its own line (with no empty lines).<br>A leading # symbol (eg: #example-page) means the page is not in the navigation menu and <i>vice versa</i> [ <a href="https://web.patricktaylor.com/cms-navigation-menu" target="_blank">info</a> ]</p>
 
 	<?php } else { ?>
 
-<p class="pages"><strong>Line 1</strong> not displayed. Add plus symbol <em>+</em> to add page to menu <span>&#124;</span> <em>~~password~~</em> to password protect <span>&#124;</span> ampersand symbol <em>&</em> enables comments [ <a href="https://web.patricktaylor.com/cms-comments" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://web.patricktaylor.com/cms-extras" target="_blank">info</a> ]<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3</strong>: leave blank</span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [&nbsp;<a href="markup.html" target="_blank">get&nbsp;HTML&nbsp;markup</a>&nbsp;]</p>
+<p class="pages"><strong>Line 1</strong> not displayed. Add plus symbol <em>+</em> to add page to menu <span>&#124;</span> <em>~~password~~</em> to password protect <span>&#124;</span> ampersand symbol <em>&</em> enables comments [ <a href="https://web.patricktaylor.com/cms-comments" target="_blank">info</a> ] <span>&#124;</span> dollar symbol <em>$</em> enables extras [ <a href="https://web.patricktaylor.com/cms-extras" target="_blank">info</a> ] <span>&#124;</span> add <em>~~</em> to exclude page in on-site search <span>&#124;</span> add <em>V</em> for HTML validation button <span>&#124;</span> add caret symbol <em>^</em> for Facebook share button<br><strong>Line 2</strong> = <em>page heading</em><br><span><strong>Line 3</strong>: leave blank</span><br><strong>Line 4</strong> onwards = <em>content</em> [ <a href="index.php?page=">get example</a> ] [&nbsp;<a href="markup.html" target="_blank">get&nbsp;HTML&nbsp;markup</a>&nbsp;]</p>
 
 	<?php } ?>
 
@@ -791,6 +668,10 @@ $obj->Template();
 
 /* ================================================== */
 /* MAIN TEXTAREA */
+
+	if (isset($_POST['submit2'])) {
+		_print($pagecontent);
+	}
 
 	if ($mode == 'preview') {
 		if (file_exists('../pages/preview.txt')) {
@@ -828,17 +709,8 @@ $obj->Template();
 		_print($pagecontent);
 
 	/* -------------------------------------------------- */
-	// Get styles
-	} elseif (isset($_POST['submit5'])) {
-		if ($cssfilename) {
-			_print(stripslashes($file_contents));
-		} else {
-			_print('');
-		}
-
-	/* -------------------------------------------------- */
 	// Update styles or get ready to save the menu
-	} elseif (isset($_POST['pre-submit6']) || isset($_POST['submit6']) || isset($_POST['pre-submit10'])) {
+	} elseif (isset($_POST['pre-submit10'])) {
 		_print(trim(stripslashes($_POST['content'])));
 
 	/* -------------------------------------------------- */
@@ -860,7 +732,7 @@ $obj->Template();
 
 	/* -------------------------------------------------- */
 	// This page first loaded or 'example' clicked
-	} else {
+	} elseif (!isset($_POST['submit2'])) { // Not preview
 		_print_nlb('#
 Page Heading
 
@@ -873,15 +745,13 @@ Content...');
 
 		</div><!-- end .textarea-container //-->
 
-<?php if ($do_menu) { ?>
+<p><?php if ($do_menu) { ?>
 
-<p><a href="./index.php" title="Back to 'Pages'">&laquo; Back to 'Pages'</a></p>
-
-<?php } elseif ($do_stylesheet) { ?>
-
-<p><a href="./index.php" title="Back to 'Pages'">&laquo; Back to 'Pages'</a></p>
+[ <a href="./index.php">back to pages</a> ] &nbsp; 
 
 <?php } ?>
+
+[ <a href="./stylesheets.php">edit the stylesheets</a> ]</p>
 
 	</div><!-- end #boxes //-->
 
@@ -893,14 +763,20 @@ Content...');
 ?>
 	<div id="buttons">
 
+		<div>
+
 <input type="submit" name="submit8" class="fade" value="Clear all">
+
+		</div>
 
 <p>Pages:</p>
 
 		<div><!-- first group //-->
 
 <input type="submit" name="submit1" value="Add new page">
+
 <input type="submit" name="submit2" value="Preview page">
+
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit3'])) {
@@ -912,87 +788,39 @@ Content...');
 	}
 
 ?>" <?php _print($preclass); ?>value="Update page">
+
 <input type="submit" name="<?php
 
 	if (isset($_POST['pre-submit4']) && file_exists($to_delete)) {
 		_print('submit4');
+		$preclass = 'class="caution" '; // Red
 	} else {
 		_print('pre-submit4');
+		$preclass = 'class="light" ';
 	}
 
-?>" class="caution" value="Delete page">
-<input type="submit" name="submit11" value="Get comments">
-<input type="submit" name="submit12" value="Get extras">
+?>" <?php _print($preclass); ?>value="Delete page">
 
 		</div>
 
-<p>Styles:</p>
-
-<select id="dropdown" name="select_style">
 <?php
 
-	$current = 'Current styles';
-	$current_mobile = 'Current mobile styles';
-	$default = 'Default styles';
-	$default_unminified = 'Default unminified';
-	$mobile_default = 'Mob default styles';
-	$mobile_default_unminified = 'Mob default unminified';
-	$extra = 'Optional extra styles';
-
-	if (isset($_POST['submit5']) || isset($_POST['pre-submit6'])) {
-		if ($_POST['select_style'] == 'current') {
-			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $current . '</option>');
-		} elseif ($_POST['select_style'] == 'current_mobile') {
-			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $current_mobile . '</option>');
-		} elseif ($_POST['select_style'] == 'default') {
-			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $default . '</option>');
-		} elseif ($_POST['select_style'] == 'default_unminified') {
-			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $default_unminified . '</option>');
-		} elseif ($_POST['select_style'] == 'mobile_default') {
-			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $mobile_default . '</option>');
-		} elseif ($_POST['select_style'] == 'mobile_default_unminified') {
-			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $mobile_default_unminified . '</option>');
-		} elseif ($_POST['select_style'] == 'extra') {
-			_print_nlb('<option value="' . $_POST['select_style'] . '">' . $extra . '</option>');
+	if ((isset($_GET['page']) && $_GET['page']) || isset($_POST['pre-submit3']) || isset($_POST['submit3'])) {
+		if (isset($_GET['page'])) { // This checks if 'page' exists in the $_GET array
+			$page = $_GET['page']; // Safe to access $_GET['page'] since we know it exists
 		}
-	}
-
 ?>
-<option value="none">Select a stylesheet:</option>
-<option value="current"><?php echo $current; ?></option>
-<option value="current_mobile"><?php echo $current_mobile; ?></option>
-<option value="default"><?php echo $default; ?></option>
-<option value="default_unminified"><?php echo $default_unminified; ?></option>
-<option value="mobile_default"><?php echo $mobile_default; ?></option>
-<option value="mobile_default_unminified"><?php echo $mobile_default_unminified; ?></option>
-<option value="extra"><?php echo $extra; ?></option>
-</select>
+<p>In addition:</p>
 
 		<div><!-- second group //-->
 
-<input type="submit" name="submit5" class="fade" value="Get styles">
-<input type="submit" name="<?php
-
-	if (isset($_POST['pre-submit6']) || isset($_POST['submit5'])) {
-		if ((strpos($_POST['page_id'], '.css') !== FALSE) || $cssfilename) {
-			$preclass = 'class="em" '; // White text on black
-		} else {
-			$preclass = 'class="fade" '; // No go, so keep it faded
-		}
-	} else {
-		$preclass = 'class="fade" '; // Default starting position class
-	}
-
-	if (isset($_POST['pre-submit6']) && (strlen(trim(stripslashes($_POST['content']))) > 1) && (strpos($_POST['page_id'], '.css') !== FALSE)) {
-		_print('submit6'); // Ready to update
-		$preclass = 'class="pre" ';
-	} else {
-		_print('pre-submit6'); // Default starting position name
-	}
-
-?>" <?php _print($preclass); ?>value="Update styles">
+<a href="./comments.php?page=<?php _print($page); ?>" class="faux-submit">Get comments</a>
+<a href="./extras.php?page=<?php _print($page); ?>" class="faux-submit">Get extras</a>
+<a href="./data.php?page=<?php _print($page); ?>" class="faux-submit">Get page data</a>
 
 		</div>
+
+<?php } ?>
 
 <p>Menu:</p>
 
@@ -1001,19 +829,18 @@ Content...');
 <input type="submit" name="submit9" class="fade" value="Get the menu">
 <input type="submit" name="<?php
 
-	if (isset($_POST['pre-submit10'])) {
+	if (isset($_POST['submit9'])) { // Get the menu
+		_print('pre-submit10');
+		$preclass = 'class="em" ';
+	} elseif (isset($_POST['pre-submit10'])) { // Save the menu
 		_print('submit10');
+		$preclass = 'class="pre" ';
 	} else {
 		_print('pre-submit10');
+		$preclass = 'class="fade" ';
 	}
 
-	if (isset($_POST['submit9']) || isset($_POST['pre-submit10'])) {
-		$class2 = 'em';
-	} else {
-		$class2 = 'fade';
-	}
-
-?>" class="<?php _print($class2); ?>" value="Save the menu">
+?>" <?php _print($preclass); ?>value="Save the menu">
 
 		</div>
 
@@ -1025,7 +852,7 @@ Content...');
 
 	<div id="list">
 
-<?php include('./list.php'); ?>
+<?php includeFileIfExists('./list.php'); ?>
 
 	</div>
 

@@ -5,7 +5,10 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 30 April 2023 */
+/* Last updated 12 September 2024 */
+
+$spam_found = FALSE;
+$response = "";
 
 	if (!defined('ACCESS')) {
 		die('Direct access not permitted to filter-email.php');
@@ -50,14 +53,13 @@
 		$response .= TEXT21 . '<br>';
 	}
 
-	$spam = array('a href=', '[url=', '[link=', 'http:');
-	$spam_found = FALSE;
+	$spam = array('a href=', '[url=', '[link=', 'https:');
 	foreach ($spam as $spamword) {
-		if ((stripos($name, $spamword) !== false) || (stripos($comment, $spamword) !== false)) {
+		if ((stripos($name, $spamword) !== FALSE) || (stripos($comment, $spamword) !== FALSE)) {
 			$spam_found = TRUE;
-			break;
 		}
 	}
+
 	if ($spam_found) {
 		$problem = TRUE;
 		if (isset($comment)) {
@@ -82,8 +84,8 @@
 	$badStrings = array('Content-Type:', 'MIME-Version:', 'Content-Transfer-Encoding:', 'bcc:', 'cc:');
 	foreach ($_POST as $k => $v) {
 		foreach ($badStrings as $v2) {
-			if (stripos($v, $v2) !== false) {
-				header('HTTP/1.0 403 Forbidden');
+			if (stripos($v, $v2) !== FALSE) {
+				echo TEXT23;
 				exit;
 			}
 		}
@@ -95,8 +97,8 @@
 	if (file_exists(INC . 'stopwords.txt')) {
 		$stopwordsArray = file(INC . 'stopwords.txt'); // Get stopword as array
 		$string = stripslashes($comment);
-		foreach ($stopwordsArray as $word) {
-			$regex = '/\b'. $word .'\b/';
+		foreach ($stopwordsArray as $pattern) {
+			$regex = '/'. $pattern .'/'; // Word boundary removed 12/09/24
 			if (preg_match($regex, $string, $matches, PREG_OFFSET_CAPTURE)) {
 				$problem = TRUE;
 				unset($string);

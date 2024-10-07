@@ -5,7 +5,7 @@
  * COPYRIGHT Patrick Taylor https://patricktaylor.com/
  */
 
-/* Last updated 23 March 2024 */
+/* Last updated 11 July 2024 */
 
 // Declare variables
 $suffix = "";
@@ -35,19 +35,19 @@ if (defined('SHOW_HISTORY')) {
 			$cookie_string = rtrim($_COOKIE[$smcms_history], '_');
 			$pageArray = explode("_", $cookie_string); // Make array
 
-			_print_nlab('<ul class="inline">');
-			_print('<li class="viewed">You last viewed: &nbsp;</li>');
+			_print_nla('<p id="viewed">');
+			_print('You last viewed: &nbsp;');
 			if (isset($pageArray[0])) {
-				_print("<li><a href=\"" . LOCATION . $pageArray[0] . $suffix . "\">" . $pageArray[0] . "</a></li>");
+				_print("<a href=\"" . LOCATION . $pageArray[0] . $suffix . "\">" . $pageArray[0] . "</a>");
 			}
 			if (isset($pageArray[1])) {
-				_print("<li> <span class=\"grey\">&#124;</span> <a href=\"" . LOCATION . $pageArray[1] . $suffix . "\">" . $pageArray[1] . "</a></li>");
+				_print(" <span class=\"grey\">&#124;</span> <a href=\"" . LOCATION . $pageArray[1] . $suffix . "\">" . $pageArray[1] . "</a>");
 			}
 			if (isset($pageArray[2])) {
-				_print_nlb("<li> <span class=\"grey\">&#124;</span> <a href=\"" . LOCATION . $pageArray[2] . $suffix . "\">" . $pageArray[2] . "</a></li>");
+				_print(" <span class=\"grey\">&#124;</span> <a href=\"" . LOCATION . $pageArray[2] . $suffix . "\">" . $pageArray[2] . "</a>");
 			}
-			_print_nlb('</ul>');
-			_print_nlab("		</div>\n");
+			_print_nlb('</p>');
+			_print_nlab("		</div>");
 
 		}
 
